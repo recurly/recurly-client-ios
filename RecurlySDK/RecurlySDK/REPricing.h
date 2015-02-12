@@ -7,6 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <RecurlySDK/REProtocols.h>
+
 
 @class RECartSummary;
 @class REPlan;
@@ -16,18 +18,21 @@ typedef void (^REPricingBlock)(RECartSummary *price, NSError *error);
 
 @interface REPricing : NSObject
 
-@property (nonatomic, strong) REPlan *plan;
-@property (nonatomic, strong) RETaxes *taxes;
-@property (nonatomic, strong) NSDictionary *addons;
-@property (nonatomic, strong) NSString *currency;
-@property (nonatomic, strong) NSString *couponCode;
-@property (nonatomic, assign) NSUInteger planCount;
-@property (nonatomic, strong) REPricingBlock pricingCallback;
+@property (nonatomic) NSDictionary *addons;
+@property (nonatomic) NSString *couponCode;
+@property (nonatomic) NSUInteger planCount;
+@property (nonatomic) NSString *countryCode;
+@property (nonatomic) NSString *postalCode;
+@property (nonatomic) NSString *vatCode;
 
+@property (nonatomic, readonly) NSString *currency;
+@property (nonatomic, weak) id<REPricingHandlerDelegate>delegate;
+
+- (instancetype)initWithCurrency:(NSString *)currency;
 - (void)setPlanCode:(NSString *)planCode;
+- (void)setCountryCode:(NSString *)country;
 - (void)setAddress:(REAddress *)anAddress;
 - (void)updateAddon:(NSString *)addonName quantity:(NSUInteger)quantity;
-- (void)setCountryCode:(NSString *)country postalCode:(NSString *)postalCode vatCode:(NSString *)vat;
 
 @end
 

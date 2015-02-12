@@ -7,9 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <RecurlySDK/RecurlySDK.h>
 
 
-@interface PricingViewController : UIViewController <UITableViewDataSource>
+@interface PricingViewController : UIViewController <REPricingHandlerDelegate>
+
+@property (weak, nonatomic) IBOutlet UITextView *textBox;
 
 + (instancetype)createFromNib;
 

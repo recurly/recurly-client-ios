@@ -9,6 +9,18 @@
 #import <Foundation/Foundation.h>
 
 
+
+@class RECartSummary;
+@protocol REPricingHandlerDelegate <NSObject>
+
+- (void)priceDidUpdate:(RECartSummary *)summary;
+
+@optional
+- (void)priceDidFail:(NSError *)error;
+
+@end
+
+
 @protocol REValidable <NSObject>
 
 - (NSError *)validate;

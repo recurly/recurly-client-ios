@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "32CF71931A8913AC004B8E6A"
-               BuildableName = "libRecurlyLib.a"
+               BuildableName = "librecurly.a"
                BlueprintName = "RecurlyLib"
                ReferencedContainer = "container:RecurlySDK.xcodeproj">
             </BuildableReference>
@@ -57,7 +57,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "32CF71931A8913AC004B8E6A"
-            BuildableName = "libRecurlyLib.a"
+            BuildableName = "librecurly.a"
             BlueprintName = "RecurlyLib"
             ReferencedContainer = "container:RecurlySDK.xcodeproj">
          </BuildableReference>
@@ -76,7 +76,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "32CF71931A8913AC004B8E6A"
-            BuildableName = "libRecurlyLib.a"
+            BuildableName = "librecurly.a"
             BlueprintName = "RecurlyLib"
             ReferencedContainer = "container:RecurlySDK.xcodeproj">
          </BuildableReference>
@@ -94,7 +94,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "32CF71931A8913AC004B8E6A"
-            BuildableName = "libRecurlyLib.a"
+            BuildableName = "librecurly.a"
             BlueprintName = "RecurlyLib"
             ReferencedContainer = "container:RecurlySDK.xcodeproj">
          </BuildableReference>

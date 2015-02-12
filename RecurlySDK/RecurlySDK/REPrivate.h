@@ -24,12 +24,14 @@
 
 @interface REPriceSummary ()
 
-- (instancetype)initWithTaxRate:(NSDecimalNumber *)taxRate
-                       currency:(NSString *)currency
-                      planPrice:(NSDecimalNumber *)planPrice
-                       setupFee:(NSDecimalNumber *)setupFee
-                    addonsPrice:(NSDecimalNumber *)addonsPrice
-                         coupon:(RECoupon *)coupon;
++ (instancetype)summaryWithTaxRate:(NSDecimalNumber *)taxRate
+                          currency:(NSString *)currency
+                         planPrice:(NSDecimalNumber *)planPrice
+                          setupFee:(NSDecimalNumber *)setupFee
+                       addonsPrice:(NSDecimalNumber *)addonsPrice
+                            coupon:(RECoupon *)coupon
+                             error:(NSError *__autoreleasing*)error;
+
 @end
 
 @interface RECartSummary ()

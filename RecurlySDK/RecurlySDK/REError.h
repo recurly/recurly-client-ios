@@ -16,6 +16,9 @@ typedef NS_ENUM(NSInteger, REErrorCode) {
     kREErrorInvalidField,
     kREErrorBackend,
     kREErrorUnexpectedHTTPResponse,
+    kREErrorMissingPlan,
+    kREErrorAPIOperationCancelled,
+    kREErrorPricingMissing
 };
 
 @interface REError : NSObject
@@ -26,6 +29,9 @@ typedef NS_ENUM(NSInteger, REErrorCode) {
 + (NSError *)invalidFieldError:(NSString *)field message:(NSString *)message;
 + (NSError *)responseIsNotHTTP;
 + (NSError *)unexpectedHTTPResponse;
++ (NSError *)apiOperationCancelled;
++ (NSError *)missingPlan;
++ (NSError *)pricingMissing;
 + (NSError *)backendErrorWithDictionary:(NSDictionary *)errorDict statusCode:(NSInteger)statusCode;
 
 @end

@@ -97,17 +97,12 @@
 {
     REAPIResponse *response;
     if(_connection) {
-        response = [[REAPIResponse alloc] initWithRequest:_request
-                                               statusCode:_statusCode
-                                                 HTTPBody:_receivedData];
+        response = [[REAPIResponse alloc] initWithRequest:_request statusCode:_statusCode HTTPBody:_receivedData];
         [response setNetworkError:_connectionError];
     }else{
-        response = [[REAPIResponse alloc] initWithRequest:_request
-                                               statusCode:0
-                                                 HTTPBody:nil];
-        [response setNetworkError:_connectionError];
+        response = [[REAPIResponse alloc] initWithRequest:_request statusCode:0 HTTPBody:nil];
+        [response setNetworkError:[REError apiOperationCancelled]];
     }
-
     if([response error]) {
         RELOGERROR(@"REAPIOperation: %@", [response error]);
     }

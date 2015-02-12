@@ -15,9 +15,11 @@
 #import "RETaxRequest.h"
 #import "REAddress.h"
 #import "REAPIHandler.h"
+#import "REError.h"
+#import "RecurlyState.h"
 
 
-@interface REPricing () <REPricingHandlerDelegate>
+@interface REPricing ()
 {
     REPricingHandler *_handler;
     NSOperation *_planOperation;
@@ -28,51 +30,39 @@
 
 
 @implementation REPricing
-@dynamic plan;
-@dynamic taxes;
 @dynamic currency;
 @dynamic planCount;
 @dynamic addons;
+@dynamic delegate;
 
 - (instancetype)init
 {
+    NSString *currency = [[[RecurlyState sharedInstance] configuration] currency];
+    return [self initWithCurrency:currency];
+}
+
+- (instancetype)initWithCurrency:(NSString *)currency
+{
     self = [super init];
     if (self) {
-        _handler = [[REPricingHandler alloc] init];
-        [_handler setDelegate:self];
+        _handler = [[REPricingHandler alloc] initWithCurrency:currency];
     }
     return self;
 }
 
-- (void)setPlan:(REPlan *)plan
+- (void)setDelegate:(id<REPricingHandlerDelegate>) delegate
 {
-    [_handler setPlan:plan];
+    [_handler setDelegate:delegate];
 }
-- (REPlan *)plan
+- (id<REPricingHandlerDelegate>)delegate
 {
-    return [_handler plan];
-}
-
-
-- (void)setTaxes:(RETaxes *)taxes
-{
-    [_handler setTaxes:taxes];
-}
-- (RETaxes *)taxes
-{
-    return [_handler taxes];
+    return [_handler delegate];
 }
 
-
-- (void)setCurrency:(NSString *)currency
-{
-    [_handler setCurrency:currency];
-}
 - (NSString *)currency
 {
     return [_handler currency];
 }
-
 
 - (void)setPlanCount:(NSUInteger)planCount
 {
@@ -83,7 +73,6 @@
     return [_handler planCount];
 }
 
-
 - (void)setAddons:(NSDictionary *)addons
 {
     [_handler setAddons:[addons mutableCopy]];
@@ -92,9 +81,6 @@
 {
     return [_handler addons];
 }
-
-
-
 - (void)updateAddon:(NSString *)addonName quantity:(NSUInteger)quantity
 {
     [_handler updateAddon:addonName quantity:quantity];
@@ -103,14 +89,19 @@
 
 - (void)setCouponCode:(NSString *)couponCode
 {
-    [self cancelOperation:_couponOperation];
+    // TODO
+    // should be refactored
+    if(_couponOperation) {
+        [_couponOperation cancel];
+        _couponOperation = nil;
+    }
 
     if(!couponCode) {
         [_handler setCoupon:nil];
         return;
     }
-    NSString *planName = _handler.plan.name;
     _couponCode = couponCode;
+    NSString *planName = _handler.plan.name;
     if(_couponCode && planName) {
 
         RECouponRequest *request = [[RECouponRequest alloc] initWithPlan:planName coupon:_couponCode];
@@ -126,8 +117,10 @@
 
 - (void)setPlanCode:(NSString *)planCode
 {
-    [self cancelOperation:_planOperation];
-
+    if(_planOperation) {
+        [_planOperation cancel];
+        _planOperation = nil;
+    }
     REPlanRequest *request = [[REPlanRequest alloc] initWithPlanCode:planCode];
     _planOperation = [REAPIHandler handlePlanRequest:request completion:^(REPlan *plan, NSError *error) {
         if(!error) {
@@ -139,13 +132,16 @@
     }];
 }
 
-- (void)setCountryCode:(NSString *)country postalCode:(NSString *)postalCode vatCode:(NSString *)vat
+- (void)updateTaxes
 {
-    [self cancelOperation:_taxesOperation];
-
-    RETaxRequest *request = [[RETaxRequest alloc] initWithPostalCode:postalCode country:country];
-    request.vatNumber = vat;
+    if(_taxesOperation) {
+        [_taxesOperation cancel];
+        _taxesOperation = nil;
+    }
+    RETaxRequest *request = [[RETaxRequest alloc] initWithPostalCode:_postalCode country:_countryCode];
+    request.vatNumber = _vatCode;
     request.currency = [self currency];
+    
     _taxesOperation = [REAPIHandler handleTaxRequest:request completion:^(RETaxes *taxes, NSError *error) {
         if(!error) {
             [self->_handler setTaxes:taxes];
@@ -157,29 +153,11 @@
 
 - (void)setAddress:(REAddress *)anAddress
 {
-    [self setCountryCode:anAddress.country
-              postalCode:anAddress.postalCode
-                 vatCode:anAddress.vatCode];
-}
+    _countryCode = anAddress.country;
+    _postalCode = anAddress.postalCode;
+    _vatCode = anAddress.vatCode;
 
-- (void)cancelOperation:(NSOperation *)operation
-{
-    if(operation) {
-        [operation cancel];
-    }
-}
-
-
-#pragma mark REPricingHandlerDelegate protocol
-
-- (void)priceDidFail:(NSError *)error
-{
-    _pricingCallback(nil, error);
-}
-
-- (void)priceDidUpdate:(RECartSummary *)summary
-{
-    _pricingCallback(summary, nil);
+    [self updateTaxes];
 }
 
 @end

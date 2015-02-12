@@ -43,6 +43,34 @@
     return error;
 }
 
++ (NSError *)missingPlan
+{
+    static NSError *error = nil;
+    ASSIGN_ONCE(error, [self errorWithCode:kREErrorMissingPlan
+                               description:@"Pricing plan is missing"
+                                    reason:nil]);
+    return error;
+}
+
++ (NSError *)pricingMissing
+{
+    static NSError *error = nil;
+    ASSIGN_ONCE(error, [self errorWithCode:kREErrorPricingMissing
+                               description:@"Pricing data is missing"
+                                    reason:nil]);
+    return error;
+}
+
+
++ (NSError *)apiOperationCancelled
+{
+    static NSError *error = nil;
+    ASSIGN_ONCE(error, [self errorWithCode:kREErrorAPIOperationCancelled
+                               description:@"API operation cancelled"
+                                    reason:nil]);
+    return error;
+}
+
 + (NSError *)invalidFieldError:(NSString *)field message:(NSString *)message
 {
     if(!field) {

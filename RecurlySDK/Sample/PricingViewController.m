@@ -23,47 +23,47 @@
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"PricingViewController"
                                                          bundle:[NSBundle mainBundle]];
-    
+
+    [[Recurly configuration] setCurrency:@"EUR"];
+
     PricingViewController *instance = [storyboard instantiateInitialViewController];
     return instance;
 }
 
-- (void)initializePricing
+- (instancetype)initWithCoder:(NSCoder *)coder
 {
-    _pricing = [Recurly pricing];
-    [_pricing setPricingCallback:^(RECartSummary *price, NSError *error) {
-        if (!error) {
-            NSLog(@"Pricing: %@", price);
-        } else {
-            [[Recurly alertViewWithError:error] show];
-        }
-    }];
-}
-
-- (void)doSomePricing
-{
-    if(!_pricing) {
-        [self initializePricing];
+    self = [super initWithCoder:coder];
+    if (self) {
+        _pricing = [Recurly pricing];
+        [_pricing setDelegate:self];
     }
-    NSString *planCode = @"premium";
-    //NSString *couponCode = @"promo1234";
-    NSString *postalCode = @"93131";
-    NSString *countryCode = @"US";
-    NSString *vatNumber = nil;
-
-
-    [_pricing setPlanCode:planCode];
-    //[_pricing setCouponCode:couponCode];
-    [_pricing setCountryCode:countryCode
-                  postalCode:postalCode
-                     vatCode:vatNumber];
+    return self;
 }
 
-- (void)viewWillAppear:(BOOL)animated
+- (IBAction)planCodeChanged:(UITextField *)sender
 {
-    [super viewWillAppear:animated];
+    [_pricing setPlanCode:sender.text];
+}
+- (IBAction)planCountChanged:(UITextField *)sender
+{
+    [_pricing setPlanCount:(NSUInteger)[sender.text integerValue]];
+}
+- (IBAction)couponCodeChanged:(UITextField *)sender
+{
+    [_pricing setCouponCode:sender.text];
+}
+- (IBAction)countryCodeChanged:(UITextField *)sender
+{
+    [_pricing setCountryCode:sender.text];
+}
+- (IBAction)postalCodeChanged:(UITextField *)sender
+{
+    [_pricing setCountryCode:sender.text];
+}
 
-    [self doSomePricing];
+- (void)priceDidUpdate:(RECartSummary *)summary
+{
+    _textBox.text = [summary description];
 }
 
 @end

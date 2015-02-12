@@ -106,6 +106,7 @@
     return YES;
 }
 
+
 - (BOOL)parseAddons:(NSArray *)array
 {
     NSMutableDictionary *addonsByName = [NSMutableDictionary dictionaryWithCapacity:[array count]];

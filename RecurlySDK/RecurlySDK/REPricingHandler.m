@@ -15,99 +15,64 @@
 #import "REMacros.h"
 #import "REPrivate.h"
 #import "RecurlyState.h"
+#import "REError.h"
 
 
 @implementation REPricingHandler
 
-- (instancetype)init
+- (instancetype)initWithCurrency:(NSString *)currency
 {
     self = [super init];
     if (self) {
-        _currency = [[[RecurlyState sharedInstance] configuration] currency];
-        _serialQueue = dispatch_queue_create("com.recurly.mobile.ios.sdk.pricing", NULL);
+        _currency = currency;
+        _planCount = 1;
     }
     return self;
 }
 
-
-- (void)updateAddon:(NSString *)addonName quantity:(NSUInteger)quantity
-{
-    dispatch_sync(_serialQueue, ^{
-        if(!self->_addons) {
-            self->_addons = [NSMutableDictionary dictionary];
-        }
-        self->_addons[addonName] = @(quantity);
-        [self setNeedsUpdate];
-    });
-}
-
-
 - (void)setPlan:(REPlan *)aPlan
 {
-    dispatch_sync(_serialQueue, ^{
-        self->_plan = aPlan;
-        self->_coupon = nil;
-        [self setNeedsUpdate];
-    });
+    _plan = aPlan;
+    _coupon = nil;
+    [self setNeedsUpdate];
 }
 
 - (void)setCoupon:(RECoupon *)aCoupon
 {
-    dispatch_sync(_serialQueue, ^{
-        self->_coupon = aCoupon;
-        [self setNeedsUpdate];
-    });
+    _coupon = aCoupon;
+    [self setNeedsUpdate];
+}
+
+- (void)setPlanCount:(NSUInteger)planCount
+{
+    _planCount = planCount;
+    [self setNeedsUpdate];
 }
 
 
 - (void)setTaxes:(RETaxes *)taxes
 {
-    dispatch_sync(_serialQueue, ^{
-        self->_taxes = taxes;
-        [self setNeedsUpdate];
-    });
+    _taxes = taxes;
+    [self setNeedsUpdate];
 }
+
+
+- (void)updateAddon:(NSString *)addonName quantity:(NSUInteger)quantity
+{
+    if(!_addons) {
+        _addons = [NSMutableDictionary dictionary];
+    }
+    _addons[addonName] = @(quantity);
+    [self setNeedsUpdate];
+}
+
 
 - (void)setAddons:(NSMutableDictionary *)addons
 {
-    dispatch_sync(_serialQueue, ^{
-        self->_addons = addons;
-        [self setNeedsUpdate];
-    });
+    _addons = addons;
+    [self setNeedsUpdate];
 }
 
-- (void)setError:(NSError *)aError
-{
-    _error = aError;
-    _lastCartSummary = nil;
-    [self dispatchPriceUpdated];
-}
-
-
-- (void)setLastCartSummary:(RECartSummary *)aPrice
-{
-    _lastCartSummary = aPrice;
-    _error = nil;
-    [self dispatchPriceUpdated];
-}
-
-
-- (void)dispatchPriceUpdated
-{
-    __strong id<REPricingHandlerDelegate> delegate = _delegate;
-    
-    NSAssert(delegate, @"Delegate must be set");
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if(self->_lastCartSummary) {
-            [delegate priceDidUpdate:self->_lastCartSummary];
-        }else{
-            [delegate priceDidFail:self->_error];
-        }
-    });
-}
-
-
-#pragma mark - Price calculation
 
 - (void)setNeedsUpdate
 {
@@ -115,10 +80,10 @@
     if(!_updateTask) {
         RELOGDEBUG(@"REPricing: Scheduling price recalculation");
         _updateTask = [NSTimer scheduledTimerWithTimeInterval:dl
-                                              target:self
-                                            selector:@selector(recalculatePrice)
-                                            userInfo:nil
-                                             repeats:NO];
+                                                       target:self
+                                                     selector:@selector(recalculatePrice)
+                                                     userInfo:nil
+                                                      repeats:NO];
         [_updateTask setTolerance:1];
     }else{
         RELOGDEBUG(@"REPricing: Rescheduling price recalculation");
@@ -126,48 +91,89 @@
     }
 }
 
+- (void)invalidateTimer
+{
+    [_updateTask invalidate];
+    _updateTask = nil;
+}
+
+
+#pragma mark - Price calculation
+
 - (void)recalculatePrice
 {
-    dispatch_sync(_serialQueue, ^{
-        [self->_updateTask invalidate];
-        self->_updateTask = nil;
-        RELOGDEBUG(@"REPricing: Calculating new price");
-        self.lastCartSummary = [[RECartSummary alloc] initWithNow:[self calculateNowSubtotal]
-                                                        recurrent:[self calculateRecurrentSubtotal]];
-    });
+    RELOGDEBUG(@"REPricing: Calculating new price");
+    [self invalidateTimer];
+
+    NSError *error = nil;
+    REPriceSummary *now = [self calculateNowWithError:&error];
+    if(!now) {
+        self.error = error;
+        return;
+    }
+    REPriceSummary *recurrent = [self calculateRecurrentWithError:&error];
+    if(!recurrent) {
+        self.error = error;
+        return;
+    }
+    self.lastCartSummary = [[RECartSummary alloc] initWithNow:now recurrent:recurrent];
 }
 
 
-- (REPriceSummary *)calculateRecurrentSubtotal
+- (REPriceSummary *)calculateNowWithError:(NSError * __autoreleasing*)error
 {
-    return [[REPriceSummary alloc] initWithTaxRate:[_taxes totalTax]
-                                          currency:_currency
-                                         planPrice:[self planCost]
-                                          setupFee:[NSDecimalNumber zero]
-                                       addonsPrice:[self addonsCost]
-                                            coupon:_coupon];
+    return [self calculateSummaryWithSetupFee:[self setupFee] error:error];
+}
+
+- (REPriceSummary *)calculateRecurrentWithError:(NSError * __autoreleasing*)error
+{
+    return [self calculateSummaryWithSetupFee:[NSDecimalNumber zero] error:error];
+}
+
+- (REPriceSummary *)calculateSummaryWithSetupFee:(NSDecimalNumber *)fee
+                                           error:(NSError * __autoreleasing*)error
+{
+    NSParameterAssert(error);
+    NSDecimalNumber *planCost = [self planCostWithError:error];
+    if(!planCost) {
+        return nil;
+    }
+    return [REPriceSummary summaryWithTaxRate:[self totalTax]
+                                     currency:_currency
+                                    planPrice:planCost
+                                     setupFee:fee
+                                  addonsPrice:[self addonsCost]
+                                       coupon:_coupon
+                                        error:error];
 }
 
 
-- (REPriceSummary *)calculateNowSubtotal
+- (NSDecimalNumber *)planCostWithError:(NSError *__autoreleasing*)error
 {
-    return [[REPriceSummary alloc] initWithTaxRate:[_taxes totalTax]
-                                          currency:_currency
-                                         planPrice:[self planCost]
-                                          setupFee:[self setupFee]
-                                       addonsPrice:[self addonsCost]
-                                            coupon:_coupon];
-}
-
-
-- (NSDecimalNumber *)planCost
-{
+    NSParameterAssert(error);
+    if(!_plan) {
+        *error = [REError errorWithCode:kREErrorMissingPlan
+                            description:@"Plan code was not specified"
+                                 reason:nil];
+        return nil;
+    }
+    
     REPlanPrice *planPrice = [_plan priceForCurrency:_currency];
     if(!planPrice) {
+        *error = [REError errorWithCode:kREErrorMissingPlan
+                            description:@"Plan pricing is not available"
+                                 reason:[NSString stringWithFormat:@"There is not pricing available for currency: %@", _currency]];
         return nil;
     }
     NSDecimalNumber *planCount = [NSDecimalNumber decimalNumberWithDecimal:[@(_planCount) decimalValue]];
     return [[planPrice unitAmount] decimalNumberByMultiplyingBy:planCount];
+}
+
+
+- (NSDecimalNumber *)totalTax
+{
+    NSDecimalNumber *taxRate = [_taxes totalTax];
+    return (taxRate) ? taxRate : [NSDecimalNumber zero];
 }
 
 
@@ -185,11 +191,51 @@
         if(addon) {
             NSDecimalNumber *quantity = [NSDecimalNumber decimalNumberWithDecimal:[_addons[addonName] decimalValue]];
             NSDecimalNumber *cost = [addon priceForCurrency:_currency];
-            cost = [cost decimalNumberByMultiplyingBy:quantity];
-            addonsCost = [addonsCost decimalNumberByAdding:cost];
+            if(cost) {
+                cost = [cost decimalNumberByMultiplyingBy:quantity];
+                addonsCost = [addonsCost decimalNumberByAdding:cost];
+            }
         }
     }
     return addonsCost;
+}
+
+
+#pragma mark - Dispatching
+
+- (void)setError:(NSError *)aError
+{
+    RELOGERROR(@"REPricing: %@", aError);
+    if(aError.code != kREErrorAPIOperationCancelled) {
+        _error = aError;
+        _lastCartSummary = nil;
+        [self dispatchPriceUpdated];
+    }
+}
+
+
+- (void)setLastCartSummary:(RECartSummary *)aPrice
+{
+    _lastCartSummary = aPrice;
+    _error = nil;
+    [self dispatchPriceUpdated];
+}
+
+
+- (void)dispatchPriceUpdated
+{
+    __strong id<REPricingHandlerDelegate> delegate = _delegate;
+    if(!delegate) {
+        return;
+    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if(self->_lastCartSummary) {
+            [delegate priceDidUpdate:self->_lastCartSummary];
+        }else{
+            if([delegate respondsToSelector:@selector(priceDidFail:)])
+                [delegate priceDidFail:self->_error];
+        }
+    });
 }
 
 @end

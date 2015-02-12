@@ -8,10 +8,34 @@
 
 #import "REPriceSummary.h"
 #import "RECoupon.h"
+#import "REError.h"
 #import "REMacros.h"
 
 
 @implementation REPriceSummary
+
++ (instancetype)summaryWithTaxRate:(NSDecimalNumber *)taxRate
+                          currency:(NSString *)currency
+                         planPrice:(NSDecimalNumber *)planPrice
+                          setupFee:(NSDecimalNumber *)setupFee
+                       addonsPrice:(NSDecimalNumber *)addonsPrice
+                            coupon:(RECoupon *)coupon
+                             error:(NSError *__autoreleasing*)error
+{
+    NSParameterAssert(error);
+    if(!taxRate || !currency || !planPrice || !setupFee || !addonsPrice) {
+        *error = [REError pricingMissing];
+        return nil;
+    }
+    return [[[self class] alloc] initWithTaxRate:taxRate
+                                        currency:currency
+                                       planPrice:planPrice
+                                        setupFee:setupFee
+                                     addonsPrice:addonsPrice
+                                          coupon:coupon];
+
+}
+
 
 - (instancetype)initWithTaxRate:(NSDecimalNumber *)taxRate
                        currency:(NSString *)currency
