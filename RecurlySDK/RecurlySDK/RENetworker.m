@@ -19,7 +19,7 @@
     self = [super init];
     if (self) {
         _queue = [[NSOperationQueue alloc] init];
-        [_queue setMaxConcurrentOperationCount:SERIAL_QUEUE];
+        //[_queue setMaxConcurrentOperationCount:SERIAL_QUEUE];
     }
     return self;
 }
