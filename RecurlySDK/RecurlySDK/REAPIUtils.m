@@ -22,8 +22,6 @@
 
 + (NSDecimalNumber *)parseDecimal:(id)obj
 {
-    // TODO
-    // refactor this method, Don't Repeat Yourself
     if(!obj) {
         return nil;
     }
@@ -43,21 +41,11 @@
 
 + (NSNumber *)parseNumber:(id)obj
 {
-    if(!obj) {
-        return nil;
-    }
     if([obj isKindOfClass:[NSNumber class]]) {
         return obj;
+    }else{
+        return [REAPIUtils parseDecimal:obj];
     }
-    if([obj isKindOfClass:[NSString class]]) {
-        NSString *objString = (NSString *)obj;
-        NSDecimalNumber *number = [[NSDecimalNumber alloc] initWithString:objString];
-        if(!number || [number isNaN]) {
-            return nil;
-        }
-        return number;
-    }
-    return nil;
 }
 
 
