@@ -56,9 +56,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "32A1FD4819FEBE4D009C07FC"
-            BuildableName = "RecurlySDK.framework"
-            BlueprintName = "RecurlySDK"
+            BlueprintIdentifier = "3200B0EC1A11091B00947C81"
+            BuildableName = "RecurlySample.app"
+            BlueprintName = "RecurlySample"
             ReferencedContainer = "container:RecurlySDK.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -72,15 +72,15 @@
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       allowLocationSimulation = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "32A1FD4819FEBE4D009C07FC"
-            BuildableName = "RecurlySDK.framework"
-            BlueprintName = "RecurlySDK"
+            BlueprintIdentifier = "3200B0EC1A11091B00947C81"
+            BuildableName = "RecurlySample.app"
+            BlueprintName = "RecurlySample"
             ReferencedContainer = "container:RecurlySDK.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>

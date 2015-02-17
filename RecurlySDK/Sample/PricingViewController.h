@@ -13,6 +13,8 @@
 @interface PricingViewController : UIViewController <REPricingHandlerDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextView *textBox;
+@property (weak, nonatomic) IBOutlet UITextField *addonNameField;
+@property (weak, nonatomic) IBOutlet UITextField *addonQuantityField;
 
 + (instancetype)createFromNib;
 

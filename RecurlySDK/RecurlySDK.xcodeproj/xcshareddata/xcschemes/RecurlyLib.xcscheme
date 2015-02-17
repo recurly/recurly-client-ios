@@ -28,8 +28,8 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "32CF719D1A8913AC004B8E6A"
-               BuildableName = "RecurlyLibTests.xctest"
+               BlueprintIdentifier = "322916D31A92462A00339A3D"
+               BuildableName = "RecurlySDKTests copy.xctest"
                BlueprintName = "RecurlyLibTests"
                ReferencedContainer = "container:RecurlySDK.xcodeproj">
             </BuildableReference>
@@ -46,8 +46,8 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "32CF719D1A8913AC004B8E6A"
-               BuildableName = "RecurlyLibTests.xctest"
+               BlueprintIdentifier = "322916D31A92462A00339A3D"
+               BuildableName = "RecurlySDKTests copy.xctest"
                BlueprintName = "RecurlyLibTests"
                ReferencedContainer = "container:RecurlySDK.xcodeproj">
             </BuildableReference>

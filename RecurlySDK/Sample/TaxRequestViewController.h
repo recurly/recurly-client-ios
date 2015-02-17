@@ -13,6 +13,7 @@
 
 @property (weak, nonatomic) IBOutlet UITextField *postalCodeField;
 @property (weak, nonatomic) IBOutlet UILabel *postalCodeLabel;
+@property (weak, nonatomic) IBOutlet UITextField *countryCodeField;
 
 + (instancetype)createFromNib;
 

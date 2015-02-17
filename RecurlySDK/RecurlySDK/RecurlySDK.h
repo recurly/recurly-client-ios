@@ -15,7 +15,6 @@
 // BASIC
 #import <RecurlySDK/REProtocols.h>
 #import <RecurlySDK/REError.h>
-#import <RecurlySDK/RecurlyState.h>
 #import <RecurlySDK/REConfiguration.h>
 #import <RecurlySDK/REValidation.h>
 
@@ -23,9 +22,7 @@
 // NETWORKING PRIMITIVES
 #import <RecurlySDK/REAPIRequest.h>
 #import <RecurlySDK/REAPIResponse.h>
-#import <RecurlySDK/RENetworker.h>
 #import <RecurlySDK/REAPIOperation.h>
-#import <RecurlySDK/REAPIUtils.h>
 
 // MODELS
 #import <RecurlySDK/REAddress.h>

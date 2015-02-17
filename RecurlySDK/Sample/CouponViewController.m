@@ -18,8 +18,7 @@
 
 + (instancetype)createFromNib
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"CouponViewController"
-                                                         bundle:[NSBundle mainBundle]];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"CouponViewController" bundle:nil];
     return [storyboard instantiateInitialViewController];
 }
 

@@ -14,8 +14,7 @@
 
 + (instancetype)createFromNib
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"TaxRequestViewController"
-                                                         bundle:[NSBundle mainBundle]];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"TaxRequestViewController" bundle:nil];
     return [storyboard instantiateInitialViewController];
 }
 
@@ -23,8 +22,9 @@
 - (IBAction)taxPressed:(id)sender
 {
     NSString *postalCode = [_postalCodeField text];
+    NSString *countryCode = [_countryCodeField text];
     [Recurly taxForPostalCode:postalCode
-                  countryCode:@"US"
+                  countryCode:countryCode
                    completion:^(RETaxes *taxes, NSError *error)
     {
         if(!error) {

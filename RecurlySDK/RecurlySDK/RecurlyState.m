@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import "RecurlyState.h"
+#import "REConfiguration.h"
+#import "RENetworker.h"
 
 
 static RecurlyState *__sharedInstance = nil;

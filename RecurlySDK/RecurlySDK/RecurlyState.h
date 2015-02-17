@@ -7,10 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <RecurlySDK/REConfiguration.h>
-#import <RecurlySDK/RENetworker.h>
+#import "REConfiguration.h"
 
 
+@class RENetworker;
 @interface RecurlyState : NSObject
 
 @property (nonatomic, readonly) RENetworker *networker;

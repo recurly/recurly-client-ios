@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <XCTest/XCTest.h>
 #import <RecurlySDK/RecurlySDK.h>
+#import "REAPIUtils.h"
 
 
 @interface REAPIUtilsTests : XCTestCase

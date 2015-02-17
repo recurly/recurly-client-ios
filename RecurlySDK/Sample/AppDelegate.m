@@ -14,7 +14,7 @@
 
 - (BOOL)application:(UIApplication *)app didFinishLaunchingWithOptions:(NSDictionary *)options
 {
-    [Recurly configure:@"sc-zBh5Z3Jcto0c3Z6YLGPMFb"]; // Manu's key
+    [Recurly configure:@"sc-Hw20ERMh8bzGFiWKO7NvDB"]; // Manu's key
     //[Recurly configure:@"sc-30WYXJUzQ852w0kHEYQ7Rw"]; // Peter's key
     return YES;
 }

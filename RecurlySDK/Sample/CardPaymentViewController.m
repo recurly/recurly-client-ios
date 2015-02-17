@@ -14,8 +14,7 @@
 
 + (instancetype)createFromNib
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"CardPaymentViewController"
-                                                         bundle:[NSBundle mainBundle]];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"CardPaymentViewController" bundle:nil];
     return [storyboard instantiateInitialViewController];
 }
 
@@ -29,6 +28,7 @@
     card.billingAddress.firstName = [_firstNameField textValue];
     card.billingAddress.lastName = [_lastNameField textValue];
     card.billingAddress.country = [_countryField textValue];
+    card.billingAddress.postalCode = @"94131";
 
     return card;
 }
