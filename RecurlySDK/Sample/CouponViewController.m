@@ -7,8 +7,8 @@
 //
 
 #import "CouponViewController.h"
-#import "RecurlySDK.h"
-#import "RECoupon.h"
+#import <RecurlySDK/RecurlySDK.h>
+
 
 @interface CouponViewController ()
 
