@@ -41,6 +41,7 @@ function compileForDevice() {
 function compileForSimulator() {
     echo "Compiling for iphonesimulator with ${CONFIGURATION} in ${OUTPUT_SIMULATOR_DIR}"
     xcodebuild clean build \
+        -arch x86_64 \
         -arch i386 \
         -sdk iphonesimulator \
         -configuration "${CONFIGURATION}" \
