@@ -14,6 +14,7 @@
 @class REPlan;
 @class RECartSummary;
 @class RECoupon;
+@class REPricingResult;
 @interface REPricingHandler  : NSObject
 {
     NSTimer *_updateTask;
@@ -27,7 +28,7 @@
 @property (nonatomic, readonly) NSString *currency;
 @property (nonatomic, assign) NSUInteger planCount;
 @property (nonatomic, strong) NSError *error;
-@property (nonatomic, strong) RECartSummary *lastCartSummary;
+@property (nonatomic, strong) REPricingResult *lastPricingResult;
 
 - (instancetype)initWithCurrency:(NSString *)currency;
 - (void)updateAddon:(NSString *)addonName quantity:(NSUInteger)quantity;

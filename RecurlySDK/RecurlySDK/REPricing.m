@@ -19,6 +19,31 @@
 #import "RecurlyState.h"
 
 
+@implementation REPricingResult
+
+- (instancetype)initWithNow:(REPriceSummary *)now
+                  recurrent:(REPriceSummary *)recurrent
+                       cart:(RECartSummary *)cart
+{
+    self = [super init];
+    if (self) {
+        _now = now;
+        _recurrent = recurrent;
+        _cart = cart;
+    }
+    return self;
+}
+
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"REPricingResult{\n"
+            @"\t-Now: %@\n"
+            @"\t-Recurrent: %@\n}",
+            _now, _recurrent];
+}
+
+@end
+
 @interface REPricing ()
 {
     REPricingHandler *_handler;
@@ -34,6 +59,7 @@
 @dynamic planCount;
 @dynamic addons;
 @dynamic delegate;
+@dynamic availableAddons;
 
 - (instancetype)init
 {
@@ -86,11 +112,13 @@
     [_handler updateAddon:addonName quantity:quantity];
 }
 
+- (NSDictionary *)availableAddons
+{
+    return [NSDictionary dictionaryWithDictionary:[_handler addons]];
+}
 
 - (void)setCouponCode:(NSString *)couponCode
 {
-    // TODO
-    // should be refactored
     if(_couponOperation) {
         [_couponOperation cancel];
         _couponOperation = nil;
@@ -106,6 +134,7 @@
 
         RECouponRequest *request = [[RECouponRequest alloc] initWithPlan:planName coupon:_couponCode];
         _couponOperation = [REAPIHandler handleCouponRequest:request completion:^(RECoupon *coupon, NSError *error) {
+            self->_couponOperation = nil;
             if(!error) {
                 [self->_handler setCoupon:coupon];
             }else{
@@ -123,6 +152,7 @@
     }
     REPlanRequest *request = [[REPlanRequest alloc] initWithPlanCode:planCode];
     _planOperation = [REAPIHandler handlePlanRequest:request completion:^(REPlan *plan, NSError *error) {
+        self->_planOperation = nil;
         if(!error) {
             [self->_handler setPlan:plan];
             [self setCouponCode:self->_couponCode]; // update coupon
@@ -143,6 +173,7 @@
     request.currency = [self currency];
     
     _taxesOperation = [REAPIHandler handleTaxRequest:request completion:^(RETaxes *taxes, NSError *error) {
+        self->_taxesOperation = nil;
         if(!error) {
             [self->_handler setTaxes:taxes];
         }else{

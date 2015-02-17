@@ -10,10 +10,10 @@
 
 
 
-@class RECartSummary;
+@class REPricingResult;
 @protocol REPricingHandlerDelegate <NSObject>
 
-- (void)priceDidUpdate:(RECartSummary *)summary;
+- (void)priceDidUpdate:(REPricingResult *)result;
 
 @optional
 - (void)priceDidFail:(NSError *)error;

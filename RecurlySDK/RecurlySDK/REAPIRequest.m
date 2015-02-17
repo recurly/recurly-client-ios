@@ -12,7 +12,6 @@
 #import "REMacros.h"
 #import "RecurlyState.h"
 
-
 // TODO
 // this class should be refactored
 

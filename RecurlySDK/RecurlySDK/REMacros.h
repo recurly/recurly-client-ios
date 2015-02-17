@@ -13,14 +13,14 @@
 
 #pragma mark - Logging
 
-#define RELOG(s, ...) fprintf(stdout, "Recurly: %s\n", [[NSString stringWithFormat:s, ##__VA_ARGS__] UTF8String] )
 #define RELOGERROR(s, ...)  fprintf(stderr, "Recurly:Error: %s\n", [[NSString stringWithFormat:s, ##__VA_ARGS__] UTF8String] )
-#define RELOGDEBUG(s, ...) fprintf(stdout, "Recurly:Debug: %s\n", [[NSString stringWithFormat:s, ##__VA_ARGS__] UTF8String] )
 
-#if defined(DEBUG) || 1
+#if defined(DEBUG)
+#define RELOGDEBUG(s, ...) fprintf(stdout, "Recurly:Debug: %s\n", [[NSString stringWithFormat:s, ##__VA_ARGS__] UTF8String] )
 #define RELOGINFO(s, ...) fprintf(stdout, "Recurly:Info: %s\n", [[NSString stringWithFormat:s, ##__VA_ARGS__] UTF8String] )
 #else
 #define RELOGINFO(...) do{}while(0)
+#define RELOGDEBUG(...) do{}while(0)
 #endif
 
 
@@ -38,16 +38,15 @@
 #define SAFE(__OBJ__) (__OBJ__ == nil ? [NSNull null] : __OBJ__)
 
 #define ASSIGN_ONCE(__variable__, __expression__) { \
-static dispatch_once_t pred = 0; \
-dispatch_once(&pred, ^{ \
-__variable__ = __expression__; \
-});\
+    static dispatch_once_t pred = 0; \
+    dispatch_once(&pred, ^{ \
+        __variable__ = __expression__; \
+    });\
 }
 
 
 #define ALLOC_DISABLED \
-\
 + (instancetype)alloc { \
-[NSException raise:@"RENoDefaultConfig" format:@"Allocating an instance of this class is not allowed"];\
-return nil;\
+    [NSException raise:@"RENoDefaultConfig" format:@"Allocating an instance of this class is not allowed"]; \
+    return nil; \
 }

@@ -97,6 +97,15 @@
     _updateTask = nil;
 }
 
+- (RECartSummary *)cartSummary
+{
+    return [[RECartSummary alloc] initWithPlan:_plan
+                                     planCount:_planCount
+                                        addons:_addons
+                                        coupon:_coupon
+                                      currency:_currency];
+}
+
 
 #pragma mark - Price calculation
 
@@ -116,7 +125,9 @@
         self.error = error;
         return;
     }
-    self.lastCartSummary = [[RECartSummary alloc] initWithNow:now recurrent:recurrent];
+    self.lastPricingResult = [[REPricingResult alloc] initWithNow:now
+                                                        recurrent:recurrent
+                                                             cart:[self cartSummary]];
 }
 
 
@@ -133,7 +144,6 @@
 - (REPriceSummary *)calculateSummaryWithSetupFee:(NSDecimalNumber *)fee
                                            error:(NSError * __autoreleasing*)error
 {
-    NSParameterAssert(error);
     NSDecimalNumber *planCost = [self planCostWithError:error];
     if(!planCost) {
         return nil;
@@ -160,9 +170,10 @@
     
     REPlanPrice *planPrice = [_plan priceForCurrency:_currency];
     if(!planPrice) {
+        NSString *message = [NSString stringWithFormat:@"There is not pricing available for currency: %@", _currency];
         *error = [REError errorWithCode:kREErrorMissingPlan
-                            description:@"Plan pricing is not available"
-                                 reason:[NSString stringWithFormat:@"There is not pricing available for currency: %@", _currency]];
+                            description:message
+                                 reason:nil];
         return nil;
     }
     NSDecimalNumber *planCount = [NSDecimalNumber decimalNumberWithDecimal:[@(_planCount) decimalValue]];
@@ -208,15 +219,15 @@
     RELOGERROR(@"REPricing: %@", aError);
     if(aError.code != kREErrorAPIOperationCancelled) {
         _error = aError;
-        _lastCartSummary = nil;
+        _lastPricingResult = nil;
         [self dispatchPriceUpdated];
     }
 }
 
 
-- (void)setLastCartSummary:(RECartSummary *)aPrice
+- (void)setLastPricingResult:(REPricingResult *)result
 {
-    _lastCartSummary = aPrice;
+    _lastPricingResult = result;
     _error = nil;
     [self dispatchPriceUpdated];
 }
@@ -229,10 +240,9 @@
         return;
     }
     dispatch_async(dispatch_get_main_queue(), ^{
-        if(self->_lastCartSummary) {
-            [delegate priceDidUpdate:self->_lastCartSummary];
-        }else{
-            if([delegate respondsToSelector:@selector(priceDidFail:)])
+        if(self->_lastPricingResult) {
+            [delegate priceDidUpdate:self->_lastPricingResult];
+        }else if([delegate respondsToSelector:@selector(priceDidFail:)]) {
                 [delegate priceDidFail:self->_error];
         }
     });

@@ -29,15 +29,15 @@
 
 - (BOOL)loadWithDictionary:(NSDictionary *)dict
 {
-    NSNumber *setupFee = [REAPIUtils parseNumber:dict[@"setup_fee"]];
-    NSNumber *unitAmount = [REAPIUtils parseNumber:dict[@"unit_amount"]];
+    NSDecimalNumber *setupFee = [REAPIUtils parseDecimal:dict[@"setup_fee"]];
+    NSDecimalNumber *unitAmount = [REAPIUtils parseDecimal:dict[@"unit_amount"]];
     NSString *symbol = DYNAMIC_CAST(NSString, dict[@"symbol"]);
     
     if(!setupFee || !unitAmount) {
         return NO;
     }
-    _setupFee = [NSDecimalNumber decimalNumberWithDecimal:[setupFee decimalValue]];
-    _unitAmount = [NSDecimalNumber decimalNumberWithDecimal:[unitAmount decimalValue]];
+    _setupFee = setupFee;
+    _unitAmount = unitAmount;
     _currencySymbol = symbol;
     
     return YES;

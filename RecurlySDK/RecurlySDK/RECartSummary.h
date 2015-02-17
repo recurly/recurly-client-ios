@@ -8,11 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
-
-@class REPriceSummary;
+@class REPlan;
+@class RECoupon;
 @interface RECartSummary : NSObject
 
-@property (nonatomic, readonly) REPriceSummary *now;
-@property (nonatomic, readonly) REPriceSummary *recurrent;
+@property (nonatomic, readonly) REPlan *plan;
+@property (nonatomic, readonly) NSUInteger planCount;
+@property (nonatomic, readonly) NSDictionary *addons;
+@property (nonatomic, readonly) RECoupon *coupon;
+@property (nonatomic, readonly) NSString *currency;
 
 @end

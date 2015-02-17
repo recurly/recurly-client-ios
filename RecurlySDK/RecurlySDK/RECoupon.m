@@ -42,15 +42,16 @@ NSString *const RecurlyCouponTypePercent = @"percent";
 
 - (BOOL)parseDiscount:(NSDictionary *)dict
 {
+    // TODO
     // we get either rate or fixed amount.  one is required, not both
-    NSNumber *discountRate = [REAPIUtils parseNumber:dict[@"rate"]];
+    NSDecimalNumber *discountRate = [REAPIUtils parseDecimal:dict[@"rate"]];
     NSString *type = DYNAMIC_CAST(NSString, dict[@"type"]);
     NSDictionary *fixedDiscounts = DYNAMIC_CAST(NSDictionary, dict[@"amount"]);
 
     if(!type || (!discountRate && !fixedDiscounts)) {
         return NO;
     }
-    _discountRate = [NSDecimalNumber decimalNumberWithDecimal:[discountRate decimalValue]];
+    _discountRate = discountRate;
     _type = type;
     return [self parseFixedDiscounts:fixedDiscounts];
 }
@@ -60,9 +61,9 @@ NSString *const RecurlyCouponTypePercent = @"percent";
 {
     NSMutableDictionary *amounts = [NSMutableDictionary dictionaryWithCapacity:[discounts count]];
     for(NSString *currency in discounts) {
-        NSNumber *amount = [REAPIUtils parseNumber:discounts[currency]];
+        NSDecimalNumber *amount = [REAPIUtils parseDecimal:discounts[currency]];
         if(amount) {
-            amounts[currency] = [NSDecimalNumber decimalNumberWithDecimal:[amount decimalValue]];
+            amounts[currency] = amount;
         }else{
             return NO;
         }

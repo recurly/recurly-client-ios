@@ -13,14 +13,16 @@
 #import <RecurlySDK/REProtocols.h>
 #import <RecurlySDK/REPriceSummary.h>
 #import <RecurlySDK/RECartSummary.h>
+#import <RecurlySDK/REPricing.h>
 
 
-//
-//@protocol REDeserializable
-//
-//- (id)initWithDictionary:(NSDictionary *)JSONDictionary;
-//
-//@end
+@interface REPricingResult ()
+
+- (instancetype)initWithNow:(REPriceSummary *)now
+                  recurrent:(REPriceSummary *)recurrent
+                       cart:(RECartSummary *)cart;
+
+@end
 
 @interface REPriceSummary ()
 
@@ -35,7 +37,13 @@
 @end
 
 @interface RECartSummary ()
-- (instancetype)initWithNow:(REPriceSummary *)now recurrent:(REPriceSummary *)recurrent;
+
+- (instancetype)initWithPlan:(REPlan *)plan
+                   planCount:(NSUInteger)planCount
+                      addons:(NSDictionary *)addons
+                      coupon:(RECoupon *)coupon
+                    currency:(NSString *)currency;
+
 @end
 
 @interface RETaxes ()

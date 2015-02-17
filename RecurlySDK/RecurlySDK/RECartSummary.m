@@ -13,22 +13,21 @@
 
 @implementation RECartSummary
 
-- (instancetype)initWithNow:(REPriceSummary *)now recurrent:(REPriceSummary *)recurrent
+- (instancetype)initWithPlan:(REPlan *)plan
+                   planCount:(NSUInteger)planCount
+                      addons:(NSDictionary *)addons
+                      coupon:(RECoupon *)coupon
+                    currency:(NSString *)currency
 {
     self = [super init];
     if (self) {
-        _now = now;
-        _recurrent = recurrent;
+        _plan = plan;
+        _planCount = planCount;
+        _addons = addons;
+        _coupon = coupon;
+        _currency = currency;
     }
     return self;
-}
-
-- (NSString *)description
-{
-    return [NSString stringWithFormat:@"RECartSummary{\n"
-            @"\t-Now: %@\n"
-            @"\t-Recurrent: %@\n}",
-            _now, _recurrent];
 }
 
 @end

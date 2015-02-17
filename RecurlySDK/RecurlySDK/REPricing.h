@@ -14,7 +14,15 @@
 @class REPlan;
 @class RETaxes;
 @class REAddress;
-typedef void (^REPricingBlock)(RECartSummary *price, NSError *error);
+@class REPriceSummary;
+
+@interface REPricingResult : NSObject
+
+@property (nonatomic, readonly) REPriceSummary *now;
+@property (nonatomic, readonly) REPriceSummary *recurrent;
+@property (nonatomic, readonly) RECartSummary *cart;
+
+@end
 
 @interface REPricing : NSObject
 
@@ -26,6 +34,7 @@ typedef void (^REPricingBlock)(RECartSummary *price, NSError *error);
 @property (nonatomic) NSString *vatCode;
 
 @property (nonatomic, readonly) NSString *currency;
+@property (nonatomic, readonly) NSDictionary *availableAddons;
 @property (nonatomic, weak) id<REPricingHandlerDelegate>delegate;
 
 - (instancetype)initWithCurrency:(NSString *)currency;
