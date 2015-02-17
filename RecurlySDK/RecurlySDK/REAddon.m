@@ -46,7 +46,7 @@
     for(NSString *currency in dict) {
         NSDictionary *priceDict = DYNAMIC_CAST(NSDictionary, dict[currency]);
         
-        NSNumber *unitAmount = [REAPIUtils parseNumber:priceDict[@"unit_amount"]];
+        NSNumber *unitAmount = [REAPIUtils parseDecimal:priceDict[@"unit_amount"]];
         if(unitAmount) {
             prices[currency] = unitAmount;
         }else{
@@ -58,7 +58,7 @@
 }
 
 
-- (NSNumber *)priceForCurrency:(NSString *)aCurrency
+- (NSDecimalNumber *)priceForCurrency:(NSString *)aCurrency
 {
     return _price[aCurrency];
 }
