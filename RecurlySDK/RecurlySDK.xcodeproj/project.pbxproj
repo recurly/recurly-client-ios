@@ -589,8 +589,8 @@
 		32A1FD5819FEBE4E009C07FC /* RecurlySDKTests */ = {
 			isa = PBXGroup;
 			children = (
-				325DAE791A3924B10032CB91 /* REValidation-tests.m */,
 				320594191A1E34AB004EC96F /* Shared-tests.h */,
+				325DAE791A3924B10032CB91 /* REValidation-tests.m */,
 				32D0CEAC1A37D196000B30FD /* RECouponRequest-tests.m */,
 				32D0CEAD1A37D196000B30FD /* REPlanRequest-tests.m */,
 				32D0CEAF1A37D196000B30FD /* RETaxRequest-tests.m */,
@@ -1128,6 +1128,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = RecurlySDKTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1147,6 +1148,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = RecurlySDKTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1392,6 +1394,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",
@@ -1405,6 +1408,7 @@
 		32CF71A61A8913AC004B8E6A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",

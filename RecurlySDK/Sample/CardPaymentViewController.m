@@ -35,9 +35,12 @@
 
 - (IBAction)subscribePressed:(id)sender
 {
-    RECardRequest *req = [self cardRequestFromUI];
+    UIView *view = [self loadingView];
+    [self.view addSubview:view];
 
+    RECardRequest *req = [self cardRequestFromUI];
     [Recurly tokenWithRequest:req completion:^(NSString *token, NSError *error) {
+        [view removeFromSuperview];
         if(!error) {
             [[[UIAlertView alloc] initWithTitle:@"Payment Done"
                                         message:[NSString stringWithFormat:@"Token: %@", token]
@@ -52,6 +55,23 @@
 
 
 #pragma mark - UI stuff
+
+- (UIView *)loadingView
+{
+    CGRect frame = self.view.bounds;
+    UIVisualEffectView *view = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight]];
+    [view setFrame:frame];
+    [view setUserInteractionEnabled:YES];
+    [view setExclusiveTouch:YES];
+
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, frame.size.height/2, frame.size.width, 20)];
+    [label setText:@"loading... please wait"];
+    [label setTextColor:[UIColor blackColor]];
+    [label setTextAlignment:NSTextAlignmentCenter];
+    [view addSubview:label];
+
+    return view;
+}
 
 - (IBAction)editingEnded:(id)sender
 {
