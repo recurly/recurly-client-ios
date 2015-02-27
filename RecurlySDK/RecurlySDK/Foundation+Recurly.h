@@ -31,7 +31,7 @@
 @end
 
 
-@interface NSNumber (Recurly)
+@interface NSDecimalNumber (Recurly)
 
 - (BOOL)isNaN;
 

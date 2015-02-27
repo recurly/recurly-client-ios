@@ -43,6 +43,16 @@
 		322916E81A92462A00339A3D /* REPlanRequest-tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32D0CEAD1A37D196000B30FD /* REPlanRequest-tests.m */; };
 		322916E91A92462A00339A3D /* REAddress-tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EFED711A06F9F2006A1CE8 /* REAddress-tests.m */; };
 		322916F71A92464600339A3D /* librecurly.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 32CF71941A8913AC004B8E6A /* librecurly.a */; };
+		323CAEBF1A9655DD003347B3 /* Foundation-tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 323CAEBD1A9655DD003347B3 /* Foundation-tests.m */; };
+		323CAEC01A9655DD003347B3 /* Foundation-tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 323CAEBD1A9655DD003347B3 /* Foundation-tests.m */; };
+		323CAEC11A9655DD003347B3 /* REAddon-tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 323CAEBE1A9655DD003347B3 /* REAddon-tests.m */; };
+		323CAEC21A9655DD003347B3 /* REAddon-tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 323CAEBE1A9655DD003347B3 /* REAddon-tests.m */; };
+		323CAEC41A96685C003347B3 /* REPricingHandler-tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 323CAEC31A96685C003347B3 /* REPricingHandler-tests.m */; };
+		323CAEC51A96685C003347B3 /* REPricingHandler-tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 323CAEC31A96685C003347B3 /* REPricingHandler-tests.m */; };
+		323CAEC81A967C9B003347B3 /* RECartSummary-tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 323CAEC61A967C9B003347B3 /* RECartSummary-tests.m */; };
+		323CAEC91A967C9B003347B3 /* RECartSummary-tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 323CAEC61A967C9B003347B3 /* RECartSummary-tests.m */; };
+		323CAECA1A967C9B003347B3 /* REPriceSummary-tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 323CAEC71A967C9B003347B3 /* REPriceSummary-tests.m */; };
+		323CAECB1A967C9B003347B3 /* REPriceSummary-tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 323CAEC71A967C9B003347B3 /* REPriceSummary-tests.m */; };
 		3241EBF71A00263A002DBD56 /* REConfiguration-tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3241EBF61A00263A002DBD56 /* REConfiguration-tests.m */; };
 		325640A01A10D3B5007A06EA /* RecurlyState.h in Headers */ = {isa = PBXBuildFile; fileRef = 3256409E1A10D3B5007A06EA /* RecurlyState.h */; };
 		325640A11A10D3B5007A06EA /* RecurlyState.m in Sources */ = {isa = PBXBuildFile; fileRef = 3256409F1A10D3B5007A06EA /* RecurlyState.m */; };
@@ -276,6 +286,11 @@
 		32163B661A2C8DBA00B4A2C1 /* REPricing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REPricing.h; sourceTree = "<group>"; };
 		32163B671A2C8DBA00B4A2C1 /* REPricing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REPricing.m; sourceTree = "<group>"; };
 		322916F31A92462A00339A3D /* RecurlySDKTests copy.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "RecurlySDKTests copy.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		323CAEBD1A9655DD003347B3 /* Foundation-tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Foundation-tests.m"; sourceTree = "<group>"; };
+		323CAEBE1A9655DD003347B3 /* REAddon-tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "REAddon-tests.m"; sourceTree = "<group>"; };
+		323CAEC31A96685C003347B3 /* REPricingHandler-tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "REPricingHandler-tests.m"; sourceTree = "<group>"; };
+		323CAEC61A967C9B003347B3 /* RECartSummary-tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RECartSummary-tests.m"; sourceTree = "<group>"; };
+		323CAEC71A967C9B003347B3 /* REPriceSummary-tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "REPriceSummary-tests.m"; sourceTree = "<group>"; };
 		3241EBF61A00263A002DBD56 /* REConfiguration-tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "REConfiguration-tests.m"; sourceTree = "<group>"; };
 		3256409E1A10D3B5007A06EA /* RecurlyState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecurlyState.h; sourceTree = "<group>"; };
 		3256409F1A10D3B5007A06EA /* RecurlyState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecurlyState.m; sourceTree = "<group>"; };
@@ -438,10 +453,10 @@
 			children = (
 				32C6DEA41A25B134006F6B27 /* Foundation+Recurly.h */,
 				32C6DEA51A25B134006F6B27 /* Foundation+Recurly.m */,
-				329613731A366AE100A12A61 /* REAPIUtils.h */,
-				329613741A366AE100A12A61 /* REAPIUtils.m */,
 				32F69F9A1A0FEF2E00B09E4E /* REAPIHandler.h */,
 				32F69F9B1A0FEF2E00B09E4E /* REAPIHandler.m */,
+				329613731A366AE100A12A61 /* REAPIUtils.h */,
+				329613741A366AE100A12A61 /* REAPIUtils.m */,
 				32026F301A09464400B03B0F /* REError.h */,
 				32026F311A09464400B03B0F /* REError.m */,
 				325DAE741A3923580032CB91 /* REValidation.h */,
@@ -589,6 +604,11 @@
 		32A1FD5819FEBE4E009C07FC /* RecurlySDKTests */ = {
 			isa = PBXGroup;
 			children = (
+				323CAEC61A967C9B003347B3 /* RECartSummary-tests.m */,
+				323CAEC71A967C9B003347B3 /* REPriceSummary-tests.m */,
+				323CAEC31A96685C003347B3 /* REPricingHandler-tests.m */,
+				323CAEBD1A9655DD003347B3 /* Foundation-tests.m */,
+				323CAEBE1A9655DD003347B3 /* REAddon-tests.m */,
 				320594191A1E34AB004EC96F /* Shared-tests.h */,
 				325DAE791A3924B10032CB91 /* REValidation-tests.m */,
 				32D0CEAC1A37D196000B30FD /* RECouponRequest-tests.m */,
@@ -625,24 +645,24 @@
 		AD8FA6351A3234BD00D8D9FC /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				ADB53CCC1A397F2400109A57 /* REAddon.h */,
+				ADB53CCD1A397F2400109A57 /* REAddon.m */,
 				32EFED661A069478006A1CE8 /* REAddress.h */,
 				32EFED671A069478006A1CE8 /* REAddress.m */,
+				ADB53CB61A38401100109A57 /* RECartSummary.h */,
+				ADB53CB71A38401100109A57 /* RECartSummary.m */,
 				AD8FA6361A3234F200D8D9FC /* RECoupon.h */,
 				AD8FA6371A3234F200D8D9FC /* RECoupon.m */,
 				329960CF1A3512F600157BCD /* REPlan.h */,
 				329960D01A3512F600157BCD /* REPlan.m */,
-				32DAE0C71A365FA4000927C8 /* RETaxes.h */,
-				32DAE0C81A365FA4000927C8 /* RETaxes.m */,
-				ADB53CB61A38401100109A57 /* RECartSummary.h */,
-				ADB53CB71A38401100109A57 /* RECartSummary.m */,
 				ADB53CBA1A38401B00109A57 /* REPriceSummary.h */,
 				ADB53CBB1A38401B00109A57 /* REPriceSummary.m */,
 				32163B661A2C8DBA00B4A2C1 /* REPricing.h */,
 				32163B671A2C8DBA00B4A2C1 /* REPricing.m */,
 				ADB53CBE1A3846AD00109A57 /* REPricingHandler.h */,
 				ADB53CBF1A3846AD00109A57 /* REPricingHandler.m */,
-				ADB53CCC1A397F2400109A57 /* REAddon.h */,
-				ADB53CCD1A397F2400109A57 /* REAddon.m */,
+				32DAE0C71A365FA4000927C8 /* RETaxes.h */,
+				32DAE0C81A365FA4000927C8 /* RETaxes.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -893,6 +913,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				322916D71A92462A00339A3D /* REAPIOperation-tests.m in Sources */,
+				323CAECB1A967C9B003347B3 /* REPriceSummary-tests.m in Sources */,
 				322916D81A92462A00339A3D /* RENetworker-tests.m in Sources */,
 				322916D91A92462A00339A3D /* RECoupon-tests.m in Sources */,
 				322916DA1A92462A00339A3D /* RECardRequest-tests.m in Sources */,
@@ -906,8 +927,12 @@
 				322916E21A92462A00339A3D /* RETaxRequest-tests.m in Sources */,
 				322916E31A92462A00339A3D /* RecurlySDKTests.m in Sources */,
 				322916E41A92462A00339A3D /* REConfiguration-tests.m in Sources */,
+				323CAEC51A96685C003347B3 /* REPricingHandler-tests.m in Sources */,
 				322916E51A92462A00339A3D /* REValidation-tests.m in Sources */,
 				322916E61A92462A00339A3D /* RETaxes-tests.m in Sources */,
+				323CAEC91A967C9B003347B3 /* RECartSummary-tests.m in Sources */,
+				323CAEC01A9655DD003347B3 /* Foundation-tests.m in Sources */,
+				323CAEC21A9655DD003347B3 /* REAddon-tests.m in Sources */,
 				322916E71A92462A00339A3D /* REAPIUtils-tests.m in Sources */,
 				322916E81A92462A00339A3D /* REPlanRequest-tests.m in Sources */,
 				322916E91A92462A00339A3D /* REAddress-tests.m in Sources */,
@@ -952,6 +977,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				32EFED791A07016B006A1CE8 /* REAPIOperation-tests.m in Sources */,
+				323CAECA1A967C9B003347B3 /* REPriceSummary-tests.m in Sources */,
 				32EFED751A06F9F2006A1CE8 /* RENetworker-tests.m in Sources */,
 				32D0CEB01A37D196000B30FD /* RECoupon-tests.m in Sources */,
 				32A5AA481A0BBCDA001C8022 /* RECardRequest-tests.m in Sources */,
@@ -965,8 +991,12 @@
 				32D0CEB41A37D196000B30FD /* RETaxRequest-tests.m in Sources */,
 				32A1FD5C19FEBE4E009C07FC /* RecurlySDKTests.m in Sources */,
 				3241EBF71A00263A002DBD56 /* REConfiguration-tests.m in Sources */,
+				323CAEC41A96685C003347B3 /* REPricingHandler-tests.m in Sources */,
 				325DAE7A1A3924B10032CB91 /* REValidation-tests.m in Sources */,
 				32D0CEB31A37D196000B30FD /* RETaxes-tests.m in Sources */,
+				323CAEC81A967C9B003347B3 /* RECartSummary-tests.m in Sources */,
+				323CAEBF1A9655DD003347B3 /* Foundation-tests.m in Sources */,
+				323CAEC11A9655DD003347B3 /* REAddon-tests.m in Sources */,
 				32F69F991A0FE79100B09E4E /* REAPIUtils-tests.m in Sources */,
 				32D0CEB21A37D196000B30FD /* REPlanRequest-tests.m in Sources */,
 				32EFED771A06F9F2006A1CE8 /* REAddress-tests.m in Sources */,

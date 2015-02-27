@@ -17,6 +17,8 @@
 
 @implementation REPlanTests
 
+// TODO
+// test bad parameters recursivelly
 - (NSMutableDictionary *)validPlanResponse
 {
     NSDictionary *inmutable = @{@"code": @"premium",
@@ -27,7 +29,14 @@
                                                       @"unit_amount": @10.1,
                                                       @"symbol": @"\u20ac"}}
                                 };
-    return [NSMutableDictionary dictionaryWithDictionary:inmutable];
+    return [inmutable mutableCopy];
+}
+
+- (REPlan *)createWithoutField:(NSString *)field
+{
+    NSMutableDictionary *dict = [self validPlanResponse];
+    [dict removeObjectForKey:field];
+    return [[REPlan alloc] initWithDictionary:dict];
 }
 
 - (void)testInitializePlan
@@ -47,13 +56,6 @@
     XCTAssertEqual(plan.isTaxExempt, YES);
     
     XCTAssertNil([plan priceForCurrency:@"USD"]);
-}
-
-- (REPlan *)createWithoutField:(NSString *)field
-{
-    NSMutableDictionary *dict = [self validPlanResponse];
-    [dict removeObjectForKey:field];
-    return [[REPlan alloc] initWithDictionary:dict];
 }
 
 - (void)testMissingDictionary

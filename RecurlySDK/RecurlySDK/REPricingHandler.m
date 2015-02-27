@@ -24,6 +24,7 @@
 {
     self = [super init];
     if (self) {
+        _dispachingEnabled = YES;
         _currency = currency;
         _planCount = 1;
     }
@@ -74,29 +75,6 @@
 }
 
 
-- (void)setNeedsUpdate
-{
-    const NSTimeInterval dl = 0.1;
-    if(!_updateTask) {
-        RELOGDEBUG(@"REPricing: Scheduling price recalculation");
-        _updateTask = [NSTimer scheduledTimerWithTimeInterval:dl
-                                                       target:self
-                                                     selector:@selector(recalculatePrice)
-                                                     userInfo:nil
-                                                      repeats:NO];
-        [_updateTask setTolerance:1];
-    }else{
-        RELOGDEBUG(@"REPricing: Rescheduling price recalculation");
-        [_updateTask setFireDate:[[NSDate date] dateByAddingTimeInterval:dl]];
-    }
-}
-
-- (void)invalidateTimer
-{
-    [_updateTask invalidate];
-    _updateTask = nil;
-}
-
 - (RECartSummary *)cartSummary
 {
     return [[RECartSummary alloc] initWithPlan:_plan
@@ -109,10 +87,9 @@
 
 #pragma mark - Price calculation
 
-- (void)recalculatePrice
+- (void)setNeedsUpdate
 {
     RELOGDEBUG(@"REPricing: Calculating new price");
-    [self invalidateTimer];
 
     NSError *error = nil;
     REPriceSummary *now = [self calculateNowWithError:&error];
@@ -216,7 +193,6 @@
 
 - (void)setError:(NSError *)aError
 {
-    RELOGERROR(@"REPricing: %@", aError);
     if(aError.code != kREErrorAPIOperationCancelled) {
         _error = aError;
         _lastPricingResult = nil;
@@ -235,17 +211,19 @@
 
 - (void)dispatchPriceUpdated
 {
-    __strong id<REPricingHandlerDelegate> delegate = _delegate;
-    if(!delegate) {
-        return;
-    }
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if(self->_lastPricingResult) {
-            [delegate priceDidUpdate:self->_lastPricingResult];
-        }else if([delegate respondsToSelector:@selector(priceDidFail:)]) {
-                [delegate priceDidFail:self->_error];
+    if(_dispachingEnabled) {
+        __strong id<REPricingHandlerDelegate> delegate = _delegate;
+        if(!delegate) {
+            return;
         }
-    });
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if(self->_lastPricingResult) {
+                [delegate priceDidUpdate:self->_lastPricingResult];
+            }else if([delegate respondsToSelector:@selector(priceDidFail:)]) {
+                [delegate priceDidFail:self->_error];
+            }
+        });
+    }
 }
 
 @end

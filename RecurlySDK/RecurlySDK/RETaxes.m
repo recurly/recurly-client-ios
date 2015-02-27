@@ -30,13 +30,13 @@
 - (BOOL)loadWithDictionary:(NSDictionary *)dict
 {
     NSString *type = DYNAMIC_CAST(NSString, dict[@"type"]);
-    NSNumber *rateNumber = [REAPIUtils parseNumber:dict[@"rate"]];
+    NSDecimalNumber *rateNumber = [REAPIUtils parseDecimal:dict[@"rate"]];
     if(!type || !rateNumber)
         return NO;
 
     _region = DYNAMIC_CAST(NSString, dict[@"region"]); //optional
     _type = type;
-    _rate = [NSDecimalNumber decimalNumberWithDecimal:[rateNumber decimalValue]];
+    _rate = rateNumber;
     return YES;
 }
 

@@ -13,7 +13,6 @@
 
 
 @class RECardRequest;
-@class REApplePayRequest;
 @interface REPayment : NSObject <REPayable, RERequestable, RESerializable>
 
 - (void)setAddress:(REAddress *)address forType:(NSString *)addressType;

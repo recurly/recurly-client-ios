@@ -28,8 +28,8 @@
 {
     _code = DYNAMIC_CAST(NSString, dict[@"code"]);
     _name = DYNAMIC_CAST(NSString, dict[@"name"]);
-    
-    NSNumber *quantity = DYNAMIC_CAST(NSNumber, dict[@"quantity"]);
+
+    NSNumber *quantity = [REAPIUtils parseNumber:dict[@"quantity"]];
     _quantity = [quantity unsignedIntegerValue];
     
     NSDictionary *price = DYNAMIC_CAST(NSDictionary, dict[@"price"]);

@@ -17,7 +17,6 @@
 @class REPricingResult;
 @interface REPricingHandler  : NSObject
 {
-    NSTimer *_updateTask;
     NSMutableDictionary *_addons;
 }
 @property (nonatomic, weak) id<REPricingHandlerDelegate> delegate;
@@ -29,6 +28,7 @@
 @property (nonatomic, assign) NSUInteger planCount;
 @property (nonatomic, strong) NSError *error;
 @property (nonatomic, strong) REPricingResult *lastPricingResult;
+@property (nonatomic, assign, getter=isDispachingEnabled) BOOL dispachingEnabled;
 
 - (instancetype)initWithCurrency:(NSString *)currency;
 - (void)updateAddon:(NSString *)addonName quantity:(NSUInteger)quantity;

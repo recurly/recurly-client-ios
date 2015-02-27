@@ -56,7 +56,7 @@
 @end
 
 
-@implementation NSNumber (Recurly)
+@implementation NSDecimalNumber (Recurly)
 
 - (BOOL)isNaN
 {

@@ -52,7 +52,7 @@ NSString *const RecurlyCouponTypePercent = @"percent";
         return NO;
     }
     _discountRate = discountRate;
-    _type = type;
+    _type = type; // TODO, what does this mean?
     return [self parseFixedDiscounts:fixedDiscounts];
 }
 
@@ -75,27 +75,16 @@ NSString *const RecurlyCouponTypePercent = @"percent";
 
 - (NSDecimalNumber *)discountForSubtotal:(NSDecimalNumber *)subtotal currency:(NSString *)currency
 {
-// TODO, alternative impletamentation?
-//    if (self.coupon != nil) {
-//        if ([self.coupon.discountRate floatValue] > 0) {
-//            discountRate = [self.coupon.discountRate floatValue];
-//        } else if ([self.coupon.discountAmount objectForKey:self.currency] != nil) {
-//            discountTotal = [[self.coupon.discountAmount objectForKey:self.currency] floatValue];
-//        } else {
-//            // TODO: error - coupon not applied error?
-//        }
-//    }
     NSParameterAssert(subtotal);
     NSParameterAssert(currency);
 
-    if ([_type isEqualToString:RecurlyCouponTypeFixed]) {
-        // fixed amount
-        return _discountAmount[currency];
-
-    } else if ([_type isEqualToString:RecurlyCouponTypePercent]) {
+    if (_discountRate && [_discountRate doubleValue] > 0) {
         return [subtotal decimalNumberByMultiplyingBy:_discountRate];
+
+    }else{
+        NSDecimalNumber *discount = _discountAmount[currency];
+        return discount ? discount : [NSDecimalNumber zero];
     }
-    return [NSDecimalNumber zero];
 }
 
 

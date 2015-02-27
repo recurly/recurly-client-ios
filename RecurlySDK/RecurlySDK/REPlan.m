@@ -71,11 +71,11 @@
     _name = DYNAMIC_CAST(NSString, dict[@"name"]);
     _interval = DYNAMIC_CAST(NSString, [dict valueForKeyPath:@"period.interval"]);
     _trialInterval = DYNAMIC_CAST(NSString, [dict valueForKeyPath:@"trial.interval"]);
-    NSNumber *taxExempt = DYNAMIC_CAST(NSNumber, dict[@"tax_exempt"]);
-    NSNumber *length = [REAPIUtils parseNumber:[dict valueForKeyPath:@"period.length"]];
-    NSNumber *trialLength = [REAPIUtils parseNumber:[dict valueForKeyPath:@"trial.length"]];
     NSDictionary *price = DYNAMIC_CAST(NSDictionary, dict[@"price"]);
     NSArray *addons = DYNAMIC_CAST(NSArray, dict[@"addons"]);
+    NSNumber *taxExempt = [REAPIUtils parseNumber:dict[@"tax_exempt"]];
+    NSNumber *length = [REAPIUtils parseNumber:[dict valueForKeyPath:@"period.length"]];
+    NSNumber *trialLength = [REAPIUtils parseNumber:[dict valueForKeyPath:@"trial.length"]];
     if(!_code || !_name || !_interval || !taxExempt || !length || !price)
         return NO;
 
