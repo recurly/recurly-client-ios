@@ -94,7 +94,7 @@ NSString *const RecurlyErrorDomain = @"com.recurly.mobile.ios.sdk";
 
 + (NSError *)invalidFieldError:(NSString *)field message:(NSString *)message
 {
-    if(!field) {
+    if(field == nil) {
         return nil;
     }
     NSString *reason = [NSString stringWithFormat:@"Invalid %@", field];

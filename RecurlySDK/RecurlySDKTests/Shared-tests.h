@@ -30,5 +30,10 @@
 #define XCTAssertJSONSerializable(__OBJ__) XCTAssertTrue([NSJSONSerialization isValidJSONObject:__OBJ__])
 
 REAddress *validAddress(void);
+
+CF_IMPLICIT_BRIDGING_ENABLED
+
 ABRecordRef validABRecordWithAddress(void);
 ABRecordRef validABRecord(void);
+
+CF_IMPLICIT_BRIDGING_DISABLED

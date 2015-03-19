@@ -75,18 +75,18 @@
 
 - (NSError *)validate
 {
-    if(IS_EMPTY(_publicKey))
+    if(IS_EMPTY(_publicKey)) {
         return [REError invalidFieldError:@"public key" message:nil];
-
-    if(IS_EMPTY(_currency))
+    }
+    if(IS_EMPTY(_currency)) {
         return [REError invalidFieldError:@"currency" message:nil];
-
-    if(IS_EMPTY(_apiEndpoint))
+    }
+    if(IS_EMPTY(_apiEndpoint)) {
         return [REError invalidFieldError:@"API endpoint" message:nil];
-
-    if(_timeout == 0)
+    }
+    if(_timeout == 0) {
         return [REError invalidFieldError:@"timeout" message:nil];
-
+    }
     return nil;
 }
 

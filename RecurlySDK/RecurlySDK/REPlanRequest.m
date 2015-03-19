@@ -56,9 +56,9 @@
 
 - (NSError *)validate
 {
-    if(IS_EMPTY(_planCode))
+    if(IS_EMPTY(_planCode)) {
         return [REError invalidFieldError:@"plan code" message:nil];
-
+    }
     return nil;
 }
 

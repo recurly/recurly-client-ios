@@ -52,9 +52,9 @@
     _quantity = [quantity unsignedIntegerValue];
     
     NSDictionary *price = DYNAMIC_CAST(NSDictionary, dict[@"price"]);
-    if(!_code || !_name)
+    if(_code == nil || _name == nil) {
         return NO;
-    
+    }
     return [self parsePrice:price];
 }
 

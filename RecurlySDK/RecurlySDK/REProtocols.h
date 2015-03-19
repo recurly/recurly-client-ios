@@ -51,7 +51,7 @@
 
 @protocol REDeserializable
 
-- (id)initWithDictionary:(NSDictionary *)JSONDictionary;
+- (instancetype)initWithDictionary:(NSDictionary *)JSONDictionary;
 
 @end
 

@@ -37,7 +37,6 @@ IB_DESIGNABLE
 @property (nonatomic, assign) char state;
 @property (nonatomic, weak) UITextField *nextTextField;
 
-
 - (NSString *)textValue;
 - (void)setTextValue:(NSString *)text;
 - (void)setFieldName:(NSString *)fieldName;

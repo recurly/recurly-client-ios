@@ -51,9 +51,9 @@ NSString *const RecurlyCouponTypePercent = @"percent";
     _name = DYNAMIC_CAST(NSString, dict[@"name"]);
     _code = DYNAMIC_CAST(NSString, dict[@"code"]);
 
-    if(!_name || !_code)
+    if(_name == nil || _code == nil) {
         return NO;
-
+    }
     NSDictionary *discount = DYNAMIC_CAST(NSDictionary, dict[@"discount"]);
     return [self parseDiscount:discount];
 }
@@ -67,7 +67,7 @@ NSString *const RecurlyCouponTypePercent = @"percent";
     NSString *type = DYNAMIC_CAST(NSString, dict[@"type"]);
     NSDictionary *fixedDiscounts = DYNAMIC_CAST(NSDictionary, dict[@"amount"]);
 
-    if(!type || (!discountRate && !fixedDiscounts)) {
+    if(type==nil || (discountRate==nil && fixedDiscounts==nil)) {
         return NO;
     }
     _discountRate = discountRate;
@@ -109,6 +109,8 @@ NSString *const RecurlyCouponTypePercent = @"percent";
 
 - (NSString *)description
 {
+    // TODO
+    // this method should be refactored
     NSString *discountInfo = @"";
     if ([_type isEqualToString:RecurlyCouponTypeFixed]) {
         NSMutableArray *discountAmount = [[NSMutableArray alloc] init];

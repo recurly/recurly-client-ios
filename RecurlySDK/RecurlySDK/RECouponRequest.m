@@ -57,12 +57,12 @@
 
 - (NSError *)validate
 {
-    if(IS_EMPTY(_planCode))
+    if(IS_EMPTY(_planCode)) {
         return [REError invalidFieldError:@"plan code" message:nil];
-
-    if(IS_EMPTY(_couponCode))
+    }
+    if(IS_EMPTY(_couponCode)) {
         return [REError invalidFieldError:@"coupon code" message:nil];
-
+    }
     return nil;
 }
 

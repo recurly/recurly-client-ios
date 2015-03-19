@@ -51,9 +51,9 @@
 {
     NSString *type = DYNAMIC_CAST(NSString, dict[@"type"]);
     NSDecimalNumber *rateNumber = [REAPIUtils parseDecimal:dict[@"rate"]];
-    if(!type || !rateNumber)
+    if(type == nil || rateNumber == nil) {
         return NO;
-
+    }
     _region = DYNAMIC_CAST(NSString, dict[@"region"]); //optional
     _type = type;
     _rate = rateNumber;
@@ -88,7 +88,7 @@
 
 - (BOOL)loadWithArray:(NSArray *)array
 {
-    if(!array) {
+    if(array == nil) {
         return NO;
     }
     NSMutableArray *taxes = [NSMutableArray arrayWithCapacity:[array count]];

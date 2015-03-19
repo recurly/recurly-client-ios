@@ -168,7 +168,7 @@ static BOOL shouldSeparateAtIndex(NSUInteger index) {
 
 + (NSString *)parseCardNumber:(NSString *)card
 {
-    if(!card) {
+    if(card == nil) {
         return @"";
     }
     card = [card stringByRemovingOccurrencesOfString:@" "];

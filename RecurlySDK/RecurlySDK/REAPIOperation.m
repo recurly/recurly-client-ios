@@ -33,7 +33,6 @@
 #import "REError.h"
 
 
-
 #define MAX_PREALLOCATION_BUFFER 65536
 
 @interface REAPIOperation ()
@@ -143,7 +142,7 @@
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
-    if (!_receivedData)
+    if (_receivedData == nil)
         _receivedData = [data mutableCopy];
     else
         [_receivedData appendData:data];

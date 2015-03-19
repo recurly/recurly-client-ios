@@ -64,7 +64,7 @@
     params = [self appendPublicKey:params];
     NSString *finalURL = [REAPIUtils buildURLQuery:endpoint parameters:params];
 
-    if(!finalURL) {
+    if(finalURL == nil) {
         // TODO
         // handle error
         return nil;

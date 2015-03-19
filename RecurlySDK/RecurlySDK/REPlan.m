@@ -52,7 +52,7 @@
     NSDecimalNumber *unitAmount = [REAPIUtils parseDecimal:dict[@"unit_amount"]];
     NSString *symbol = DYNAMIC_CAST(NSString, dict[@"symbol"]);
     
-    if(!setupFee || !unitAmount) {
+    if(setupFee == nil || unitAmount == nil) {
         return NO;
     }
     _setupFee = setupFee;
@@ -152,9 +152,9 @@
     return _addonsByName[name];
 }
 
-- (REPlanPrice *)priceForCurrency:(NSString *)aCurrency
+- (REPlanPrice *)priceForCurrency:(NSString *)currency
 {
-    return _price[aCurrency];
+    return _price[currency];
 }
 
 - (BOOL)hasTrial

@@ -1,5 +1,4 @@
 #Recurly iOS SDK
-![Ship io](https://ship.io/jobs/dzuagaYFjBg8c5xF/build_status.png)  
 
 The Recurly SDK allows you to integrate recurrent payments in your exisiting iOS app in a matter of minutes.
 
@@ -31,7 +30,6 @@ In order to connect successfully to the Recurly's servers, you have initialize t
 
 ```obj-c
 [Recurly configure:@"sc-zBh5Z3Jcto0c3Z6YLGPMFb"];
-// here, after configuring, you can perform any operation with recurly!
 ```
 
 We strongly recomend to configure Recurly just when your application is launched.
@@ -41,6 +39,7 @@ We strongly recomend to configure Recurly just when your application is launched
 {
     [Recurly configure:@"sc-zBh5Z3Jcto0c3Z6YLGPMFb"];
     // continue initializing your app
+    // use Recurly API
 }    
 ```
 
@@ -96,6 +95,39 @@ RECardRequest *card = [RECardRequest paymentWithCardNumber:@"4111111111111111"
 }];
 ```
 
+###Get Plan's information
+
+```obj-c
+[Recurly planForCode:@"premium"
+          completion:^(REPlan *plan, NSError *error) {
+    if(!error) {
+        NSLog(@"Plan info: %@", plan);
+    }
+}];
+```
+
+###Get Plan's information
+
+```obj-c
+[Recurly planForCode:@"premium"
+          completion:^(REPlan *plan, NSError *error) {
+    if(!error) {
+        NSLog(@"Plan info: %@", plan);
+    }
+}];
+```
+
+###Get Coupon's information
+
+```obj-c
+[Recurly couponForPlan:@"premium"
+                  code:@"123Win"
+            completion:^(RECoupon *coupon, NSError *error)
+{
+    if(!error) {
+        NSLog(@"Coupon info: %@", coupon);
+    }
+}];
+```
 
 ##Validating input data manually
-Although

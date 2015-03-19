@@ -36,12 +36,13 @@
 
 + (BOOL)validateCountryCode:(NSString *)countryCode
 {
-    if(!countryCode || [countryCode length] != 2) {
+    if(countryCode == nil || [countryCode length] != 2) {
         return NO;
     }
     countryCode = [countryCode uppercaseString];
     return [[NSLocale ISOCountryCodes] containsObject:countryCode];
 }
+
 
 + (BOOL)validateCVV:(NSString *)cvv
 {

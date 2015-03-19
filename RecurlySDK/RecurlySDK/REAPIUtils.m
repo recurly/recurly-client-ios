@@ -42,7 +42,7 @@
 
 + (NSDecimalNumber *)parseDecimal:(id)obj
 {
-    if(!obj) {
+    if(obj == nil) {
         return nil;
     }
     if([obj isKindOfClass:[NSNumber class]]) {
@@ -51,7 +51,7 @@
     if([obj isKindOfClass:[NSString class]]) {
         NSString *objString = (NSString *)obj;
         NSDecimalNumber *number = [[NSDecimalNumber alloc] initWithString:objString];
-        if(!number || [number isNaN]) {
+        if(number == nil || [number isNaN]) {
             return nil;
         }
         return number;
@@ -76,7 +76,7 @@
     sysctlbyname("hw.machine", NULL, &size, NULL, 0);
     char *model = malloc(size);
     sysctlbyname("hw.machine", model, &size, NULL, 0);
-    NSString *deviceModel = [NSString stringWithCString:model encoding:NSUTF8StringEncoding];
+    NSString *deviceModel = @(model);
     free(model);
     return deviceModel;
 }

@@ -52,7 +52,7 @@
 @property (nonatomic, readonly) NSDictionary *availableAddons;
 @property (nonatomic, weak) id<REPricingHandlerDelegate>delegate;
 
-- (instancetype)initWithCurrency:(NSString *)currency;
+- (instancetype)initWithCurrency:(NSString *)currency NS_DESIGNATED_INITIALIZER;
 - (void)setPlanCode:(NSString *)planCode;
 - (void)setCountryCode:(NSString *)country;
 - (void)setAddress:(REAddress *)anAddress;

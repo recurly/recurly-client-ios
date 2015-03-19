@@ -89,15 +89,15 @@
 
 - (NSError *)validate
 {
-    if(IS_EMPTY(_postalCode))
+    if(IS_EMPTY(_postalCode)) {
         return [REError invalidFieldError:@"postal code" message:nil];
-
-    if(IS_EMPTY(_countryCode))
+    }
+    if(IS_EMPTY(_countryCode)) {
         return [REError invalidFieldError:@"country code" message:nil];
-
-    if(IS_EMPTY(_currency))
+    }
+    if(IS_EMPTY(_currency)) {
         return [REError invalidFieldError:@"currency" message:nil];
-
+    }
     return nil;
 }
 
