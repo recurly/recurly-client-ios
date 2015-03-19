@@ -34,13 +34,13 @@
 
 - (RECardRequest *)validCardRequest
 {
-    RECardRequest *payment = [[RECardRequest alloc] initWithCardNumber:@"4111111111111111"
-                                                                   CVV:@"123"
-                                                                 month:5
-                                                                  year:20
-                                                             firstName:@"Manu"
-                                                              lastName:@"Martinez-Almeida"
-                                                           countryCode:@"ES"];
+    RECardRequest *payment = [RECardRequest requestWithCardNumber:@"4111111111111111"
+                                                              CVV:@"123"
+                                                            month:5
+                                                             year:20
+                                                        firstName:@"Manu"
+                                                         lastName:@"Martinez-Almeida"
+                                                      countryCode:@"ES"];
     return payment;
 }
 

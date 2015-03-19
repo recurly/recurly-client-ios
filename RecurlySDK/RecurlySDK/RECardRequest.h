@@ -58,13 +58,13 @@ typedef NS_ENUM(NSInteger, RECardType) {
 @property (nonatomic, assign) NSInteger expirationMonth;
 @property (nonatomic, assign) NSInteger expirationYear;
 
-- (instancetype)initWithCardNumber:(NSString *)cardNumber
-                               CVV:(NSString *)cvv
-                             month:(NSInteger)month
-                              year:(NSInteger)year
-                         firstName:(NSString *)firstName
-                          lastName:(NSString *)lastName
-                       countryCode:(NSString *)countryCode;
++ (instancetype)requestWithCardNumber:(NSString *)cardNumber
+                                  CVV:(NSString *)cvv
+                                month:(NSInteger)month
+                                 year:(NSInteger)year
+                            firstName:(NSString *)firstName
+                             lastName:(NSString *)lastName
+                          countryCode:(NSString *)countryCode;
 
 - (RECardType)type;
 

@@ -36,34 +36,31 @@
 
 @implementation RECardRequest
 
++ (instancetype)requestWithCardNumber:(NSString *)cardNumber
+                                  CVV:(NSString *)cvv
+                                month:(NSInteger)month
+                                 year:(NSInteger)year
+                            firstName:(NSString *)firstName
+                             lastName:(NSString *)lastName
+                          countryCode:(NSString *)countryCode
+{
+    RECardRequest *card = [RECardRequest new];
+    card.number = cardNumber;
+    card.cvv = cvv;
+    card.expirationMonth = month;
+    card.expirationYear = year;
+    card.billingAddress.firstName = firstName;
+    card.billingAddress.lastName = lastName;
+    card.billingAddress.countryCode = countryCode;
+    return card;
+}
+
+
 - (instancetype)init
 {
     self = [super init];
     if (self) {
         self.billingAddress = [[REAddress alloc] init];
-    }
-    return self;
-}
-
-
-- (instancetype)initWithCardNumber:(NSString *)cardNumber
-                               CVV:(NSString *)cvv
-                             month:(NSInteger)month
-                              year:(NSInteger)year
-                         firstName:(NSString *)firstName
-                          lastName:(NSString *)lastName
-                       countryCode:(NSString *)countryCode
-{
-    self = [self init];
-    if (self) {
-        _number = cardNumber;
-        _cvv = cvv;
-        _expirationMonth = month;
-        _expirationYear = year;
-        REAddress *address = [self billingAddress];
-        address.firstName = firstName;
-        address.lastName = lastName;
-        address.countryCode = countryCode;
     }
     return self;
 }

@@ -51,7 +51,7 @@ card.expirationMonth = 12;
 card.expirationYear = 2015;
 card.billingAddress.firstName = @"Jonh";
 card.billingAddress.lastName = @"Smith";
-card.billingAddress.country = @"US";
+card.billingAddress.countryCode = @"US";
 
 [Recurly tokenWithRequest:card completion:^(NSString *token, NSError *error) {
     if(!error) {
@@ -63,13 +63,13 @@ card.billingAddress.country = @"US";
 or (exactly the same):
 
 ```obj-c
-RECardRequest *card = [RECardRequest paymentWithCardNumber:@"4111111111111111"
-                                                   CVV:@"123"
-                                                 month:12
-                                                  year:2015
-                                             firstName:@"John"
-                                              lastName:@"Smith"
-                                           countryCode:@"US"];
+RECardRequest *card = [RECardRequest requestWithCardNumber:@"4111111111111111"
+                                                       CVV:@"123"
+                                                     month:12
+                                                      year:2015
+                                                 firstName:@"John"
+                                                  lastName:@"Smith"
+                                               countryCode:@"US"];
 
 [Recurly tokenWithRequest:card completion:^(NSString *token, NSError *error) {
     if(!error) {
@@ -84,21 +84,10 @@ RECardRequest *card = [RECardRequest paymentWithCardNumber:@"4111111111111111"
 ```obj-c
 [Recurly taxForPostalCode:@"94566"
               countryCode:@"US"
-               completion:^(double tax, NSError *error)
+               completion:^(RETaxes *tax, NSError *error)
 {
     if(!error) {
-        NSLog(@"The VAT imposed in that location is: %.3f%%", tax);
-    }
-}];
-```
-
-###Get Plan's information
-
-```obj-c
-[Recurly planForCode:@"premium"
-          completion:^(REPlan *plan, NSError *error) {
-    if(!error) {
-        NSLog(@"Plan info: %@", plan);
+        NSLog(@"The VAT imposed in that location is: %@%%", [tax totalTax]);
     }
 }];
 ```
@@ -128,3 +117,5 @@ RECardRequest *card = [RECardRequest paymentWithCardNumber:@"4111111111111111"
 ```
 
 ##Validating input data manually
+
+...
