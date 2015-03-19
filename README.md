@@ -2,7 +2,7 @@
 
 The Recurly SDK allows you to integrate recurrent payments in your exisiting iOS app in a matter of minutes.
 
-By using the Recurly SDK, you can tokenize your users payment information and safely use it to do transactions. Because you never handle any sensitive payment information, your PCI scope is drastically reduced.
+By using the Recurly SDK, you can tokenize your users payment information and safely use it to process transactions. Because you never handle any sensitive payment information, your PCI scope is drastically reduced.
 
 ##1. Download
 There are two ways to begin using the Recurly iOS SDK.
@@ -13,7 +13,7 @@ There are two ways to begin using the Recurly iOS SDK.
 ```
 	pod 'RecurlySDK'
 ```
-For more information on cocoapods, visit: [http://guides.cocoapods.org/syntax/podfile.html]()
+For more information on cocoapods, visit: [http://guides.cocoapods.org/syntax/podfile.html](http://guides.cocoapods.org/syntax/podfile.html)
 
 ##2. Import
 Once the framework is added to your project (via either of the methods above) you only need to import the SDK headers.
@@ -23,7 +23,7 @@ Once the framework is added to your project (via either of the methods above) yo
 ```
 
 ##3. Configure
-In order to connect to the Recurly API, you must initialize the SDK with the public key provided in your Recurly's dashboard which is availble here: [https://app.recurly.com/go/developer/api_access]()
+In order to connect to the Recurly API, you must initialize the SDK with the public key provided in your Recurly's dashboard which is availble here: [https://app.recurly.com/go/developer/api_access](https://app.recurly.com/go/developer/api_access)
 
 ```obj-c
 [Recurly configure:@"sc-zBh5Z3Jcto0c3Z6YLGPMFb"];
