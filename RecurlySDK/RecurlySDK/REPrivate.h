@@ -25,13 +25,13 @@
  */
 
 #import <Foundation/Foundation.h>
-#import <RecurlySDK/REPlan.h>
-#import <RecurlySDK/RECoupon.h>
-#import <RecurlySDK/RETaxes.h>
-#import <RecurlySDK/REProtocols.h>
-#import <RecurlySDK/REPriceSummary.h>
-#import <RecurlySDK/RECartSummary.h>
-#import <RecurlySDK/REPricing.h>
+#import "REPlan.h"
+#import "RECoupon.h"
+#import "RETaxes.h"
+#import "REProtocols.h"
+#import "REPriceSummary.h"
+#import "RECartSummary.h"
+#import "REPricing.h"
 
 
 @interface REPricingResult ()

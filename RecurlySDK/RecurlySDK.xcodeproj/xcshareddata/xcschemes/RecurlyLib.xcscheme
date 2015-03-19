@@ -23,13 +23,13 @@
          <BuildActionEntry
             buildForTesting = "YES"
             buildForRunning = "YES"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "322916D31A92462A00339A3D"
-               BuildableName = "RecurlySDKTests copy.xctest"
+               BuildableName = "RecurlySDKTests.xctest"
                BlueprintName = "RecurlyLibTests"
                ReferencedContainer = "container:RecurlySDK.xcodeproj">
             </BuildableReference>
@@ -47,7 +47,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "322916D31A92462A00339A3D"
-               BuildableName = "RecurlySDKTests copy.xctest"
+               BuildableName = "RecurlySDKTests.xctest"
                BlueprintName = "RecurlyLibTests"
                ReferencedContainer = "container:RecurlySDK.xcodeproj">
             </BuildableReference>
@@ -56,7 +56,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "3200B0EC1A11091B00947C81"
+            BlueprintIdentifier = "32CA8D411ABB3E1300849818"
             BuildableName = "RecurlySample.app"
             BlueprintName = "RecurlySample"
             ReferencedContainer = "container:RecurlySDK.xcodeproj">
@@ -75,7 +75,7 @@
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "3200B0EC1A11091B00947C81"
+            BlueprintIdentifier = "32CA8D411ABB3E1300849818"
             BuildableName = "RecurlySample.app"
             BlueprintName = "RecurlySample"
             ReferencedContainer = "container:RecurlySDK.xcodeproj">

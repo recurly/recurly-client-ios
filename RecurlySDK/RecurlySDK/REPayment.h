@@ -23,8 +23,8 @@
 
 #import <Foundation/Foundation.h>
 #import <PassKit/PassKit.h>
-#import <RecurlySDK/REAddress.h>
-#import <RecurlySDK/REProtocols.h>
+#import "REAddress.h"
+#import "REProtocols.h"
 
 
 @class RECardRequest;

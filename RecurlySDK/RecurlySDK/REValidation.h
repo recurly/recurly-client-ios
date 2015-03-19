@@ -22,7 +22,6 @@
  */
 
 #import <Foundation/Foundation.h>
-#import <RecurlySDK/REPayment.h>
 
 
 @interface REValidation : NSObject

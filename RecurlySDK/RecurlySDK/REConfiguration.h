@@ -22,7 +22,7 @@
  */
 
 #import <Foundation/Foundation.h>
-#import <RecurlySDK/REProtocols.h>
+#import "REProtocols.h"
 
 
 @interface REConfiguration : NSObject <REValidable>

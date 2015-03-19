@@ -25,14 +25,10 @@
  */
 
 #import <Foundation/Foundation.h>
-#import <RecurlySDK/REProtocols.h>
+#import "REProtocols.h"
 
 
-@class RETaxes;
-@class REPlan;
-@class RECartSummary;
-@class RECoupon;
-@class REPricingResult;
+@class RETaxes, REPlan, RECartSummary, RECoupon, REPricingResult;
 @interface REPricingHandler  : NSObject
 {
     NSMutableDictionary *_addons;

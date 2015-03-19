@@ -23,7 +23,7 @@
 
 #import <Foundation/Foundation.h>
 #import <XCTest/XCTest.h>
-#import <RecurlySDK/RecurlySDK.h>
+#import "RecurlySDK.h"
 #import "Foundation+Recurly.h"
 #import "Shared-tests.h"
 

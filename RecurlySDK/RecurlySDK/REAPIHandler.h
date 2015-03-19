@@ -27,14 +27,7 @@
 #import <Foundation/Foundation.h>
 
 
-@class RETaxRequest;
-@class RENetworker;
-@class REPayment;
-@class REPlanRequest;
-@class REPlan;
-@class RETaxes;
-@class RECoupon;
-@class RECouponRequest;
+@class RETaxRequest, REPayment, REPlanRequest, REPlan, RETaxes, RECoupon, RECouponRequest;
 
 @interface REAPIHandler : NSObject
 

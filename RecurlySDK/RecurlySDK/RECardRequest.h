@@ -22,7 +22,7 @@
  */
 
 #import <Foundation/Foundation.h>
-#import <RecurlySDK/REPayment.h>
+#import "REPayment.h"
 
 
 typedef NS_ENUM(NSInteger, RECardType) {

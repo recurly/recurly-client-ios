@@ -7,18 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		32026F321A09464400B03B0F /* REError.h in Headers */ = {isa = PBXBuildFile; fileRef = 32026F301A09464400B03B0F /* REError.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		32026F331A09464400B03B0F /* REError.m in Sources */ = {isa = PBXBuildFile; fileRef = 32026F311A09464400B03B0F /* REError.m */; };
-		32114A6C1A1E39DF00A1F11B /* REError-tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32114A6B1A1E39DF00A1F11B /* REError-tests.m */; };
-		32163B681A2C8DBA00B4A2C1 /* REPricing.h in Headers */ = {isa = PBXBuildFile; fileRef = 32163B661A2C8DBA00B4A2C1 /* REPricing.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		32163B691A2C8DBA00B4A2C1 /* REPricing.m in Sources */ = {isa = PBXBuildFile; fileRef = 32163B671A2C8DBA00B4A2C1 /* REPricing.m */; };
-		3220735A1A818554001FBE7F /* CardPaymentViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3268AB8A1A814C8500C48A08 /* CardPaymentViewController.storyboard */; };
-		3220735B1A818554001FBE7F /* CouponViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3268AB8C1A814C8500C48A08 /* CouponViewController.storyboard */; };
-		3220735C1A818554001FBE7F /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3268AB8E1A814C8500C48A08 /* LaunchScreen.xib */; };
-		3220735D1A818554001FBE7F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3268AB901A814C8500C48A08 /* Main.storyboard */; };
-		3220735E1A818565001FBE7F /* PricingViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3268AB941A814C8500C48A08 /* PricingViewController.storyboard */; };
-		3220735F1A818568001FBE7F /* TaxRequestViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3268AB961A814C8500C48A08 /* TaxRequestViewController.storyboard */; };
-		322916CE1A9245C200339A3D /* PassKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3268AB841A814BF600C48A08 /* PassKit.framework */; };
 		322916CF1A9245C200339A3D /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3268AB821A814BF100C48A08 /* AddressBook.framework */; };
 		322916D01A9245C200339A3D /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3268AB801A814BD300C48A08 /* Accounts.framework */; };
 		322916D11A9245C200339A3D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3268AB7E1A814BB900C48A08 /* UIKit.framework */; };
@@ -42,72 +30,41 @@
 		322916E71A92462A00339A3D /* REAPIUtils-tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F69F981A0FE79100B09E4E /* REAPIUtils-tests.m */; };
 		322916E81A92462A00339A3D /* REPlanRequest-tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32D0CEAD1A37D196000B30FD /* REPlanRequest-tests.m */; };
 		322916E91A92462A00339A3D /* REAddress-tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EFED711A06F9F2006A1CE8 /* REAddress-tests.m */; };
-		322916F71A92464600339A3D /* librecurly.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 32CF71941A8913AC004B8E6A /* librecurly.a */; };
-		323CAEBF1A9655DD003347B3 /* Foundation-tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 323CAEBD1A9655DD003347B3 /* Foundation-tests.m */; };
 		323CAEC01A9655DD003347B3 /* Foundation-tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 323CAEBD1A9655DD003347B3 /* Foundation-tests.m */; };
-		323CAEC11A9655DD003347B3 /* REAddon-tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 323CAEBE1A9655DD003347B3 /* REAddon-tests.m */; };
 		323CAEC21A9655DD003347B3 /* REAddon-tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 323CAEBE1A9655DD003347B3 /* REAddon-tests.m */; };
-		323CAEC41A96685C003347B3 /* REPricingHandler-tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 323CAEC31A96685C003347B3 /* REPricingHandler-tests.m */; };
 		323CAEC51A96685C003347B3 /* REPricingHandler-tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 323CAEC31A96685C003347B3 /* REPricingHandler-tests.m */; };
-		323CAEC81A967C9B003347B3 /* RECartSummary-tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 323CAEC61A967C9B003347B3 /* RECartSummary-tests.m */; };
 		323CAEC91A967C9B003347B3 /* RECartSummary-tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 323CAEC61A967C9B003347B3 /* RECartSummary-tests.m */; };
-		323CAECA1A967C9B003347B3 /* REPriceSummary-tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 323CAEC71A967C9B003347B3 /* REPriceSummary-tests.m */; };
 		323CAECB1A967C9B003347B3 /* REPriceSummary-tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 323CAEC71A967C9B003347B3 /* REPriceSummary-tests.m */; };
-		3241EBF71A00263A002DBD56 /* REConfiguration-tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3241EBF61A00263A002DBD56 /* REConfiguration-tests.m */; };
-		325640A01A10D3B5007A06EA /* RecurlyState.h in Headers */ = {isa = PBXBuildFile; fileRef = 3256409E1A10D3B5007A06EA /* RecurlyState.h */; };
-		325640A11A10D3B5007A06EA /* RecurlyState.m in Sources */ = {isa = PBXBuildFile; fileRef = 3256409F1A10D3B5007A06EA /* RecurlyState.m */; };
-		325DAE761A3923580032CB91 /* REValidation.h in Headers */ = {isa = PBXBuildFile; fileRef = 325DAE741A3923580032CB91 /* REValidation.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		325DAE771A3923580032CB91 /* REValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = 325DAE751A3923580032CB91 /* REValidation.m */; };
-		325DAE7A1A3924B10032CB91 /* REValidation-tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 325DAE791A3924B10032CB91 /* REValidation-tests.m */; };
-		3268AB621A814B6F00C48A08 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3268AB381A814B6F00C48A08 /* AppDelegate.m */; };
-		3268AB641A814B6F00C48A08 /* CardPaymentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3268AB3C1A814B6F00C48A08 /* CardPaymentViewController.m */; };
-		3268AB651A814B6F00C48A08 /* CouponViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3268AB3E1A814B6F00C48A08 /* CouponViewController.m */; };
-		3268AB661A814B6F00C48A08 /* FormFieldViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3268AB401A814B6F00C48A08 /* FormFieldViewCell.m */; };
-		3268AB671A814B6F00C48A08 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3268AB411A814B6F00C48A08 /* main.m */; };
-		3268AB681A814B6F00C48A08 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3268AB431A814B6F00C48A08 /* MainViewController.m */; };
-		3268AB691A814B6F00C48A08 /* PricingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3268AB451A814B6F00C48A08 /* PricingViewController.m */; };
-		3268AB7B1A814B6F00C48A08 /* TaxRequestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3268AB611A814B6F00C48A08 /* TaxRequestViewController.m */; };
-		3268AB7D1A814BB500C48A08 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32AA578D1A2544A50094FB52 /* Foundation.framework */; };
-		3268AB7F1A814BB900C48A08 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3268AB7E1A814BB900C48A08 /* UIKit.framework */; };
-		3268AB831A814BF100C48A08 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3268AB821A814BF100C48A08 /* AddressBook.framework */; };
-		3268AB851A814BF600C48A08 /* PassKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3268AB841A814BF600C48A08 /* PassKit.framework */; };
-		3268ABA61A814C8500C48A08 /* FormFieldViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3268AB981A814C8500C48A08 /* FormFieldViewCell.xib */; };
-		3268ABA71A814C8500C48A08 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3268AB991A814C8500C48A08 /* Images.xcassets */; };
-		3268ABA91A814C8500C48A08 /* Recurly_Logo_Color.png in Resources */ = {isa = PBXBuildFile; fileRef = 3268AB9B1A814C8500C48A08 /* Recurly_Logo_Color.png */; };
-		329613621A366AA900A12A61 /* RECardRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 329613561A366AA900A12A61 /* RECardRequest.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		329613631A366AA900A12A61 /* RECardRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 329613571A366AA900A12A61 /* RECardRequest.m */; };
-		329613641A366AA900A12A61 /* RECouponRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 329613581A366AA900A12A61 /* RECouponRequest.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		329613651A366AA900A12A61 /* RECouponRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 329613591A366AA900A12A61 /* RECouponRequest.m */; };
-		329613661A366AA900A12A61 /* REPayment.h in Headers */ = {isa = PBXBuildFile; fileRef = 3296135A1A366AA900A12A61 /* REPayment.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		329613671A366AA900A12A61 /* REPayment.m in Sources */ = {isa = PBXBuildFile; fileRef = 3296135B1A366AA900A12A61 /* REPayment.m */; };
-		329613681A366AA900A12A61 /* REPlanRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 3296135C1A366AA900A12A61 /* REPlanRequest.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		329613691A366AA900A12A61 /* REPlanRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3296135D1A366AA900A12A61 /* REPlanRequest.m */; };
-		3296136A1A366AA900A12A61 /* RETaxRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 3296135E1A366AA900A12A61 /* RETaxRequest.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		3296136B1A366AA900A12A61 /* RETaxRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3296135F1A366AA900A12A61 /* RETaxRequest.m */; };
-		329613771A366AE100A12A61 /* REAPIOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 3296136D1A366AE100A12A61 /* REAPIOperation.h */; };
-		329613781A366AE100A12A61 /* REAPIOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 3296136E1A366AE100A12A61 /* REAPIOperation.m */; };
-		329613791A366AE100A12A61 /* REAPIRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 3296136F1A366AE100A12A61 /* REAPIRequest.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		3296137A1A366AE100A12A61 /* REAPIRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 329613701A366AE100A12A61 /* REAPIRequest.m */; };
-		3296137B1A366AE100A12A61 /* REAPIResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = 329613711A366AE100A12A61 /* REAPIResponse.h */; };
-		3296137C1A366AE100A12A61 /* REAPIResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 329613721A366AE100A12A61 /* REAPIResponse.m */; };
-		3296137D1A366AE100A12A61 /* REAPIUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 329613731A366AE100A12A61 /* REAPIUtils.h */; };
-		3296137E1A366AE100A12A61 /* REAPIUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 329613741A366AE100A12A61 /* REAPIUtils.m */; };
-		3296137F1A366AE100A12A61 /* RENetworker.h in Headers */ = {isa = PBXBuildFile; fileRef = 329613751A366AE100A12A61 /* RENetworker.h */; };
-		329613801A366AE100A12A61 /* RENetworker.m in Sources */ = {isa = PBXBuildFile; fileRef = 329613761A366AE100A12A61 /* RENetworker.m */; };
-		329775521A13DE1400CDA64D /* REProtocols.h in Headers */ = {isa = PBXBuildFile; fileRef = 329775511A13DE1400CDA64D /* REProtocols.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		329960D11A3512F600157BCD /* REPlan.h in Headers */ = {isa = PBXBuildFile; fileRef = 329960CF1A3512F600157BCD /* REPlan.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		329960D21A3512F600157BCD /* REPlan.m in Sources */ = {isa = PBXBuildFile; fileRef = 329960D01A3512F600157BCD /* REPlan.m */; };
-		32A1FD4F19FEBE4E009C07FC /* RecurlySDK.h in Headers */ = {isa = PBXBuildFile; fileRef = 32A1FD4E19FEBE4E009C07FC /* RecurlySDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		32A1FD5519FEBE4E009C07FC /* RecurlySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32A1FD4919FEBE4E009C07FC /* RecurlySDK.framework */; };
-		32A1FD5C19FEBE4E009C07FC /* RecurlySDKTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32A1FD5B19FEBE4E009C07FC /* RecurlySDKTests.m */; };
-		32A1FD6819FEBEF9009C07FC /* RecurlySDK.m in Sources */ = {isa = PBXBuildFile; fileRef = 32A1FD6719FEBEF9009C07FC /* RecurlySDK.m */; };
-		32A1FD7F19FECF49009C07FC /* REConfiguration.h in Headers */ = {isa = PBXBuildFile; fileRef = 32A1FD7D19FECF49009C07FC /* REConfiguration.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		32A1FD8019FECF49009C07FC /* REConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 32A1FD7E19FECF49009C07FC /* REConfiguration.m */; };
-		32A5AA481A0BBCDA001C8022 /* RECardRequest-tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32A5AA471A0BBCDA001C8022 /* RECardRequest-tests.m */; };
-		32AA578E1A2544A50094FB52 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32AA578D1A2544A50094FB52 /* Foundation.framework */; };
-		32C364B21A2E70030076B9B7 /* REPlan-tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32C364B11A2E70030076B9B7 /* REPlan-tests.m */; };
-		32C6DEA61A25B134006F6B27 /* Foundation+Recurly.h in Headers */ = {isa = PBXBuildFile; fileRef = 32C6DEA41A25B134006F6B27 /* Foundation+Recurly.h */; };
-		32C6DEA71A25B134006F6B27 /* Foundation+Recurly.m in Sources */ = {isa = PBXBuildFile; fileRef = 32C6DEA51A25B134006F6B27 /* Foundation+Recurly.m */; };
+		32CA8D2A1ABB3A2C00849818 /* librecurly.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 32CF71941A8913AC004B8E6A /* librecurly.a */; };
+		32CA8D311ABB3AC100849818 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32CA8D301ABB3AC100849818 /* CoreTelephony.framework */; };
+		32CA8D381ABB3AD300849818 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32CA8D301ABB3AC100849818 /* CoreTelephony.framework */; };
+		32CA8D3A1ABB3AD800849818 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3268AB821A814BF100C48A08 /* AddressBook.framework */; };
+		32CA8D3B1ABB3ADA00849818 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3268AB801A814BD300C48A08 /* Accounts.framework */; };
+		32CA8D3C1ABB3ADD00849818 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3268AB7E1A814BB900C48A08 /* UIKit.framework */; };
+		32CA8D3D1ABB3ADF00849818 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32AA578D1A2544A50094FB52 /* Foundation.framework */; };
+		32CA8D691ABB3E7D00849818 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3268AB381A814B6F00C48A08 /* AppDelegate.m */; };
+		32CA8D6B1ABB3E7D00849818 /* CardPaymentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3268AB3C1A814B6F00C48A08 /* CardPaymentViewController.m */; };
+		32CA8D6D1ABB3E7D00849818 /* CouponViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3268AB3E1A814B6F00C48A08 /* CouponViewController.m */; };
+		32CA8D6F1ABB3E7D00849818 /* FormFieldViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3268AB401A814B6F00C48A08 /* FormFieldViewCell.m */; };
+		32CA8D711ABB3E7D00849818 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3268AB431A814B6F00C48A08 /* MainViewController.m */; };
+		32CA8D731ABB3E7D00849818 /* PricingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3268AB451A814B6F00C48A08 /* PricingViewController.m */; };
+		32CA8D751ABB3E7D00849818 /* TaxRequestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3268AB611A814B6F00C48A08 /* TaxRequestViewController.m */; };
+		32CA8D761ABB3E7D00849818 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3268AB411A814B6F00C48A08 /* main.m */; };
+		32CA8D771ABB3E8B00849818 /* CardPaymentViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3268AB8A1A814C8500C48A08 /* CardPaymentViewController.storyboard */; };
+		32CA8D781ABB3E8B00849818 /* CouponViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3268AB8C1A814C8500C48A08 /* CouponViewController.storyboard */; };
+		32CA8D791ABB3E8B00849818 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3268AB8E1A814C8500C48A08 /* LaunchScreen.xib */; };
+		32CA8D7A1ABB3E8B00849818 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3268AB901A814C8500C48A08 /* Main.storyboard */; };
+		32CA8D7B1ABB3E8B00849818 /* PricingViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3268AB941A814C8500C48A08 /* PricingViewController.storyboard */; };
+		32CA8D7C1ABB3E8B00849818 /* TaxRequestViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3268AB961A814C8500C48A08 /* TaxRequestViewController.storyboard */; };
+		32CA8D7D1ABB3E8B00849818 /* FormFieldViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3268AB981A814C8500C48A08 /* FormFieldViewCell.xib */; };
+		32CA8D7E1ABB3E8B00849818 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3268AB991A814C8500C48A08 /* Images.xcassets */; };
+		32CA8D801ABB3E8B00849818 /* Recurly_Logo_Color.png in Resources */ = {isa = PBXBuildFile; fileRef = 3268AB9B1A814C8500C48A08 /* Recurly_Logo_Color.png */; };
+		32CA8D811ABB3E8E00849818 /* librecurly.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 32CF71941A8913AC004B8E6A /* librecurly.a */; };
+		32CA8D841ABB3EBC00849818 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32CA8D301ABB3AC100849818 /* CoreTelephony.framework */; };
+		32CA8D851ABB3EBC00849818 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3268AB821A814BF100C48A08 /* AddressBook.framework */; };
+		32CA8D861ABB3EBC00849818 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3268AB801A814BD300C48A08 /* Accounts.framework */; };
+		32CA8D871ABB3EBC00849818 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3268AB7E1A814BB900C48A08 /* UIKit.framework */; };
+		32CA8D881ABB3EBC00849818 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32AA578D1A2544A50094FB52 /* Foundation.framework */; };
 		32CF71AB1A8913FB004B8E6A /* REAPIOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 3296136E1A366AE100A12A61 /* REAPIOperation.m */; };
 		32CF71AC1A8913FB004B8E6A /* REAPIRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 329613701A366AE100A12A61 /* REAPIRequest.m */; };
 		32CF71AD1A8913FB004B8E6A /* REAPIResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 329613721A366AE100A12A61 /* REAPIResponse.m */; };
@@ -153,62 +110,22 @@
 		32CF71DA1A891550004B8E6A /* REConfiguration.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 32A1FD7D19FECF49009C07FC /* REConfiguration.h */; };
 		32CF71DB1A891550004B8E6A /* RecurlySDK.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 32A1FD4E19FEBE4E009C07FC /* RecurlySDK.h */; };
 		32CF71DC1A891550004B8E6A /* REProtocols.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 329775511A13DE1400CDA64D /* REProtocols.h */; };
-		32D0CEB01A37D196000B30FD /* RECoupon-tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32D0CEAB1A37D196000B30FD /* RECoupon-tests.m */; };
-		32D0CEB11A37D196000B30FD /* RECouponRequest-tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32D0CEAC1A37D196000B30FD /* RECouponRequest-tests.m */; };
-		32D0CEB21A37D196000B30FD /* REPlanRequest-tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32D0CEAD1A37D196000B30FD /* REPlanRequest-tests.m */; };
-		32D0CEB31A37D196000B30FD /* RETaxes-tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32D0CEAE1A37D196000B30FD /* RETaxes-tests.m */; };
-		32D0CEB41A37D196000B30FD /* RETaxRequest-tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32D0CEAF1A37D196000B30FD /* RETaxRequest-tests.m */; };
-		32D4D80E1A0A2EAE00A9F6D3 /* REPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 32D4D80D1A0A2EAE00A9F6D3 /* REPrivate.h */; };
-		32D7DA8E1A23BD9F00DDEC0C /* RecurlySDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 32A1FD4919FEBE4E009C07FC /* RecurlySDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		32DAE0C91A365FA4000927C8 /* RETaxes.h in Headers */ = {isa = PBXBuildFile; fileRef = 32DAE0C71A365FA4000927C8 /* RETaxes.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		32DAE0CA1A365FA4000927C8 /* RETaxes.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DAE0C81A365FA4000927C8 /* RETaxes.m */; };
-		32DDA7711A1F8BCC009793DF /* RecurlySDK.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 32A1FD4919FEBE4E009C07FC /* RecurlySDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		32EFED681A069478006A1CE8 /* REAddress.h in Headers */ = {isa = PBXBuildFile; fileRef = 32EFED661A069478006A1CE8 /* REAddress.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		32EFED691A069478006A1CE8 /* REAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EFED671A069478006A1CE8 /* REAddress.m */; };
-		32EFED6B1A06A264006A1CE8 /* REMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 32EFED6A1A06A264006A1CE8 /* REMacros.h */; };
-		32EFED721A06F9F2006A1CE8 /* REAPIRequest-tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EFED6C1A06F9F2006A1CE8 /* REAPIRequest-tests.m */; };
-		32EFED731A06F9F2006A1CE8 /* REAPIResponse-tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EFED6D1A06F9F2006A1CE8 /* REAPIResponse-tests.m */; };
-		32EFED741A06F9F2006A1CE8 /* Recurly-tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EFED6E1A06F9F2006A1CE8 /* Recurly-tests.m */; };
-		32EFED751A06F9F2006A1CE8 /* RENetworker-tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EFED6F1A06F9F2006A1CE8 /* RENetworker-tests.m */; };
-		32EFED761A06F9F2006A1CE8 /* REPayments-tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EFED701A06F9F2006A1CE8 /* REPayments-tests.m */; };
-		32EFED771A06F9F2006A1CE8 /* REAddress-tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EFED711A06F9F2006A1CE8 /* REAddress-tests.m */; };
-		32EFED791A07016B006A1CE8 /* REAPIOperation-tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EFED781A07016B006A1CE8 /* REAPIOperation-tests.m */; };
-		32F69F991A0FE79100B09E4E /* REAPIUtils-tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F69F981A0FE79100B09E4E /* REAPIUtils-tests.m */; };
-		32F69F9C1A0FEF2E00B09E4E /* REAPIHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 32F69F9A1A0FEF2E00B09E4E /* REAPIHandler.h */; };
-		32F69F9D1A0FEF2E00B09E4E /* REAPIHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F69F9B1A0FEF2E00B09E4E /* REAPIHandler.m */; };
-		AD8FA6381A3234F200D8D9FC /* RECoupon.h in Headers */ = {isa = PBXBuildFile; fileRef = AD8FA6361A3234F200D8D9FC /* RECoupon.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		AD8FA6391A3234F200D8D9FC /* RECoupon.m in Sources */ = {isa = PBXBuildFile; fileRef = AD8FA6371A3234F200D8D9FC /* RECoupon.m */; };
-		ADB53CB81A38401100109A57 /* RECartSummary.h in Headers */ = {isa = PBXBuildFile; fileRef = ADB53CB61A38401100109A57 /* RECartSummary.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		ADB53CB91A38401100109A57 /* RECartSummary.m in Sources */ = {isa = PBXBuildFile; fileRef = ADB53CB71A38401100109A57 /* RECartSummary.m */; };
-		ADB53CBC1A38401B00109A57 /* REPriceSummary.h in Headers */ = {isa = PBXBuildFile; fileRef = ADB53CBA1A38401B00109A57 /* REPriceSummary.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		ADB53CBD1A38401B00109A57 /* REPriceSummary.m in Sources */ = {isa = PBXBuildFile; fileRef = ADB53CBB1A38401B00109A57 /* REPriceSummary.m */; };
-		ADB53CC01A3846AD00109A57 /* REPricingHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = ADB53CBE1A3846AD00109A57 /* REPricingHandler.h */; };
-		ADB53CC11A3846AD00109A57 /* REPricingHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = ADB53CBF1A3846AD00109A57 /* REPricingHandler.m */; };
-		ADB53CCE1A397F2400109A57 /* REAddon.h in Headers */ = {isa = PBXBuildFile; fileRef = ADB53CCC1A397F2400109A57 /* REAddon.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		ADB53CCF1A397F2400109A57 /* REAddon.m in Sources */ = {isa = PBXBuildFile; fileRef = ADB53CCD1A397F2400109A57 /* REAddon.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		322916F51A92463800339A3D /* PBXContainerItemProxy */ = {
+		32CA8D2B1ABB3A3400849818 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 32A1FD4019FEBE4D009C07FC /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 32CF71931A8913AC004B8E6A;
 			remoteInfo = RecurlyLib;
 		};
-		32A1FD5619FEBE4E009C07FC /* PBXContainerItemProxy */ = {
+		32CA8D821ABB3E9400849818 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 32A1FD4019FEBE4D009C07FC /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 32A1FD4819FEBE4D009C07FC;
-			remoteInfo = RecurlySDK;
-		};
-		32D7DA8F1A23BD9F00DDEC0C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 32A1FD4019FEBE4D009C07FC /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 32A1FD4819FEBE4D009C07FC;
-			remoteInfo = RecurlySDK;
+			remoteGlobalIDString = 32CF71931A8913AC004B8E6A;
+			remoteInfo = RecurlyLib;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -250,38 +167,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		32D7DA911A23BD9F00DDEC0C /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				32D7DA8E1A23BD9F00DDEC0C /* RecurlySDK.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		32DDA7701A1F8BC4009793DF /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				32DDA7711A1F8BCC009793DF /* RecurlySDK.framework in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		3200B0ED1A11091B00947C81 /* RecurlySample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RecurlySample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		32026F301A09464400B03B0F /* REError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REError.h; sourceTree = "<group>"; };
 		32026F311A09464400B03B0F /* REError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REError.m; sourceTree = "<group>"; };
 		320594191A1E34AB004EC96F /* Shared-tests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Shared-tests.h"; sourceTree = "<group>"; };
 		32114A6B1A1E39DF00A1F11B /* REError-tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "REError-tests.m"; sourceTree = "<group>"; };
 		32163B661A2C8DBA00B4A2C1 /* REPricing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REPricing.h; sourceTree = "<group>"; };
 		32163B671A2C8DBA00B4A2C1 /* REPricing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REPricing.m; sourceTree = "<group>"; };
-		322916F31A92462A00339A3D /* RecurlySDKTests copy.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "RecurlySDKTests copy.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		322916F31A92462A00339A3D /* RecurlySDKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RecurlySDKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		323CAEBD1A9655DD003347B3 /* Foundation-tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Foundation-tests.m"; sourceTree = "<group>"; };
 		323CAEBE1A9655DD003347B3 /* REAddon-tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "REAddon-tests.m"; sourceTree = "<group>"; };
 		323CAEC31A96685C003347B3 /* REPricingHandler-tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "REPricingHandler-tests.m"; sourceTree = "<group>"; };
@@ -311,7 +206,6 @@
 		3268AB7E1A814BB900C48A08 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		3268AB801A814BD300C48A08 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		3268AB821A814BF100C48A08 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
-		3268AB841A814BF600C48A08 /* PassKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PassKit.framework; path = System/Library/Frameworks/PassKit.framework; sourceTree = SDKROOT; };
 		3268AB8B1A814C8500C48A08 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/CardPaymentViewController.storyboard; sourceTree = "<group>"; };
 		3268AB8D1A814C8500C48A08 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/CouponViewController.storyboard; sourceTree = "<group>"; };
 		3268AB8F1A814C8500C48A08 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -345,10 +239,8 @@
 		329775511A13DE1400CDA64D /* REProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REProtocols.h; sourceTree = "<group>"; };
 		329960CF1A3512F600157BCD /* REPlan.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REPlan.h; sourceTree = "<group>"; };
 		329960D01A3512F600157BCD /* REPlan.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REPlan.m; sourceTree = "<group>"; };
-		32A1FD4919FEBE4E009C07FC /* RecurlySDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RecurlySDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		32A1FD4D19FEBE4E009C07FC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		32A1FD4E19FEBE4E009C07FC /* RecurlySDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RecurlySDK.h; sourceTree = "<group>"; };
-		32A1FD5419FEBE4E009C07FC /* RecurlySDKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RecurlySDKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		32A1FD5A19FEBE4E009C07FC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		32A1FD5B19FEBE4E009C07FC /* RecurlySDKTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RecurlySDKTests.m; sourceTree = "<group>"; };
 		32A1FD6719FEBEF9009C07FC /* RecurlySDK.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecurlySDK.m; sourceTree = "<group>"; };
@@ -359,6 +251,8 @@
 		32C364B11A2E70030076B9B7 /* REPlan-tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "REPlan-tests.m"; sourceTree = "<group>"; };
 		32C6DEA41A25B134006F6B27 /* Foundation+Recurly.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Foundation+Recurly.h"; sourceTree = "<group>"; };
 		32C6DEA51A25B134006F6B27 /* Foundation+Recurly.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Foundation+Recurly.m"; sourceTree = "<group>"; };
+		32CA8D301ABB3AC100849818 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		32CA8D421ABB3E1300849818 /* RecurlySample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RecurlySample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		32CF71941A8913AC004B8E6A /* librecurly.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = librecurly.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		32D0CEAB1A37D196000B30FD /* RECoupon-tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RECoupon-tests.m"; sourceTree = "<group>"; };
 		32D0CEAC1A37D196000B30FD /* RECouponRequest-tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RECouponRequest-tests.m"; sourceTree = "<group>"; };
@@ -394,38 +288,29 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		3200B0EA1A11091B00947C81 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		322916EA1A92462A00339A3D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				322916F71A92464600339A3D /* librecurly.a in Frameworks */,
+				32CA8D3C1ABB3ADD00849818 /* UIKit.framework in Frameworks */,
+				32CA8D381ABB3AD300849818 /* CoreTelephony.framework in Frameworks */,
+				32CA8D3A1ABB3AD800849818 /* AddressBook.framework in Frameworks */,
+				32CA8D2A1ABB3A2C00849818 /* librecurly.a in Frameworks */,
+				32CA8D3D1ABB3ADF00849818 /* Foundation.framework in Frameworks */,
+				32CA8D3B1ABB3ADA00849818 /* Accounts.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		32A1FD4519FEBE4D009C07FC /* Frameworks */ = {
+		32CA8D3F1ABB3E1300849818 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3268AB851A814BF600C48A08 /* PassKit.framework in Frameworks */,
-				3268AB831A814BF100C48A08 /* AddressBook.framework in Frameworks */,
-				3268AB7F1A814BB900C48A08 /* UIKit.framework in Frameworks */,
-				3268AB7D1A814BB500C48A08 /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		32A1FD5119FEBE4E009C07FC /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				32AA578E1A2544A50094FB52 /* Foundation.framework in Frameworks */,
-				32A1FD5519FEBE4E009C07FC /* RecurlySDK.framework in Frameworks */,
+				32CA8D811ABB3E8E00849818 /* librecurly.a in Frameworks */,
+				32CA8D841ABB3EBC00849818 /* CoreTelephony.framework in Frameworks */,
+				32CA8D851ABB3EBC00849818 /* AddressBook.framework in Frameworks */,
+				32CA8D861ABB3EBC00849818 /* Accounts.framework in Frameworks */,
+				32CA8D871ABB3EBC00849818 /* UIKit.framework in Frameworks */,
+				32CA8D881ABB3EBC00849818 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -433,7 +318,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				322916CE1A9245C200339A3D /* PassKit.framework in Frameworks */,
+				32CA8D311ABB3AC100849818 /* CoreTelephony.framework in Frameworks */,
 				322916CF1A9245C200339A3D /* AddressBook.framework in Frameworks */,
 				322916D01A9245C200339A3D /* Accounts.framework in Frameworks */,
 				322916D11A9245C200339A3D /* UIKit.framework in Frameworks */,
@@ -487,7 +372,7 @@
 		3268AB7C1A814B8100C48A08 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				3268AB841A814BF600C48A08 /* PassKit.framework */,
+				32CA8D301ABB3AC100849818 /* CoreTelephony.framework */,
 				3268AB821A814BF100C48A08 /* AddressBook.framework */,
 				3268AB801A814BD300C48A08 /* Accounts.framework */,
 				3268AB7E1A814BB900C48A08 /* UIKit.framework */,
@@ -559,11 +444,9 @@
 		32A1FD4A19FEBE4E009C07FC /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				32A1FD4919FEBE4E009C07FC /* RecurlySDK.framework */,
-				32A1FD5419FEBE4E009C07FC /* RecurlySDKTests.xctest */,
-				3200B0ED1A11091B00947C81 /* RecurlySample.app */,
 				32CF71941A8913AC004B8E6A /* librecurly.a */,
-				322916F31A92462A00339A3D /* RecurlySDKTests copy.xctest */,
+				322916F31A92462A00339A3D /* RecurlySDKTests.xctest */,
+				32CA8D421ABB3E1300849818 /* RecurlySample.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -665,65 +548,7 @@
 		};
 /* End PBXGroup section */
 
-/* Begin PBXHeadersBuildPhase section */
-		32A1FD4619FEBE4D009C07FC /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				3296136A1A366AA900A12A61 /* RETaxRequest.h in Headers */,
-				329613681A366AA900A12A61 /* REPlanRequest.h in Headers */,
-				329613661A366AA900A12A61 /* REPayment.h in Headers */,
-				329960D11A3512F600157BCD /* REPlan.h in Headers */,
-				3296137D1A366AE100A12A61 /* REAPIUtils.h in Headers */,
-				32A1FD4F19FEBE4E009C07FC /* RecurlySDK.h in Headers */,
-				32EFED681A069478006A1CE8 /* REAddress.h in Headers */,
-				325DAE761A3923580032CB91 /* REValidation.h in Headers */,
-				32C6DEA61A25B134006F6B27 /* Foundation+Recurly.h in Headers */,
-				32A1FD7F19FECF49009C07FC /* REConfiguration.h in Headers */,
-				AD8FA6381A3234F200D8D9FC /* RECoupon.h in Headers */,
-				3296137B1A366AE100A12A61 /* REAPIResponse.h in Headers */,
-				329775521A13DE1400CDA64D /* REProtocols.h in Headers */,
-				32163B681A2C8DBA00B4A2C1 /* REPricing.h in Headers */,
-				32026F321A09464400B03B0F /* REError.h in Headers */,
-				32DAE0C91A365FA4000927C8 /* RETaxes.h in Headers */,
-				ADB53CBC1A38401B00109A57 /* REPriceSummary.h in Headers */,
-				ADB53CB81A38401100109A57 /* RECartSummary.h in Headers */,
-				ADB53CC01A3846AD00109A57 /* REPricingHandler.h in Headers */,
-				329613641A366AA900A12A61 /* RECouponRequest.h in Headers */,
-				329613621A366AA900A12A61 /* RECardRequest.h in Headers */,
-				ADB53CCE1A397F2400109A57 /* REAddon.h in Headers */,
-				325640A01A10D3B5007A06EA /* RecurlyState.h in Headers */,
-				3296137F1A366AE100A12A61 /* RENetworker.h in Headers */,
-				32F69F9C1A0FEF2E00B09E4E /* REAPIHandler.h in Headers */,
-				329613791A366AE100A12A61 /* REAPIRequest.h in Headers */,
-				32D4D80E1A0A2EAE00A9F6D3 /* REPrivate.h in Headers */,
-				32EFED6B1A06A264006A1CE8 /* REMacros.h in Headers */,
-				329613771A366AE100A12A61 /* REAPIOperation.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXHeadersBuildPhase section */
-
 /* Begin PBXNativeTarget section */
-		3200B0EC1A11091B00947C81 /* RecurlySample */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 3200B1111A11091B00947C81 /* Build configuration list for PBXNativeTarget "RecurlySample" */;
-			buildPhases = (
-				3200B0E91A11091B00947C81 /* Sources */,
-				3200B0EA1A11091B00947C81 /* Frameworks */,
-				3200B0EB1A11091B00947C81 /* Resources */,
-				32D7DA911A23BD9F00DDEC0C /* Embed Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				32D7DA901A23BD9F00DDEC0C /* PBXTargetDependency */,
-			);
-			name = RecurlySample;
-			productName = SampleApp;
-			productReference = 3200B0ED1A11091B00947C81 /* RecurlySample.app */;
-			productType = "com.apple.product-type.application";
-		};
 		322916D31A92462A00339A3D /* RecurlyLibTests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 322916F01A92462A00339A3D /* Build configuration list for PBXNativeTarget "RecurlyLibTests" */;
@@ -736,49 +561,30 @@
 			buildRules = (
 			);
 			dependencies = (
-				322916F61A92463800339A3D /* PBXTargetDependency */,
+				32CA8D2C1ABB3A3400849818 /* PBXTargetDependency */,
 			);
 			name = RecurlyLibTests;
 			productName = RecurlySDKTests;
-			productReference = 322916F31A92462A00339A3D /* RecurlySDKTests copy.xctest */;
+			productReference = 322916F31A92462A00339A3D /* RecurlySDKTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		32A1FD4819FEBE4D009C07FC /* RecurlySDK */ = {
+		32CA8D411ABB3E1300849818 /* RecurlySample */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 32A1FD5F19FEBE4E009C07FC /* Build configuration list for PBXNativeTarget "RecurlySDK" */;
+			buildConfigurationList = 32CA8D621ABB3E1400849818 /* Build configuration list for PBXNativeTarget "RecurlySample" */;
 			buildPhases = (
-				32A1FD4419FEBE4D009C07FC /* Sources */,
-				32A1FD4519FEBE4D009C07FC /* Frameworks */,
-				32A1FD4619FEBE4D009C07FC /* Headers */,
-				32A1FD4719FEBE4D009C07FC /* Resources */,
+				32CA8D3E1ABB3E1300849818 /* Sources */,
+				32CA8D3F1ABB3E1300849818 /* Frameworks */,
+				32CA8D401ABB3E1300849818 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				32CA8D831ABB3E9400849818 /* PBXTargetDependency */,
 			);
-			name = RecurlySDK;
-			productName = RecurlySDK;
-			productReference = 32A1FD4919FEBE4E009C07FC /* RecurlySDK.framework */;
-			productType = "com.apple.product-type.framework";
-		};
-		32A1FD5319FEBE4E009C07FC /* RecurlySDKTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 32A1FD6219FEBE4E009C07FC /* Build configuration list for PBXNativeTarget "RecurlySDKTests" */;
-			buildPhases = (
-				32A1FD5019FEBE4E009C07FC /* Sources */,
-				32A1FD5119FEBE4E009C07FC /* Frameworks */,
-				32A1FD5219FEBE4E009C07FC /* Resources */,
-				32DDA7701A1F8BC4009793DF /* CopyFiles */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				32A1FD5719FEBE4E009C07FC /* PBXTargetDependency */,
-			);
-			name = RecurlySDKTests;
-			productName = RecurlySDKTests;
-			productReference = 32A1FD5419FEBE4E009C07FC /* RecurlySDKTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
+			name = RecurlySample;
+			productName = RecurlySample;
+			productReference = 32CA8D421ABB3E1300849818 /* RecurlySample.app */;
+			productType = "com.apple.product-type.application";
 		};
 		32CF71931A8913AC004B8E6A /* RecurlyLib */ = {
 			isa = PBXNativeTarget;
@@ -806,20 +612,8 @@
 				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = "Recurly Inc";
 				TargetAttributes = {
-					3200B0EC1A11091B00947C81 = {
-						CreatedOnToolsVersion = 6.1;
-						DevelopmentTeam = 44PABWK8UL;
-						SystemCapabilities = {
-							com.apple.OMC = {
-								enabled = 0;
-							};
-						};
-					};
-					32A1FD4819FEBE4D009C07FC = {
-						CreatedOnToolsVersion = 6.1;
-					};
-					32A1FD5319FEBE4E009C07FC = {
-						CreatedOnToolsVersion = 6.1;
+					32CA8D411ABB3E1300849818 = {
+						CreatedOnToolsVersion = 6.1.1;
 					};
 					32CF71931A8913AC004B8E6A = {
 						CreatedOnToolsVersion = 6.1.1;
@@ -839,32 +633,14 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				32A1FD4819FEBE4D009C07FC /* RecurlySDK */,
 				32CF71931A8913AC004B8E6A /* RecurlyLib */,
-				32A1FD5319FEBE4E009C07FC /* RecurlySDKTests */,
 				322916D31A92462A00339A3D /* RecurlyLibTests */,
-				3200B0EC1A11091B00947C81 /* RecurlySample */,
+				32CA8D411ABB3E1300849818 /* RecurlySample */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		3200B0EB1A11091B00947C81 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				3220735D1A818554001FBE7F /* Main.storyboard in Resources */,
-				3268ABA61A814C8500C48A08 /* FormFieldViewCell.xib in Resources */,
-				3220735F1A818568001FBE7F /* TaxRequestViewController.storyboard in Resources */,
-				3268ABA71A814C8500C48A08 /* Images.xcassets in Resources */,
-				3220735A1A818554001FBE7F /* CardPaymentViewController.storyboard in Resources */,
-				3220735E1A818565001FBE7F /* PricingViewController.storyboard in Resources */,
-				3220735B1A818554001FBE7F /* CouponViewController.storyboard in Resources */,
-				3220735C1A818554001FBE7F /* LaunchScreen.xib in Resources */,
-				3268ABA91A814C8500C48A08 /* Recurly_Logo_Color.png in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		322916ED1A92462A00339A3D /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -872,38 +648,25 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		32A1FD4719FEBE4D009C07FC /* Resources */ = {
+		32CA8D401ABB3E1300849818 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		32A1FD5219FEBE4E009C07FC /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
+				32CA8D771ABB3E8B00849818 /* CardPaymentViewController.storyboard in Resources */,
+				32CA8D781ABB3E8B00849818 /* CouponViewController.storyboard in Resources */,
+				32CA8D791ABB3E8B00849818 /* LaunchScreen.xib in Resources */,
+				32CA8D7A1ABB3E8B00849818 /* Main.storyboard in Resources */,
+				32CA8D7B1ABB3E8B00849818 /* PricingViewController.storyboard in Resources */,
+				32CA8D7C1ABB3E8B00849818 /* TaxRequestViewController.storyboard in Resources */,
+				32CA8D7D1ABB3E8B00849818 /* FormFieldViewCell.xib in Resources */,
+				32CA8D7E1ABB3E8B00849818 /* Images.xcassets in Resources */,
+				32CA8D801ABB3E8B00849818 /* Recurly_Logo_Color.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		3200B0E91A11091B00947C81 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				3268AB661A814B6F00C48A08 /* FormFieldViewCell.m in Sources */,
-				3268AB651A814B6F00C48A08 /* CouponViewController.m in Sources */,
-				3268AB641A814B6F00C48A08 /* CardPaymentViewController.m in Sources */,
-				3268AB681A814B6F00C48A08 /* MainViewController.m in Sources */,
-				3268AB691A814B6F00C48A08 /* PricingViewController.m in Sources */,
-				3268AB671A814B6F00C48A08 /* main.m in Sources */,
-				3268AB621A814B6F00C48A08 /* AppDelegate.m in Sources */,
-				3268AB7B1A814B6F00C48A08 /* TaxRequestViewController.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		322916D61A92462A00339A3D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -935,67 +698,18 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		32A1FD4419FEBE4D009C07FC /* Sources */ = {
+		32CA8D3E1ABB3E1300849818 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				32C6DEA71A25B134006F6B27 /* Foundation+Recurly.m in Sources */,
-				325640A11A10D3B5007A06EA /* RecurlyState.m in Sources */,
-				AD8FA6391A3234F200D8D9FC /* RECoupon.m in Sources */,
-				32A1FD8019FECF49009C07FC /* REConfiguration.m in Sources */,
-				32EFED691A069478006A1CE8 /* REAddress.m in Sources */,
-				329613691A366AA900A12A61 /* REPlanRequest.m in Sources */,
-				3296137C1A366AE100A12A61 /* REAPIResponse.m in Sources */,
-				32F69F9D1A0FEF2E00B09E4E /* REAPIHandler.m in Sources */,
-				329613651A366AA900A12A61 /* RECouponRequest.m in Sources */,
-				32026F331A09464400B03B0F /* REError.m in Sources */,
-				329960D21A3512F600157BCD /* REPlan.m in Sources */,
-				32A1FD6819FEBEF9009C07FC /* RecurlySDK.m in Sources */,
-				329613801A366AE100A12A61 /* RENetworker.m in Sources */,
-				3296137A1A366AE100A12A61 /* REAPIRequest.m in Sources */,
-				ADB53CCF1A397F2400109A57 /* REAddon.m in Sources */,
-				329613631A366AA900A12A61 /* RECardRequest.m in Sources */,
-				3296137E1A366AE100A12A61 /* REAPIUtils.m in Sources */,
-				ADB53CC11A3846AD00109A57 /* REPricingHandler.m in Sources */,
-				ADB53CBD1A38401B00109A57 /* REPriceSummary.m in Sources */,
-				ADB53CB91A38401100109A57 /* RECartSummary.m in Sources */,
-				329613671A366AA900A12A61 /* REPayment.m in Sources */,
-				32163B691A2C8DBA00B4A2C1 /* REPricing.m in Sources */,
-				32DAE0CA1A365FA4000927C8 /* RETaxes.m in Sources */,
-				329613781A366AE100A12A61 /* REAPIOperation.m in Sources */,
-				325DAE771A3923580032CB91 /* REValidation.m in Sources */,
-				3296136B1A366AA900A12A61 /* RETaxRequest.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		32A1FD5019FEBE4E009C07FC /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				32EFED791A07016B006A1CE8 /* REAPIOperation-tests.m in Sources */,
-				323CAECA1A967C9B003347B3 /* REPriceSummary-tests.m in Sources */,
-				32EFED751A06F9F2006A1CE8 /* RENetworker-tests.m in Sources */,
-				32D0CEB01A37D196000B30FD /* RECoupon-tests.m in Sources */,
-				32A5AA481A0BBCDA001C8022 /* RECardRequest-tests.m in Sources */,
-				32C364B21A2E70030076B9B7 /* REPlan-tests.m in Sources */,
-				32EFED731A06F9F2006A1CE8 /* REAPIResponse-tests.m in Sources */,
-				32D0CEB11A37D196000B30FD /* RECouponRequest-tests.m in Sources */,
-				32EFED741A06F9F2006A1CE8 /* Recurly-tests.m in Sources */,
-				32EFED761A06F9F2006A1CE8 /* REPayments-tests.m in Sources */,
-				32114A6C1A1E39DF00A1F11B /* REError-tests.m in Sources */,
-				32EFED721A06F9F2006A1CE8 /* REAPIRequest-tests.m in Sources */,
-				32D0CEB41A37D196000B30FD /* RETaxRequest-tests.m in Sources */,
-				32A1FD5C19FEBE4E009C07FC /* RecurlySDKTests.m in Sources */,
-				3241EBF71A00263A002DBD56 /* REConfiguration-tests.m in Sources */,
-				323CAEC41A96685C003347B3 /* REPricingHandler-tests.m in Sources */,
-				325DAE7A1A3924B10032CB91 /* REValidation-tests.m in Sources */,
-				32D0CEB31A37D196000B30FD /* RETaxes-tests.m in Sources */,
-				323CAEC81A967C9B003347B3 /* RECartSummary-tests.m in Sources */,
-				323CAEBF1A9655DD003347B3 /* Foundation-tests.m in Sources */,
-				323CAEC11A9655DD003347B3 /* REAddon-tests.m in Sources */,
-				32F69F991A0FE79100B09E4E /* REAPIUtils-tests.m in Sources */,
-				32D0CEB21A37D196000B30FD /* REPlanRequest-tests.m in Sources */,
-				32EFED771A06F9F2006A1CE8 /* REAddress-tests.m in Sources */,
+				32CA8D691ABB3E7D00849818 /* AppDelegate.m in Sources */,
+				32CA8D6B1ABB3E7D00849818 /* CardPaymentViewController.m in Sources */,
+				32CA8D6D1ABB3E7D00849818 /* CouponViewController.m in Sources */,
+				32CA8D6F1ABB3E7D00849818 /* FormFieldViewCell.m in Sources */,
+				32CA8D711ABB3E7D00849818 /* MainViewController.m in Sources */,
+				32CA8D731ABB3E7D00849818 /* PricingViewController.m in Sources */,
+				32CA8D751ABB3E7D00849818 /* TaxRequestViewController.m in Sources */,
+				32CA8D761ABB3E7D00849818 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1035,20 +749,15 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		322916F61A92463800339A3D /* PBXTargetDependency */ = {
+		32CA8D2C1ABB3A3400849818 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 32CF71931A8913AC004B8E6A /* RecurlyLib */;
-			targetProxy = 322916F51A92463800339A3D /* PBXContainerItemProxy */;
+			targetProxy = 32CA8D2B1ABB3A3400849818 /* PBXContainerItemProxy */;
 		};
-		32A1FD5719FEBE4E009C07FC /* PBXTargetDependency */ = {
+		32CA8D831ABB3E9400849818 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 32A1FD4819FEBE4D009C07FC /* RecurlySDK */;
-			targetProxy = 32A1FD5619FEBE4E009C07FC /* PBXContainerItemProxy */;
-		};
-		32D7DA901A23BD9F00DDEC0C /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 32A1FD4819FEBE4D009C07FC /* RecurlySDK */;
-			targetProxy = 32D7DA8F1A23BD9F00DDEC0C /* PBXContainerItemProxy */;
+			target = 32CF71931A8913AC004B8E6A /* RecurlyLib */;
+			targetProxy = 32CA8D821ABB3E9400849818 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1104,83 +813,35 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		3200B10D1A11091B00947C81 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = NO;
-				CLANG_WARN_OBJC_RECEIVER_WEAK = NO;
-				CLANG_WARN_OBJC_REPEATED_USE_OF_WEAK = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = "$(SRCROOT)/Sample/Resources/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-			};
-			name = Debug;
-		};
-		3200B10E1A11091B00947C81 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = NO;
-				CLANG_WARN_OBJC_RECEIVER_WEAK = NO;
-				CLANG_WARN_OBJC_REPEATED_USE_OF_WEAK = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				INFOPLIST_FILE = "$(SRCROOT)/Sample/Resources/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-			};
-			name = Release;
-		};
 		322916F11A92462A00339A3D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = RecurlySDKTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-framework",
 					XCTest,
 					"-ObjC",
 				);
-				PRODUCT_NAME = "RecurlySDKTests copy";
+				PRODUCT_NAME = RecurlySDKTests;
 			};
 			name = Debug;
 		};
 		322916F21A92462A00339A3D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
 				INFOPLIST_FILE = RecurlySDKTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-framework",
 					XCTest,
 					"-ObjC",
 				);
-				PRODUCT_NAME = "RecurlySDKTests copy";
+				PRODUCT_NAME = RecurlySDKTests;
 			};
 			name = Release;
 		};
@@ -1237,7 +898,7 @@
 				GCC_WARN_UNKNOWN_PRAGMAS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1295,7 +956,7 @@
 				GCC_WARN_UNKNOWN_PRAGMAS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1305,108 +966,47 @@
 			};
 			name = Release;
 		};
-		32A1FD6019FEBE4E009C07FC /* Debug */ = {
+		32CA8D631ABB3E1400849818 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
-				APPLICATION_EXTENSION_API_ONLY = NO;
-				CLANG_ANALYZER_SECURITY_FLOATLOOPCOUNTER = YES;
-				CLANG_ANALYZER_SECURITY_INSECUREAPI_RAND = YES;
-				CLANG_ANALYZER_SECURITY_INSECUREAPI_STRCPY = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = YES;
-				CLANG_WARN_OBJC_EXPLICIT_OWNERSHIP_TYPE = YES;
-				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_RECEIVER_WEAK = YES;
-				CLANG_WARN_OBJC_REPEATED_USE_OF_WEAK = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 0.1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
-				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
-				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
-				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
-				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
-				GCC_WARN_SHADOW = YES;
-				GCC_WARN_SIGN_COMPARE = YES;
-				GCC_WARN_STRICT_SELECTOR_MATCH = YES;
-				GCC_WARN_UNKNOWN_PRAGMAS = YES;
-				INFOPLIST_FILE = RecurlySDK/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-		32A1FD6119FEBE4E009C07FC /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = YES;
-				APPLICATION_EXTENSION_API_ONLY = NO;
-				CLANG_ANALYZER_SECURITY_FLOATLOOPCOUNTER = YES;
-				CLANG_ANALYZER_SECURITY_INSECUREAPI_RAND = YES;
-				CLANG_ANALYZER_SECURITY_INSECUREAPI_STRCPY = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = YES;
-				CLANG_WARN_OBJC_EXPLICIT_OWNERSHIP_TYPE = YES;
-				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_RECEIVER_WEAK = YES;
-				CLANG_WARN_OBJC_REPEATED_USE_OF_WEAK = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 0.1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
-				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
-				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
-				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
-				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
-				GCC_WARN_SHADOW = YES;
-				GCC_WARN_SIGN_COMPARE = YES;
-				GCC_WARN_STRICT_SELECTOR_MATCH = YES;
-				GCC_WARN_UNKNOWN_PRAGMAS = YES;
-				INFOPLIST_FILE = RecurlySDK/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
-		32A1FD6319FEBE4E009C07FC /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = NO;
+				CLANG_WARN_OBJC_RECEIVER_WEAK = NO;
+				CLANG_WARN_OBJC_REPEATED_USE_OF_WEAK = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = RecurlySDKTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					.,
+				);
+				INFOPLIST_FILE = Sample/Resources/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
 		};
-		32A1FD6419FEBE4E009C07FC /* Release */ = {
+		32CA8D641ABB3E1400849818 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = NO;
+				CLANG_WARN_OBJC_RECEIVER_WEAK = NO;
+				CLANG_WARN_OBJC_REPEATED_USE_OF_WEAK = NO;
+				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					.,
 				);
-				INFOPLIST_FILE = RecurlySDKTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				INFOPLIST_FILE = Sample/Resources/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -1418,7 +1018,6 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",
@@ -1432,7 +1031,6 @@
 		32CF71A61A8913AC004B8E6A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",
@@ -1446,15 +1044,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		3200B1111A11091B00947C81 /* Build configuration list for PBXNativeTarget "RecurlySample" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				3200B10D1A11091B00947C81 /* Debug */,
-				3200B10E1A11091B00947C81 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		322916F01A92462A00339A3D /* Build configuration list for PBXNativeTarget "RecurlyLibTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1473,23 +1062,13 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		32A1FD5F19FEBE4E009C07FC /* Build configuration list for PBXNativeTarget "RecurlySDK" */ = {
+		32CA8D621ABB3E1400849818 /* Build configuration list for PBXNativeTarget "RecurlySample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				32A1FD6019FEBE4E009C07FC /* Debug */,
-				32A1FD6119FEBE4E009C07FC /* Release */,
+				32CA8D631ABB3E1400849818 /* Debug */,
+				32CA8D641ABB3E1400849818 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		32A1FD6219FEBE4E009C07FC /* Build configuration list for PBXNativeTarget "RecurlySDKTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				32A1FD6319FEBE4E009C07FC /* Debug */,
-				32A1FD6419FEBE4E009C07FC /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
 		};
 		32CF71A91A8913AC004B8E6A /* Build configuration list for PBXNativeTarget "RecurlyLib" */ = {
 			isa = XCConfigurationList;

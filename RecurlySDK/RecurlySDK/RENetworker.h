@@ -25,7 +25,7 @@
  */
 
 #import <Foundation/Foundation.h>
-#import <RecurlySDK/REProtocols.h>
+#import "REProtocols.h"
 #import "REAPIOperation.h"
 
 

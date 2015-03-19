@@ -23,8 +23,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class REPlan;
-@class RECoupon;
+@class REPlan, RECoupon;
 @interface RECartSummary : NSObject
 
 @property (nonatomic, readonly) REPlan *plan;

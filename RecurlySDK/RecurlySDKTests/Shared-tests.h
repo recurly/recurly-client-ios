@@ -24,7 +24,7 @@
 #import <Foundation/Foundation.h>
 #import <XCTest/XCTest.h>
 #import <AddressBook/AddressBook.h>
-#import <RecurlySDK/RecurlySDK.h>
+#import "RecurlySDK.h"
 
 
 #define XCTAssertJSONSerializable(__OBJ__) XCTAssertTrue([NSJSONSerialization isValidJSONObject:__OBJ__])

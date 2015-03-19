@@ -23,7 +23,7 @@
 
 #import <Foundation/Foundation.h>
 #import <AddressBook/AddressBook.h>
-#import <RecurlySDK/REProtocols.h>
+#import "REProtocols.h"
 
 
 @interface REAddress : NSObject <REValidable, RESerializable>

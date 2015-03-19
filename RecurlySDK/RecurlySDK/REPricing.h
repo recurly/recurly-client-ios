@@ -22,14 +22,10 @@
  */
 
 #import <Foundation/Foundation.h>
-#import <RecurlySDK/REProtocols.h>
+#import "REProtocols.h"
 
 
-@class RECartSummary;
-@class REPlan;
-@class RETaxes;
-@class REAddress;
-@class REPriceSummary;
+@class RECartSummary, REPlan, RETaxes, REAddress, REPriceSummary;
 
 @interface REPricingResult : NSObject
 

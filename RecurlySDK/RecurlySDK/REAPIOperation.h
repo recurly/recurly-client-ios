@@ -27,8 +27,7 @@
 #import <Foundation/Foundation.h>
 
 
-@class REAPIRequest;
-@class REAPIResponse;
+@class REAPIRequest, REAPIResponse;
 
 typedef void (^REAPICompletion)(REAPIResponse *response, NSError *error);
 

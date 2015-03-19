@@ -22,14 +22,13 @@
  */
 
 #import <Foundation/Foundation.h>
-#import <RecurlySDK/REProtocols.h>
+#import "REProtocols.h"
 
 
 @interface RECouponRequest : NSObject <RERequestable>
 
 @property (nonatomic, strong) NSString *planCode;
 @property (nonatomic, strong) NSString *couponCode;
-
 
 /** Initializes a RECouponRequest with a plan code and the coupon code to redeem. */
 - (instancetype)initWithPlanCode:(NSString *)plan couponCode:(NSString *)coupon NS_DESIGNATED_INITIALIZER;

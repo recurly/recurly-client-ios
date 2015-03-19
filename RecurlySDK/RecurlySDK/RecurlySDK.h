@@ -28,30 +28,30 @@
 #import <AddressBook/AddressBook.h>
 
 // BASIC
-#import <RecurlySDK/REProtocols.h>
-#import <RecurlySDK/REError.h>
-#import <RecurlySDK/REConfiguration.h>
-#import <RecurlySDK/REValidation.h>
+#import "REProtocols.h"
+#import "REError.h"
+#import "REConfiguration.h"
+#import "REValidation.h"
 
 
 // NETWORKING PRIMITIVES
-#import <RecurlySDK/REAPIRequest.h>
+#import "REAPIRequest.h"
 
 // MODELS
-#import <RecurlySDK/REAddress.h>
-#import <RecurlySDK/REPlan.h>
-#import <RecurlySDK/RETaxes.h>
-#import <RecurlySDK/RECoupon.h>
-#import <RecurlySDK/REPricing.h>
-#import <RecurlySDK/RECartSummary.h>
-#import <RecurlySDK/REPriceSummary.h>
+#import "REAddress.h"
+#import "REPlan.h"
+#import "RETaxes.h"
+#import "RECoupon.h"
+#import "REPricing.h"
+#import "RECartSummary.h"
+#import "REPriceSummary.h"
 
 
 // REQUESTS
-#import <RecurlySDK/RECardRequest.h>
-#import <RecurlySDK/RECouponRequest.h>
-#import <RecurlySDK/REPlanRequest.h>
-#import <RecurlySDK/RETaxRequest.h>
+#import "RECardRequest.h"
+#import "RECouponRequest.h"
+#import "REPlanRequest.h"
+#import "RETaxRequest.h"
 
 
 //! Project version number for RecurlySDK.

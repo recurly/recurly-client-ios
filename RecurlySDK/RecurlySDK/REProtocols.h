@@ -24,10 +24,9 @@
 #import <Foundation/Foundation.h>
 
 
+@class REPricingResult, REAPIRequest;
 
-@class REPricingResult;
 @protocol REPricingHandlerDelegate <NSObject>
-
 - (void)priceDidUpdate:(REPricingResult *)result;
 
 @optional
@@ -37,33 +36,29 @@
 
 
 @protocol REValidable <NSObject>
-
 - (NSError *)validate;
 
 @end
 
 
 @protocol RESerializable <REValidable>
-
 - (NSDictionary *)JSONDictionary;
 
 @end
 
 @protocol REDeserializable
-
 - (instancetype)initWithDictionary:(NSDictionary *)JSONDictionary;
 
 @end
 
-@class REAPIRequest;
-@protocol RERequestable <REValidable>
 
+@protocol RERequestable <REValidable>
 - (REAPIRequest *)request;
 
 @end
 
 
 @protocol REPayable <NSObject>
-- (void)paymentRequest:(void(^)(id<RERequestable> requestData, NSError *err))handler;
+- (void)paymentRequest:(void(^)(id<RERequestable> requestData, NSError *error))handler;
 
 @end

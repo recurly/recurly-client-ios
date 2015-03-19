@@ -22,7 +22,7 @@
  */
 
 #import <Foundation/Foundation.h>
-#import <RecurlySDK/REProtocols.h>
+#import "REProtocols.h"
 
 
 // TODO
@@ -31,7 +31,6 @@
 @interface REPlanRequest : NSObject <RERequestable>
 
 @property (nonatomic, strong) NSString *planCode;
-
 
 /** Initializes a plan request with the code of the requested plan. The plan's codes are configured in
  the recurly's dashboard 
