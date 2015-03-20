@@ -65,6 +65,8 @@
 		32CA8D861ABB3EBC00849818 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3268AB801A814BD300C48A08 /* Accounts.framework */; };
 		32CA8D871ABB3EBC00849818 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3268AB7E1A814BB900C48A08 /* UIKit.framework */; };
 		32CA8D881ABB3EBC00849818 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32AA578D1A2544A50094FB52 /* Foundation.framework */; };
+		32CA8D8D1ABB483B00849818 /* PlanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CA8D8C1ABB483B00849818 /* PlanViewController.m */; };
+		32CA8D8E1ABB484B00849818 /* PlanViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32CA8D891ABB483000849818 /* PlanViewController.storyboard */; };
 		32CF71AB1A8913FB004B8E6A /* REAPIOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 3296136E1A366AE100A12A61 /* REAPIOperation.m */; };
 		32CF71AC1A8913FB004B8E6A /* REAPIRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 329613701A366AE100A12A61 /* REAPIRequest.m */; };
 		32CF71AD1A8913FB004B8E6A /* REAPIResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 329613721A366AE100A12A61 /* REAPIResponse.m */; };
@@ -253,6 +255,9 @@
 		32C6DEA51A25B134006F6B27 /* Foundation+Recurly.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Foundation+Recurly.m"; sourceTree = "<group>"; };
 		32CA8D301ABB3AC100849818 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		32CA8D421ABB3E1300849818 /* RecurlySample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RecurlySample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		32CA8D8A1ABB483000849818 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/PlanViewController.storyboard; sourceTree = "<group>"; };
+		32CA8D8B1ABB483B00849818 /* PlanViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlanViewController.h; sourceTree = "<group>"; };
+		32CA8D8C1ABB483B00849818 /* PlanViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlanViewController.m; sourceTree = "<group>"; };
 		32CF71941A8913AC004B8E6A /* librecurly.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = librecurly.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		32D0CEAB1A37D196000B30FD /* RECoupon-tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RECoupon-tests.m"; sourceTree = "<group>"; };
 		32D0CEAC1A37D196000B30FD /* RECouponRequest-tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RECouponRequest-tests.m"; sourceTree = "<group>"; };
@@ -359,12 +364,14 @@
 				3268AB401A814B6F00C48A08 /* FormFieldViewCell.m */,
 				3268AB421A814B6F00C48A08 /* MainViewController.h */,
 				3268AB431A814B6F00C48A08 /* MainViewController.m */,
+				32CA8D8B1ABB483B00849818 /* PlanViewController.h */,
+				32CA8D8C1ABB483B00849818 /* PlanViewController.m */,
 				3268AB441A814B6F00C48A08 /* PricingViewController.h */,
 				3268AB451A814B6F00C48A08 /* PricingViewController.m */,
-				3268AB601A814B6F00C48A08 /* TaxRequestViewController.h */,
-				3268AB611A814B6F00C48A08 /* TaxRequestViewController.m */,
 				3268AB411A814B6F00C48A08 /* main.m */,
 				3268AB861A814C8500C48A08 /* Resources */,
+				3268AB601A814B6F00C48A08 /* TaxRequestViewController.h */,
+				3268AB611A814B6F00C48A08 /* TaxRequestViewController.m */,
 			);
 			path = Sample;
 			sourceTree = "<group>";
@@ -384,6 +391,7 @@
 		3268AB861A814C8500C48A08 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				32CA8D891ABB483000849818 /* PlanViewController.storyboard */,
 				3268AB8A1A814C8500C48A08 /* CardPaymentViewController.storyboard */,
 				3268AB8C1A814C8500C48A08 /* CouponViewController.storyboard */,
 				3268AB8E1A814C8500C48A08 /* LaunchScreen.xib */,
@@ -614,6 +622,7 @@
 				TargetAttributes = {
 					32CA8D411ABB3E1300849818 = {
 						CreatedOnToolsVersion = 6.1.1;
+						DevelopmentTeam = 44PABWK8UL;
 					};
 					32CF71931A8913AC004B8E6A = {
 						CreatedOnToolsVersion = 6.1.1;
@@ -654,6 +663,7 @@
 			files = (
 				32CA8D771ABB3E8B00849818 /* CardPaymentViewController.storyboard in Resources */,
 				32CA8D781ABB3E8B00849818 /* CouponViewController.storyboard in Resources */,
+				32CA8D8E1ABB484B00849818 /* PlanViewController.storyboard in Resources */,
 				32CA8D791ABB3E8B00849818 /* LaunchScreen.xib in Resources */,
 				32CA8D7A1ABB3E8B00849818 /* Main.storyboard in Resources */,
 				32CA8D7B1ABB3E8B00849818 /* PricingViewController.storyboard in Resources */,
@@ -703,6 +713,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				32CA8D691ABB3E7D00849818 /* AppDelegate.m in Sources */,
+				32CA8D8D1ABB483B00849818 /* PlanViewController.m in Sources */,
 				32CA8D6B1ABB3E7D00849818 /* CardPaymentViewController.m in Sources */,
 				32CA8D6D1ABB3E7D00849818 /* CouponViewController.m in Sources */,
 				32CA8D6F1ABB3E7D00849818 /* FormFieldViewCell.m in Sources */,
@@ -808,6 +819,14 @@
 				3268AB971A814C8500C48A08 /* Base */,
 			);
 			name = TaxRequestViewController.storyboard;
+			sourceTree = "<group>";
+		};
+		32CA8D891ABB483000849818 /* PlanViewController.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				32CA8D8A1ABB483000849818 /* Base */,
+			);
+			name = PlanViewController.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -987,6 +1006,7 @@
 				INFOPLIST_FILE = Sample/Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -1007,6 +1027,7 @@
 				INFOPLIST_FILE = Sample/Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -1069,6 +1090,7 @@
 				32CA8D641ABB3E1400849818 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		32CF71A91A8913AC004B8E6A /* Build configuration list for PBXNativeTarget "RecurlyLib" */ = {
 			isa = XCConfigurationList;

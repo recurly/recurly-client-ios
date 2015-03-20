@@ -26,6 +26,7 @@
 #import "TaxRequestViewController.h"
 #import "CouponViewController.h"
 #import "PricingViewController.h"
+#import "PlanViewController.h"
 
 
 @implementation MainViewController
@@ -48,6 +49,12 @@
     [[self navigationController] pushViewController:controller animated:YES];
 }
 
+- (void)showPlanRequest
+{
+    UIViewController *controller = [PlanViewController createFromNib];
+    [[self navigationController] pushViewController:controller animated:YES];
+}
+
 - (void)showPricingRequest
 {
     UIViewController *controller = [PricingViewController createFromNib];
@@ -66,9 +73,12 @@
             [self showTaxRequest];
             break;
         case 3:
-            [self showCouponRequest];
+            [self showPlanRequest];
             break;
         case 4:
+            [self showCouponRequest];
+            break;
+        case 5:
             [self showPricingRequest];
             break;
         default:
