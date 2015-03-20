@@ -241,7 +241,6 @@
 		329775511A13DE1400CDA64D /* REProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REProtocols.h; sourceTree = "<group>"; };
 		329960CF1A3512F600157BCD /* REPlan.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REPlan.h; sourceTree = "<group>"; };
 		329960D01A3512F600157BCD /* REPlan.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REPlan.m; sourceTree = "<group>"; };
-		32A1FD4D19FEBE4E009C07FC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		32A1FD4E19FEBE4E009C07FC /* RecurlySDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RecurlySDK.h; sourceTree = "<group>"; };
 		32A1FD5A19FEBE4E009C07FC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		32A1FD5B19FEBE4E009C07FC /* RecurlySDKTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RecurlySDKTests.m; sourceTree = "<group>"; };
@@ -475,17 +474,8 @@
 				32EFED6A1A06A264006A1CE8 /* REMacros.h */,
 				32D4D80D1A0A2EAE00A9F6D3 /* REPrivate.h */,
 				329775511A13DE1400CDA64D /* REProtocols.h */,
-				32A1FD4C19FEBE4E009C07FC /* Supporting Files */,
 			);
 			path = RecurlySDK;
-			sourceTree = "<group>";
-		};
-		32A1FD4C19FEBE4E009C07FC /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				32A1FD4D19FEBE4E009C07FC /* Info.plist */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		32A1FD5819FEBE4E009C07FC /* RecurlySDKTests */ = {
