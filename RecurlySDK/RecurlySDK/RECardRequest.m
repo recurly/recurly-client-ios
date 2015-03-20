@@ -66,6 +66,13 @@
 }
 
 
+- (REAddress *)shippingAddress
+{
+    [NSException raise:@"Not implemented" format:nil];
+    return nil;
+}
+
+
 - (REAPIRequest *)request
 {
     return  [REAPIRequest requestWithEndpoint:@"/token"
@@ -113,7 +120,7 @@
 
 #pragma mark - Validation methods
 
-static BOOL shouldSeparateAtIndex(NSUInteger index) {
+static inline BOOL shouldSeparateAtIndex(NSUInteger index) {
     return (index > 3 && (index%4) == 0);
 }
 

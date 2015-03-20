@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-// EXTERNAL FRAMEWORKS
+// FRAMEWORKS
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import <PassKit/PassKit.h>

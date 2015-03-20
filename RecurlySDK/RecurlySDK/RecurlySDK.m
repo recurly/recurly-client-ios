@@ -70,7 +70,6 @@
     [REAPIHandler handleTaxRequest:taxRequest completion:handler];
 }
 
-
 + (void)planForCode:(NSString *)code
          completion:(void(^)(REPlan *plan, NSError *error))handler
 {
