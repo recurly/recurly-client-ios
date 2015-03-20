@@ -83,7 +83,7 @@
 }
 
 
-- (void)sendTokenToOurBackend:(NSString *)token
+- (void)sendTokenToMyBackend:(NSString *)token
 {
 #define MY_BACKEND @"https://api.example.com"
     NSString *urlString = [NSString stringWithFormat:MY_BACKEND@"/subscribe?token=%@", token];
