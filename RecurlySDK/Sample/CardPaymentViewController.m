@@ -78,7 +78,7 @@
     [self hideLoadingView];
     [self showAlertViewWithToken:token];
 #else
-    [self sendTokenToOurBackend:token];
+    [self sendTokenToMyBackend:token];
 #endif
 }
 
