@@ -25,6 +25,12 @@
 #import "CardPaymentViewController.h"
 
 
+@interface CardPaymentViewController ()
+{
+    UIView *_loadingView;
+}
+@end
+
 @implementation CardPaymentViewController
 
 + (instancetype)createFromNib
@@ -32,6 +38,7 @@
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"CardPaymentViewController" bundle:nil];
     return [storyboard instantiateInitialViewController];
 }
+
 
 - (RECardRequest *)cardRequestFromUI
 {
@@ -48,31 +55,72 @@
     return card;
 }
 
+
 - (IBAction)subscribePressed:(id)sender
 {
-    UIView *loadingView = [self loadingView];
-    [self.view addSubview:loadingView];
+    [self showLoadingView];
 
     RECardRequest *req = [self cardRequestFromUI];
     [Recurly tokenWithRequest:req completion:^(NSString *token, NSError *error) {
-        [loadingView removeFromSuperview];
         if(!error) {
-            [[[UIAlertView alloc] initWithTitle:@"Payment Done"
-                                        message:[NSString stringWithFormat:@"Token: %@", token]
-                                       delegate:nil
-                              cancelButtonTitle:@"Ok"
-                              otherButtonTitles:nil] show];
+            [self handleToken:token];
         }else{
+            [self hideLoadingView];
             [[Recurly alertViewWithError:error] show];
         }
     }];
 }
 
 
+- (void)handleToken:(NSString *)token
+{
+#if 1
+    [self hideLoadingView];
+    [self showAlertViewWithToken:token];
+#else
+    [self sendTokenToOurBackend:token];
+#endif
+}
+
+
+- (void)sendTokenToOurBackend:(NSString *)token
+{
+#define MY_BACKEND @"https://api.example.com"
+    NSString *urlString = [NSString stringWithFormat:MY_BACKEND@"/subscribe?token=%@", token];
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString]
+                                             cachePolicy:NSURLRequestReloadIgnoringCacheData
+                                         timeoutInterval:20];
+
+    [NSURLConnection sendAsynchronousRequest:request
+                                       queue:[NSOperationQueue mainQueue]
+                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+     {
+         [self hideLoadingView];
+         if(error) {
+             [[Recurly alertViewWithError:error] show];
+         }else{
+             [self showAlertViewWithToken:token];
+         }
+     }];
+#undef MY_BACKEND
+}
+
+
 #pragma mark - UI stuff
 
-- (UIView *)loadingView
+- (void)showAlertViewWithToken:(NSString *)token
 {
+    [[[UIAlertView alloc] initWithTitle:@"Payment Done"
+                                message:[NSString stringWithFormat:@"Token: %@", token]
+                               delegate:nil
+                      cancelButtonTitle:@"Ok"
+                      otherButtonTitles:nil] show];
+}
+
+- (void)showLoadingView
+{
+    [self hideLoadingView];
+
     CGRect frame = self.view.bounds;
     UIVisualEffectView *view = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight]];
     [view setFrame:frame];
@@ -85,7 +133,14 @@
     [label setTextAlignment:NSTextAlignmentCenter];
     [view addSubview:label];
 
-    return view;
+    _loadingView = view;
+    [self.view addSubview:_loadingView];
+}
+
+- (void)hideLoadingView
+{
+    [_loadingView removeFromSuperview];
+    _loadingView = nil;
 }
 
 - (IBAction)editingEnded:(id)sender
