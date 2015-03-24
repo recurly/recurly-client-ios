@@ -368,9 +368,9 @@
 				3268AB441A814B6F00C48A08 /* PricingViewController.h */,
 				3268AB451A814B6F00C48A08 /* PricingViewController.m */,
 				3268AB411A814B6F00C48A08 /* main.m */,
-				3268AB861A814C8500C48A08 /* Resources */,
 				3268AB601A814B6F00C48A08 /* TaxRequestViewController.h */,
 				3268AB611A814B6F00C48A08 /* TaxRequestViewController.m */,
+				3268AB861A814C8500C48A08 /* Resources */,
 			);
 			path = Sample;
 			sourceTree = "<group>";
