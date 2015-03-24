@@ -73,7 +73,6 @@
     XCTAssertNil(taxes);
 }
 
-
 - (void)testMissingRate
 {
     NSArray *array = @[@{@"type": @"us"},

@@ -45,15 +45,15 @@
     return self;
 }
 
+
 - (REAPIRequest *)request
 {
     NSString *escapedPlan = [REAPIUtils escape:_planCode];
     NSString *escapedCoupon = [REAPIUtils escape:_couponCode];
-    NSString *query = [NSString stringWithFormat:@"/plans/%@/coupons/%@", escapedPlan, escapedCoupon];
-    return [REAPIRequest requestWithEndpoint:query
-                                      method:@"GET"
-                                    URLquery:nil];
+    NSString *url = [NSString stringWithFormat:@"/plans/%@/coupons/%@", escapedPlan, escapedCoupon];
+    return [REAPIRequest GET:url withQuery:nil];
 }
+
 
 - (NSError *)validate
 {

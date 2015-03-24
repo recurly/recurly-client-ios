@@ -75,9 +75,7 @@
 
 - (REAPIRequest *)request
 {
-    return  [REAPIRequest requestWithEndpoint:@"/token"
-                                       method:@"GET"
-                                     URLquery:[self JSONDictionary]];
+    return [REAPIRequest GET:@"/token" withQuery:[self JSONDictionary]];
 }
 
 

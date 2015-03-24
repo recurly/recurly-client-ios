@@ -29,17 +29,20 @@
 
 @property (nonatomic, readonly) NSTimeInterval timestamp;
 
-+ (instancetype)requestWithEndpoint:(NSString *)endpoint
-                             method:(NSString *)method
-                            payload:(NSDictionary *)params;
+/** Creates a GET HTTP request with the specified URL params.
+ @return nil if the query can not be converted to a URL encoded query.
+ */
++ (instancetype)GET:(NSString *)endpoint withQuery:(NSDictionary *)params;
 
-+ (instancetype)requestWithEndpoint:(NSString *)endpoint
-                             method:(NSString *)method
-                           URLquery:(NSDictionary *)params;
+/** Creates a POST HTTP request and the query is serialized as a JSON in the HTTP's body.
+ @return nil if the query can not be serialized to JSON.
+ */
++ (instancetype)POST:(NSString *)endpoint withJSON:(NSDictionary *)params;
 
-+ (instancetype)requestWithEndpoint:(NSString *)endpoint
-                             method:(NSString *)method
-                               data:(NSData *)data;
+/** Creates a POST HTTP request with the specified body.
+ */
++ (instancetype)POST:(NSString *)endpoint withBody:(NSData *)data;
+
 
 - (instancetype)initWithURL:(NSURL *)endpoint
                      method:(NSString *)method

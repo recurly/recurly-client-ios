@@ -48,9 +48,7 @@
 {
     NSString *escapedPlan = [REAPIUtils escape:_planCode];
     NSString *endpoint = [NSString stringWithFormat:@"/plans/%@", escapedPlan];
-    return [REAPIRequest requestWithEndpoint:endpoint
-                                      method:@"GET"
-                                    URLquery:nil];
+    return [REAPIRequest GET:endpoint withQuery:nil];
 }
 
 

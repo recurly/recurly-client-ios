@@ -25,6 +25,7 @@
 #import <XCTest/XCTest.h>
 #import "RecurlySDK.h"
 #import "REAPIUtils.h"
+#import "RecurlyState.h"
 
 
 @interface REAPIRequestTests : XCTestCase
@@ -62,14 +63,12 @@
     NSDictionary *dict = @{@"foo": @"bar",
                            @"nu": @"123" };
 
-    REAPIRequest *request = [REAPIRequest requestWithEndpoint:@"/payment"
-                                                       method:@"POST"
-                                                      payload:dict];
+    REAPIRequest *request = [REAPIRequest POST:@"/payment" withJSON:dict];
 
     NSDictionary *expectedDict = @{@"foo": @"bar",
                            @"nu": @"123",
                            @"key": @"aaa",
-                           @"version": @"3.0.9"};
+                           @"version": [RecurlyState version]};
 
 
     XCTAssertEqualObjects([[request URL] absoluteString], @"http://api.recurly.com/dev/v2/payment");
@@ -83,12 +82,13 @@
 {
     [self configRecurly];
 
-    REAPIRequest *request = [REAPIRequest requestWithEndpoint:@"tax"
-                                                       method:@"GET"
-                                                     URLquery:@{@"foo": @"bar",
-                                                                @"nu": @"123" }];
+    REAPIRequest *request = [REAPIRequest GET:@"tax" withQuery:@{@"foo": @"bar",
+                                                                 @"nu": @"123" }];
 
-    XCTAssertEqualObjects([[request URL] absoluteString], @"http://api.recurly.com/dev/v2/tax?foo=bar&key=aaa&nu=123&version=3.0.9");
+    NSString *expectedPath = [NSString stringWithFormat:@"http://api.recurly.com/dev/v2/tax?foo=bar&key=aaa&nu=123&version=%@",
+                              [RecurlyState version]];
+
+    XCTAssertEqualObjects([[request URL] absoluteString], expectedPath);
     XCTAssertEqualObjects([request HTTPMethod], @"GET");
     XCTAssertNil([request HTTPBody]);
     XCTAssertEqual([request timeoutInterval], 1000);
@@ -99,10 +99,10 @@
     [self configRecurly];
 
     NSData *body = [NSData dataWithBytes:"1234" length:4];
-    REAPIRequest *request = [REAPIRequest requestWithEndpoint:@"/tax" method:@"GET" data:body];
+    REAPIRequest *request = [REAPIRequest POST:@"/tax" withBody:body];
 
     XCTAssertEqualObjects([[request URL] absoluteString], @"http://api.recurly.com/dev/v2/tax");
-    XCTAssertEqualObjects([request HTTPMethod], @"GET");
+    XCTAssertEqualObjects([request HTTPMethod], @"POST");
     XCTAssertEqualObjects([request HTTPBody], body);
     XCTAssertEqual([request timeoutInterval], 1000);
 }
@@ -112,8 +112,10 @@
 {
     [self configRecurly];
 
-    NSData *body = [@"{\"key\":\"aaa\",\"version\":\"3.0.9\"}" dataUsingEncoding:NSUTF8StringEncoding];
-    REAPIRequest *request = [REAPIRequest requestWithEndpoint:@"payment" method:@"POST" payload:nil];
+    NSString *expectedJSONString = [NSString stringWithFormat:@"{\"key\":\"aaa\",\"version\":\"%@\"}",
+                                    [RecurlyState version]];
+    NSData *body = [expectedJSONString dataUsingEncoding:NSUTF8StringEncoding];
+    REAPIRequest *request = [REAPIRequest POST:@"payment" withJSON:nil];
 
     XCTAssertEqualObjects([[request URL] absoluteString], @"http://api.recurly.com/dev/v2/payment");
     XCTAssertEqualObjects([request HTTPBody], body);
@@ -124,8 +126,11 @@
 {
     [self configRecurly];
 
-    REAPIRequest *request = [REAPIRequest requestWithEndpoint:@"/tax" method:@"GET" URLquery:nil];
-    XCTAssertEqualObjects([[request URL] absoluteString], @"http://api.recurly.com/dev/v2/tax?key=aaa&version=3.0.9");
+    NSString *expectedPath = [NSString stringWithFormat:@"http://api.recurly.com/dev/v2/tax?key=aaa&version=%@",
+                              [RecurlyState version]];
+
+    REAPIRequest *request = [REAPIRequest GET:@"/tax" withQuery:nil];
+    XCTAssertEqualObjects([[request URL] absoluteString], expectedPath);
     XCTAssertNil([request HTTPBody]);
 }
 

@@ -65,9 +65,7 @@
 
 - (REAPIRequest *)request
 {
-    return [REAPIRequest requestWithEndpoint:@"/tax"
-                                      method:@"GET"
-                                    URLquery:[self JSONDictionary]];
+    return [REAPIRequest GET:@"/tax" withQuery:[self JSONDictionary]];
 }
 
 

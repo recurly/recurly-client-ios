@@ -44,39 +44,43 @@
 
 @implementation REAPIRequest
 
-+ (instancetype)requestWithEndpoint:(NSString *)endpoint
-                             method:(NSString *)method
-                            payload:(NSDictionary *)params
-{
-    NSData *data = nil;
-    params = [self appendPublicKey:params];
-    // TODO
-    // handle error
-    data = [NSJSONSerialization dataWithJSONObject:params options:0 error:nil];
-    return [self requestWithEndpoint:endpoint method:method data:data];
-}
-
-
-+ (instancetype)requestWithEndpoint:(NSString *)endpoint
-                             method:(NSString *)method
-                           URLquery:(NSDictionary *)params
++ (instancetype)GET:(NSString *)endpoint withQuery:(NSDictionary *)params
 {
     params = [self appendPublicKey:params];
     NSString *finalURL = [REAPIUtils buildURLQuery:endpoint parameters:params];
+    return [self requestWithEndpoint:finalURL method:@"GET" body:nil];
+}
 
-    if(finalURL == nil) {
-        // TODO
-        // handle error
-        return nil;
+
++ (instancetype)POST:(NSString *)endpoint withJSON:(NSDictionary *)params
+{
+    params = [self appendPublicKey:params];
+    NSData *data = nil;
+    if(params) {
+        NSError *err;
+        data = [NSJSONSerialization dataWithJSONObject:params options:0 error:&err];
+        if(data == nil) {
+            RELOGERROR(@"REAPIRequest: JSON can't be serialized: %@", err);
+            return nil;
+        }
     }
-    return [self requestWithEndpoint:finalURL method:method data:nil];
+    return [self requestWithEndpoint:endpoint method:@"POST" body:data];
+}
+
+
++ (instancetype)POST:(NSString *)endpoint withBody:(NSData *)data
+{
+    return [self requestWithEndpoint:endpoint method:@"POST" body:data];
 }
 
 
 + (instancetype)requestWithEndpoint:(NSString *)endpoint
                              method:(NSString *)method
-                               data:(NSData *)data
+                               body:(NSData *)data
 {
+    if(endpoint == nil) {
+        return nil;
+    }
     REConfiguration *config = [[RecurlyState sharedInstance] configuration];
     NSUInteger timeout = [config timeout];
     NSString *urlString = [REAPIUtils joinPath:[config apiEndpoint] secondPart:endpoint];
