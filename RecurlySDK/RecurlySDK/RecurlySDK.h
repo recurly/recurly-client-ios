@@ -55,10 +55,10 @@
 
 
 //! Project version number for RecurlySDK.
-FOUNDATION_EXPORT double RecurlySDKVersionNumber;
+FOUNDATION_EXPORT const double RecurlySDKVersionNumber;
 
 //! Project version string for RecurlySDK.
-FOUNDATION_EXPORT const unsigned char RecurlySDKVersionString[];
+FOUNDATION_EXPORT const char RecurlySDKVersionString[];
 
 
 @interface Recurly : NSObject

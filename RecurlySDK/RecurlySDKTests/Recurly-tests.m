@@ -21,9 +21,11 @@
  * THE SOFTWARE.
  */
 
+#include <math.h>
 #import <Foundation/Foundation.h>
 #import <XCTest/XCTest.h>
 #import "RecurlySDK.h"
+#import "RecurlyState.h"
 
 
 @interface RecurlyTests : XCTestCase
@@ -51,6 +53,25 @@
     XCTAssertEqualObjects(loadedConfig.currency, @"EUR");
     XCTAssertEqualObjects(loadedConfig.apiEndpoint, @"http://basic.recurly.com/v2");
     XCTAssertEqual(loadedConfig.timeout, 100UL);
+}
+
+- (void)testRecurlyVersion
+{
+    NSString *expected = [NSString stringWithUTF8String:RecurlySDKVersionString];
+    XCTAssertTrue([expected length] >= 5 );
+    XCTAssertEqualObjects([RecurlyState version], expected);
+}
+
+- (void)testRecurlyNumberVersion
+{
+    double expected = 0;
+    NSArray *parts = [[RecurlyState version] componentsSeparatedByString:@"."];
+    int level = 0;
+    for(NSString *part in parts) {
+        expected += [part doubleValue] * pow(100, -level);
+        level++;
+    }
+    XCTAssertEqual(RecurlySDKVersionNumber, expected);
 }
 
 @end
