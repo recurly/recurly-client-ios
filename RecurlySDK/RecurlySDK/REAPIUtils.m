@@ -74,7 +74,7 @@
 {
     size_t size;
     sysctlbyname("hw.machine", NULL, &size, NULL, 0);
-    char *model = malloc(size);
+    char *model = (char*)malloc(size);
     sysctlbyname("hw.machine", model, &size, NULL, 0);
     NSString *deviceModel = @(model);
     free(model);

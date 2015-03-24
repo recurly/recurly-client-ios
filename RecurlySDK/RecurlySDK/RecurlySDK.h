@@ -54,13 +54,6 @@
 #import "RETaxRequest.h"
 
 
-//! Project version number for RecurlySDK.
-FOUNDATION_EXPORT const double RecurlySDKVersionNumber;
-
-//! Project version string for RecurlySDK.
-FOUNDATION_EXPORT const char RecurlySDKVersionString[];
-
-
 @interface Recurly : NSObject
 
 #pragma mark - Configuration

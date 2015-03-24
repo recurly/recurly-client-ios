@@ -31,10 +31,17 @@
 
 @implementation REErrorTests
 
+- (void)testErrorDomain
+{
+    XCTAssertTrue([RecurlyErrorDomain length] > 5);
+
+}
+
 - (void)testInvalidFieldErrorWithoutMessage
 {
     NSError *error = [REError invalidFieldError:@"country code" message:nil];
     XCTAssertEqual(error.code, kREErrorInvalidField);
+    XCTAssertEqualObjects(error.domain, RecurlyErrorDomain);
     XCTAssertEqualObjects(error.localizedDescription, @"Invalid country code");
     XCTAssertEqualObjects(error.localizedFailureReason, @"Invalid country code");
 }
@@ -42,6 +49,7 @@
 - (void)testInvalidFieldErrorWithMessage
 {
     NSError *error = [REError invalidFieldError:@"country code" message:@"hey! it is wrong"];
+    XCTAssertEqualObjects(error.domain, RecurlyErrorDomain);
     XCTAssertEqualObjects(error.localizedDescription, @"hey! it is wrong");
     XCTAssertEqualObjects(error.localizedFailureReason, @"Invalid country code");
 }
@@ -58,6 +66,7 @@
                            @"code": @"This is a code"};
 
     NSError *error = [REError backendErrorWithDictionary:dict statusCode:200];
+    XCTAssertEqualObjects(error.domain, RecurlyErrorDomain);
     XCTAssertEqual(error.code, kREErrorBackend);
     XCTAssertEqualObjects(error.localizedDescription, @"This is an error message");
     XCTAssertEqualObjects(error.localizedFailureReason, @"This is a code");
@@ -69,6 +78,7 @@
                            @"code": @"This is a code"};
 
     NSError *error = [REError backendErrorWithDictionary:dict statusCode:400];
+    XCTAssertEqualObjects(error.domain, RecurlyErrorDomain);
     XCTAssertEqual(error.code, kREErrorBackend);
     XCTAssertEqualObjects(error.localizedDescription, @"This is an error message");
     XCTAssertEqualObjects(error.localizedFailureReason, @"This is a code");

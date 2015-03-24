@@ -57,9 +57,7 @@
 
 - (void)testRecurlyVersion
 {
-    NSString *expected = [NSString stringWithUTF8String:RecurlySDKVersionString];
-    XCTAssertTrue([expected length] >= 5 );
-    XCTAssertEqualObjects([RecurlyState version], expected);
+    XCTAssertTrue([[RecurlyState version] length] >= 5 );
 }
 
 - (void)testRecurlyNumberVersion
@@ -71,7 +69,7 @@
         expected += [part doubleValue] * pow(100, -level);
         level++;
     }
-    XCTAssertEqual(RecurlySDKVersionNumber, expected);
+    XCTAssertEqual([RecurlyState versionNumber], expected);
 }
 
 @end

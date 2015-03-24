@@ -25,8 +25,8 @@
 #import "REProtocols.h"
 
 
-extern NSString *const RecurlyCouponTypeFixed;
-extern NSString *const RecurlyCouponTypePercent;
+FOUNDATION_EXTERN NSString *const RecurlyCouponTypeFixed;
+FOUNDATION_EXTERN NSString *const RecurlyCouponTypePercent;
 
 @interface RECoupon : NSObject
 

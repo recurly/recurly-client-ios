@@ -36,5 +36,6 @@
 
 + (instancetype)sharedInstance;
 + (NSString *)version;
++ (double)versionNumber;
 
 @end

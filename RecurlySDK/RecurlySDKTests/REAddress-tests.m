@@ -67,7 +67,7 @@ ABRecordRef validABRecordWithAddress() {
         kABPersonAddressZIPKey,
         kABPersonAddressCountryCodeKey
     };
-    CFDictionaryRef dicref = CFDictionaryCreate(kCFAllocatorDefault, (void *)keys, (void *)values, 5, &kCFCopyStringDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
+    CFDictionaryRef dicref = CFDictionaryCreate(kCFAllocatorDefault, (const void **)keys, (const void **)values, 5, &kCFCopyStringDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
 
     ABMutableMultiValueRef address = ABMultiValueCreateMutable(kABDictionaryPropertyType);
     ABMultiValueIdentifier identifier;

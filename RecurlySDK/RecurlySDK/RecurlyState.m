@@ -31,9 +31,6 @@
 #import "RENetworker.h"
 
 
-const double RecurlySDKVersionNumber = 3.0009;
-const char RecurlySDKVersionString[] = "3.0.9";
-
 static RecurlyState *__sharedInstance = nil;
 
 @implementation RecurlyState
@@ -58,7 +55,12 @@ static RecurlyState *__sharedInstance = nil;
 
 + (NSString *)version
 {
-    return [NSString stringWithUTF8String:RecurlySDKVersionString];
+    return @"3.0.9";
+}
+
++ (double)versionNumber
+{
+    return 3.0009;
 }
 
 @end
