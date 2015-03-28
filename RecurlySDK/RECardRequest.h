@@ -37,27 +37,48 @@ typedef NS_ENUM(NSInteger, RECardType) {
 @interface RECardRequest : REPayment
 
 /**  Parses the card number and returns the card type.
+ @param cardNumber Card number
  @see RECardType
  */
 + (RECardType)cardTypeForNumber:(NSString *)cardNumber;
 
 /**  Parses the card number removing whitespaces and dashes.
+ @param cardNumber Card number
  @discussion Parsing "34  234-34 " returns "3423434"
  */
-+ (NSString *)parseCardNumber:(NSString *)card;
++ (NSString *)parseCardNumber:(NSString *)cardNumber;
 
 /**  Formattes a card number by adding a separator each 4 numbers.
+ @param cardNumber Card number
  @discussion Formatting "4111111111111111" returns "4111 1111 1111 1111"
  */
 + (NSString *)formatCardNumber:(NSString *)cardNumber;
 
 
+/** Card's number */
 @property (nonatomic, strong) NSString *number;
+
+/** Name on card */
 @property (nonatomic, strong) NSString *nameOnCard;
+
+/** CVV, card verification value */
 @property (nonatomic, strong) NSString *cvv;
+
+/** Month of the year. [1-12] */
 @property (nonatomic, assign) NSInteger expirationMonth;
+
+/** Year, full year number (2020) and short one (20) work. */
 @property (nonatomic, assign) NSInteger expirationYear;
 
+/** Initializes a CardRequest with the most common paramaters needed
+ @param cardNumber Card number
+ @param cvv Card verification value
+ @param month Month of the year
+ @param year Year
+ @param firstName End use's first name
+ @param lastName End use's lirst name
+ @param countryCode Country code. 
+ */
 + (instancetype)requestWithCardNumber:(NSString *)cardNumber
                                   CVV:(NSString *)cvv
                                 month:(NSInteger)month

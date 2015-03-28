@@ -30,14 +30,29 @@ FOUNDATION_EXTERN NSString *const RecurlyCouponTypePercent;
 
 @interface RECoupon : NSObject
 
+/** Coupon code */
 @property (nonatomic, readonly) NSString *code;
+
+/** Coupon name */
 @property (nonatomic, readonly) NSString *name;
+
+/** Coupon type */
 @property (nonatomic, readonly) NSString *type; // enum: RecurlyCouponType
+
+/** Discount rate
+ @discussion this value may be nil, if the discount is a fixed amount
+ */
 @property (nonatomic, readonly) NSDecimalNumber *discountRate;
+
+/** Fixed discount amount, but the fixed amount is not unique, it may be different for each supported currency.
+ @discussion this value may be nil, if the discount is a fixed amount
+ */
 @property (nonatomic, readonly) NSDictionary *discountAmount; // currency, amount
 
 
 /** Calculates the discount amount (absolute value) for a given subtotal and currency.
+ @param subtotal Subtotal
+ @param currency Currency
  @discussion The amount can be fixed or a rate of the subtotal, use this method to calculate it properly.
  Do not implement it by yourself.
  */

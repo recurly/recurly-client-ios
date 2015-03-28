@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		322916CF1A9245C200339A3D /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3268AB821A814BF100C48A08 /* AddressBook.framework */; };
-		322916D01A9245C200339A3D /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3268AB801A814BD300C48A08 /* Accounts.framework */; };
 		322916D11A9245C200339A3D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3268AB7E1A814BB900C48A08 /* UIKit.framework */; };
 		322916D21A9245C200339A3D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32AA578D1A2544A50094FB52 /* Foundation.framework */; };
 		322916D71A92462A00339A3D /* REAPIOperation-tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EFED781A07016B006A1CE8 /* REAPIOperation-tests.m */; };
@@ -35,11 +34,13 @@
 		323CAEC51A96685C003347B3 /* REPricingHandler-tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 323CAEC31A96685C003347B3 /* REPricingHandler-tests.m */; };
 		323CAEC91A967C9B003347B3 /* RECartSummary-tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 323CAEC61A967C9B003347B3 /* RECartSummary-tests.m */; };
 		323CAECB1A967C9B003347B3 /* REPriceSummary-tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 323CAEC71A967C9B003347B3 /* REPriceSummary-tests.m */; };
+		3241AB1C1AC7086300E6B527 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3241AB1B1AC7086300E6B527 /* Security.framework */; };
+		3241AB1D1AC7086C00E6B527 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3241AB1B1AC7086300E6B527 /* Security.framework */; };
+		3241AB1E1AC7087200E6B527 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3241AB1B1AC7086300E6B527 /* Security.framework */; };
 		32CA8D2A1ABB3A2C00849818 /* librecurly.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 32CF71941A8913AC004B8E6A /* librecurly.a */; };
 		32CA8D311ABB3AC100849818 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32CA8D301ABB3AC100849818 /* CoreTelephony.framework */; };
 		32CA8D381ABB3AD300849818 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32CA8D301ABB3AC100849818 /* CoreTelephony.framework */; };
 		32CA8D3A1ABB3AD800849818 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3268AB821A814BF100C48A08 /* AddressBook.framework */; };
-		32CA8D3B1ABB3ADA00849818 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3268AB801A814BD300C48A08 /* Accounts.framework */; };
 		32CA8D3C1ABB3ADD00849818 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3268AB7E1A814BB900C48A08 /* UIKit.framework */; };
 		32CA8D3D1ABB3ADF00849818 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32AA578D1A2544A50094FB52 /* Foundation.framework */; };
 		32CA8D691ABB3E7D00849818 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3268AB381A814B6F00C48A08 /* AppDelegate.m */; };
@@ -62,7 +63,6 @@
 		32CA8D811ABB3E8E00849818 /* librecurly.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 32CF71941A8913AC004B8E6A /* librecurly.a */; };
 		32CA8D841ABB3EBC00849818 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32CA8D301ABB3AC100849818 /* CoreTelephony.framework */; };
 		32CA8D851ABB3EBC00849818 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3268AB821A814BF100C48A08 /* AddressBook.framework */; };
-		32CA8D861ABB3EBC00849818 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3268AB801A814BD300C48A08 /* Accounts.framework */; };
 		32CA8D871ABB3EBC00849818 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3268AB7E1A814BB900C48A08 /* UIKit.framework */; };
 		32CA8D881ABB3EBC00849818 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32AA578D1A2544A50094FB52 /* Foundation.framework */; };
 		32CA8D8D1ABB483B00849818 /* PlanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CA8D8C1ABB483B00849818 /* PlanViewController.m */; };
@@ -184,6 +184,7 @@
 		323CAEC31A96685C003347B3 /* REPricingHandler-tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "REPricingHandler-tests.m"; sourceTree = "<group>"; };
 		323CAEC61A967C9B003347B3 /* RECartSummary-tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RECartSummary-tests.m"; sourceTree = "<group>"; };
 		323CAEC71A967C9B003347B3 /* REPriceSummary-tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "REPriceSummary-tests.m"; sourceTree = "<group>"; };
+		3241AB1B1AC7086300E6B527 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		3241EBF61A00263A002DBD56 /* REConfiguration-tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "REConfiguration-tests.m"; sourceTree = "<group>"; };
 		3256409E1A10D3B5007A06EA /* RecurlyState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecurlyState.h; sourceTree = "<group>"; };
 		3256409F1A10D3B5007A06EA /* RecurlyState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecurlyState.m; sourceTree = "<group>"; };
@@ -206,7 +207,6 @@
 		3268AB601A814B6F00C48A08 /* TaxRequestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaxRequestViewController.h; sourceTree = "<group>"; };
 		3268AB611A814B6F00C48A08 /* TaxRequestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TaxRequestViewController.m; sourceTree = "<group>"; };
 		3268AB7E1A814BB900C48A08 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		3268AB801A814BD300C48A08 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		3268AB821A814BF100C48A08 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		3268AB8B1A814C8500C48A08 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/CardPaymentViewController.storyboard; sourceTree = "<group>"; };
 		3268AB8D1A814C8500C48A08 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/CouponViewController.storyboard; sourceTree = "<group>"; };
@@ -296,12 +296,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3241AB1E1AC7087200E6B527 /* Security.framework in Frameworks */,
 				32CA8D3C1ABB3ADD00849818 /* UIKit.framework in Frameworks */,
 				32CA8D381ABB3AD300849818 /* CoreTelephony.framework in Frameworks */,
 				32CA8D3A1ABB3AD800849818 /* AddressBook.framework in Frameworks */,
 				32CA8D2A1ABB3A2C00849818 /* librecurly.a in Frameworks */,
 				32CA8D3D1ABB3ADF00849818 /* Foundation.framework in Frameworks */,
-				32CA8D3B1ABB3ADA00849818 /* Accounts.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -309,10 +309,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3241AB1D1AC7086C00E6B527 /* Security.framework in Frameworks */,
 				32CA8D811ABB3E8E00849818 /* librecurly.a in Frameworks */,
 				32CA8D841ABB3EBC00849818 /* CoreTelephony.framework in Frameworks */,
 				32CA8D851ABB3EBC00849818 /* AddressBook.framework in Frameworks */,
-				32CA8D861ABB3EBC00849818 /* Accounts.framework in Frameworks */,
 				32CA8D871ABB3EBC00849818 /* UIKit.framework in Frameworks */,
 				32CA8D881ABB3EBC00849818 /* Foundation.framework in Frameworks */,
 			);
@@ -322,9 +322,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3241AB1C1AC7086300E6B527 /* Security.framework in Frameworks */,
 				32CA8D311ABB3AC100849818 /* CoreTelephony.framework in Frameworks */,
 				322916CF1A9245C200339A3D /* AddressBook.framework in Frameworks */,
-				322916D01A9245C200339A3D /* Accounts.framework in Frameworks */,
 				322916D11A9245C200339A3D /* UIKit.framework in Frameworks */,
 				322916D21A9245C200339A3D /* Foundation.framework in Frameworks */,
 			);
@@ -378,9 +378,9 @@
 		3268AB7C1A814B8100C48A08 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3241AB1B1AC7086300E6B527 /* Security.framework */,
 				32CA8D301ABB3AC100849818 /* CoreTelephony.framework */,
 				3268AB821A814BF100C48A08 /* AddressBook.framework */,
-				3268AB801A814BD300C48A08 /* Accounts.framework */,
 				3268AB7E1A814BB900C48A08 /* UIKit.framework */,
 				32AA578D1A2544A50094FB52 /* Foundation.framework */,
 			);

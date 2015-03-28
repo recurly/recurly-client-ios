@@ -78,7 +78,6 @@
 @dynamic planCount;
 @dynamic addons;
 @dynamic delegate;
-@dynamic availableAddons;
 
 - (instancetype)init
 {
@@ -129,11 +128,6 @@
 - (void)updateAddon:(NSString *)addonName quantity:(NSUInteger)quantity
 {
     [_handler updateAddon:addonName quantity:quantity];
-}
-
-- (NSDictionary *)availableAddons
-{
-    return [NSDictionary dictionaryWithDictionary:[_handler addons]];
 }
 
 - (void)setCouponCode:(NSString *)couponCode

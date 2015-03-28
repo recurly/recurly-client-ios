@@ -27,18 +27,37 @@
 
 @interface REPriceSummary : NSObject
 
+/** Currency */
 @property (nonatomic, readonly) NSString *currency;
+
+/** Plan price */
 @property (nonatomic, readonly) NSDecimalNumber *planPrice;
+
+/** Setup fee */
 @property (nonatomic, readonly) NSDecimalNumber *setupFee;
+
+/** Aggregated price of the included addons */
 @property (nonatomic, readonly) NSDecimalNumber *addonsPrice;
+
+/** Applied discount */
 @property (nonatomic, readonly) NSDecimalNumber *discount;
+
+/** Tax rate applied to the subtotal */
 @property (nonatomic, readonly) NSDecimalNumber *taxRate;
+
+/** Subtotal */
 @property (nonatomic, readonly) NSDecimalNumber *subtotal;
+
+/** Tax amount */
 @property (nonatomic, readonly) NSDecimalNumber *tax;
+
+/** Total after taxes */
 @property (nonatomic, readonly) NSDecimalNumber *total;
 
-- (NSString *)localizedWithDecimal:(NSDecimalNumber *)decimal;
+/** Returns a localized string of the subtotal */
 - (NSString *)localizedSubtotal;
+
+/** Returns a localized string of the total amount */
 - (NSString *)localizedTotal;
 
 @end

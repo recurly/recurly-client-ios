@@ -12,17 +12,13 @@
 	<dict>
 		<key>238C24CDB6FBB13872FB5DE63913E5260425CF9D</key>
 		<string>github.com:recurly/recurly-client-ios.git</string>
-		<key>FC493624F1427EDCD4E2502210EF4E2915D1232F</key>
-		<string>github.com:recurly/recurly-client-ios.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>RecurlySDK/RecurlySDK.xcodeproj</string>
+	<string>RecurlySDK.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>238C24CDB6FBB13872FB5DE63913E5260425CF9D</key>
-		<string>../../..</string>
-		<key>FC493624F1427EDCD4E2502210EF4E2915D1232F</key>
-		<string>../../../../RecurlySDK-ios</string>
+		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>github.com:recurly/recurly-client-ios.git</string>
@@ -39,14 +35,6 @@
 			<string>238C24CDB6FBB13872FB5DE63913E5260425CF9D</string>
 			<key>IDESourceControlWCCName</key>
 			<string>recurly-client-ios</string>
-		</dict>
-		<dict>
-			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
-			<string>public.vcs.git</string>
-			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>FC493624F1427EDCD4E2502210EF4E2915D1232F</string>
-			<key>IDESourceControlWCCName</key>
-			<string>RecurlySDK-ios</string>
 		</dict>
 	</array>
 </dict>

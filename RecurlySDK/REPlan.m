@@ -68,6 +68,7 @@
 @interface REPlan ()
 {
     NSDictionary *_addonsByName;
+    NSDictionary *_price;
 }
 @end
 

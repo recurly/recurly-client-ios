@@ -38,26 +38,48 @@
 
 @interface REPlan : NSObject
 
+/** Plan id */
 @property (nonatomic, readonly) NSString *code;
+
+/** Readable name */
 @property (nonatomic, readonly) NSString *name;
+
+/** Unit of the period: months, weeks, days, years */
 @property (nonatomic, readonly) NSString *interval;
+
+/** Length of the subscription period.
+ If length = 2 and interval = months. The plan is billed each 2 months
+ */
 @property (nonatomic, readonly) NSUInteger length;
+
+/** Trial's unit of the period: months, weeks, days, years */
 @property (nonatomic, readonly) NSString *trialInterval;
+
+/** Length of the trial period.
+ If length = 2 and interval = months. The trial would last for 2 months.
+ */
 @property (nonatomic, readonly) NSUInteger trialLength;
-@property (nonatomic, readonly) NSDictionary *price; // map of REPlanPrice, by currency
+
+/** Is tax exempt */
 @property (nonatomic, readonly, getter=isTaxExempt) BOOL taxExempt;
 
 /** Returns the plan's price for the specified currency code. ISO 4217
+ @param aCurrency Currency code
  @return nil if there is not a defined price for the given currency
  */
 - (REPlanPrice *)priceForCurrency:(NSString *)aCurrency;
 
 /** Each plan has a list of associated addons. This method returns a full description of the addon given the
  addon's name.
+ @param name Addon code name
  @return nil if there is not a defined price for the given currency
  */
 - (REAddon *)addonForName:(NSString *)name;
+
+/** Returns an array with all the addons supported in this plan */
 - (NSArray *)addons;
+
+/** Returns if the plan has a trial period */
 - (BOOL)hasTrial;
 
 @end

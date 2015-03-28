@@ -27,6 +27,8 @@
 
 #include <sys/sysctl.h> // needed for sysctlbyname()
 #import <Foundation/Foundation.h>
+#import <Security/Security.h>
+#import <CommonCrypto/CommonDigest.h>
 #import "REAPIUtils.h"
 #import "REMacros.h"
 #import "Foundation+Recurly.h"
@@ -159,5 +161,19 @@
     }
     return [NSString stringWithFormat:@"%@/%@", firstPart, secondPart];
 }
+
+
++ (NSData*)SHA1:(NSData*)data
+{
+    unsigned char digest[CC_SHA1_DIGEST_LENGTH];
+    CC_SHA1([data bytes], (CC_LONG)[data length], digest);
+    return [NSData dataWithBytes:digest length:sizeof(digest)];
+}
+
+//+ (NSString*)hexSHA1:(NSData*)data
+//{
+//    return [self hexEncoding:[self SHA1:data]];
+//}
+
 
 @end

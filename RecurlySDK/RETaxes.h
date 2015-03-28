@@ -27,10 +27,13 @@
 
 @interface RETax : NSObject
 
-/** The kind of tax: VAT, IVA...
- */
+/** The kind of tax: VAT, IVA... */
 @property (nonatomic, readonly) NSString *type;
+
+/** Region */
 @property (nonatomic, readonly) NSString *region;
+
+/** Tax rate */
 @property (nonatomic, readonly) NSDecimalNumber *rate;
 
 @end
@@ -38,10 +41,10 @@
 
 @interface RETaxes : NSObject
 
+/** Array containing all the applied taxes */
 @property (nonatomic, readonly) NSArray *taxes;
 
-/** Returns an agreggated sum of all the taxes rates.
- */
+/** Returns an agreggated sum of all the taxes rates */
 - (NSDecimalNumber *)totalTax;
 
 @end

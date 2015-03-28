@@ -28,20 +28,43 @@
 
 @interface REAddress : NSObject <REValidable, RESerializable>
 
+/** First name */
 @property (nonatomic, strong) NSString *firstName;
+
+/** Last name */
 @property (nonatomic, strong) NSString *lastName;
+
+/** Company name */
 @property (nonatomic, strong) NSString *companyName;
+
+/** VAT code */
 @property (nonatomic, strong) NSString *vatCode;
+
+/** Phone number */
 @property (nonatomic, strong) NSString *phone;
+
+/** Address line 1 */
 @property (nonatomic, strong) NSString *address1;
+
+/** Address line 2 */
 @property (nonatomic, strong) NSString *address2;
+
+/** Postal code */
 @property (nonatomic, strong) NSString *postalCode;
+
+/** City name */
 @property (nonatomic, strong) NSString *city;
+
+/** State */
 @property (nonatomic, strong) NSString *state;
+
+/** Country code */
 @property (nonatomic, strong) NSString *countryCode;
 
 
-/** Initializes a REAddress from a AddressBook reference */
+/** Initializes a REAddress from an AddressBook reference
+ @param record AddressBook's record
+ */
 - (instancetype)initWithABRecord:(ABRecordRef)record NS_DESIGNATED_INITIALIZER;
 
 @end

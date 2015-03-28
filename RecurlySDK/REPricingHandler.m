@@ -82,7 +82,11 @@
     if(!_addons) {
         _addons = [NSMutableDictionary dictionary];
     }
-    _addons[addonName] = @(quantity);
+    if(quantity > 0) {
+        _addons[addonName] = @(quantity);
+    }else{
+        [_addons removeObjectForKey:addonName];
+    }
     [self setNeedsUpdate];
 }
 

@@ -27,12 +27,23 @@
 
 @interface REAddon : NSObject
 
+/** Addon id */
 @property (nonatomic, readonly) NSString *code;
+
+/** Addon name */
 @property (nonatomic, readonly) NSString *name;
+
+/** Number of units */
 @property (nonatomic, readonly) NSUInteger quantity;
+
+/** Dictionary containing the addon price for each currency.
+ You should better use the priceForCurrency: method.
+ @see priceForCurrency:
+ */
 @property (nonatomic, readonly) NSDictionary *price; // key = currency, value = price
 
 /** Returns the addon's price for the specified currency code. ISO 4217
+ @param aCurrency Currency
  @return nil if there is not a defined price for the given currency.
  */
 - (NSDecimalNumber *)priceForCurrency:(NSString *)aCurrency;

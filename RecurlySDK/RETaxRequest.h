@@ -28,19 +28,29 @@
 @class REAddress;
 @interface RETaxRequest : NSObject <RERequestable, RESerializable>
 
+/** Postal code */
 @property (nonatomic, strong) NSString *postalCode;
+
+/** Country code */
 @property (nonatomic, strong) NSString *countryCode;
+
+/** VAT number */
 @property (nonatomic, strong) NSString *vatNumber;
+
+/** Currency */
 @property (nonatomic, strong) NSString *currency;
 
 
 /** Initializes a tax request using an address.
  It takes the postal code, country code and the VAT number from the address object.
+ @param anAddress Address object used to populate the tax request (postal, country, vat codes)
  */
 - (instancetype)initWithAddress:(REAddress *)anAddress;
 
 
 /** Initializes a tax request using the postal code and the country code, the currency is the default one.
+ @param postalCode Postal code
+ @param country
  @see REConfiguration
  */
 - (instancetype)initWithPostalCode:(NSString *)postalCode

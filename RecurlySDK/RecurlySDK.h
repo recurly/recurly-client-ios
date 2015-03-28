@@ -60,7 +60,7 @@
 
 /** This must be the first method to be called. It configures the framework using the public key provided
  in your Recurly's dashboard.
- 
+ @param publicKey The public key used to configure Recurly.
  @see setConfiguration:
  */
 + (void)configure:(NSString *)publicKey;
@@ -68,6 +68,7 @@
 /** Allows a higher level of customization, instance a object of REConfiguration with your
  default settings and make it default by using this method.
 
+ @param config The configuration object containing all the settings and the public key.
  @see configure:
  @see REConfiguration
  */
@@ -85,7 +86,9 @@
  A payment is an instance of RECardPayment. This method performs an async operation, it connects with the 
  recurly servers.
  
- @see RECardPayment
+ @param payment Payment to tokenize
+ @param handler Completion handler
+ @see RECardRequest
  */
 + (void)tokenWithRequest:(REPayment *)payment
               completion:(void(^)(NSString *token, NSError *error))handler;
@@ -93,7 +96,11 @@
 
 /** Returns an instance of RETaxes given a postal code and a country code. RETaxes will encapsulate
  the tax rates of the specified area.
- @discussion The country code is ISO 3166-1 alpha-2
+
+ @param postalCode Postal code
+ @param countryCode Country Code. ISO 3166-1 alpha-2
+ @param handler Completion handler
+
  @see RETaxes
  */
 + (void)taxForPostalCode:(NSString *)postalCode
@@ -102,14 +109,21 @@
 
 /** Returns an instance of REPlan given the specified plan code. The plans can be created and managed
  in your Recurly's dashboard.
+
+ @param planCode Plan's id
+ @param handler Completion handler
  */
 + (void)planForCode:(NSString *)planCode
          completion:(void(^)(REPlan *plan, NSError *error))handler;
 
 
-/** Returns the coupon details given a plan code and a discount code. */
+/** Returns the coupon details given a plan code and a discount code.
+ @param plan Plan's id
+ @param couponCode Coupon code
+ @param handler Completion handler
+ */
 + (void)couponForPlan:(NSString *)plan
-                 code:(NSString *)coupon
+                 code:(NSString *)couponCode
            completion:(void(^)(RECoupon *coupon, NSError *error))handler;
 
 /** Returns a pricing object used for advanced pricing calculations. 
@@ -121,6 +135,7 @@
 #pragma mark - Utilities
 
 /** Helper method to create UIAlerViews based in any error provided by this SDK.
+ @param error Error used to create the UIAlertView
  */
 + (UIAlertView *)alertViewWithError:(NSError *)error;
 

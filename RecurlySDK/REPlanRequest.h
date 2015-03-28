@@ -25,15 +25,13 @@
 #import "REProtocols.h"
 
 
-// TODO
-// add unit tests
-
 @interface REPlanRequest : NSObject <RERequestable>
 
 @property (nonatomic, strong) NSString *planCode;
 
 /** Initializes a plan request with the code of the requested plan. The plan's codes are configured in
- the recurly's dashboard 
+ the recurly's dashboard.
+ @param planCode Plan's code
  */
 - (instancetype)initWithPlanCode:(NSString *)planCode NS_DESIGNATED_INITIALIZER;
 

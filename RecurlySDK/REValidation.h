@@ -26,9 +26,25 @@
 
 @interface REValidation : NSObject
 
+/** Validates the card number
+ @param cardNumber Card number
+ */
 + (BOOL)validateCardNumber:(NSString *)cardNumber;
+
+/** Validates the CVV
+ @param cvv Card Verification Value
+ */
 + (BOOL)validateCVV:(NSString *)cvv;
+
+/** Validates the expiration date
+ @param month Card number
+ @param year Card number
+ */
 + (BOOL)validateExpirationMonth:(NSInteger)month year:(NSInteger)year;
+
+/** Validates a country code
+ @param year countryCode Country Code
+*/
 + (BOOL)validateCountryCode:(NSString *)countryCode;
 
 @end

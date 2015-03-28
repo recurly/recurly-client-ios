@@ -178,3 +178,98 @@
 }
 
 @end
+
+
+#if 0
+
+@implementation REAPIOperation (SSLPinning)
+
+static NSData* getPublicKeyBitsFromKey(SecKeyRef givenKey)
+{
+    static const uint8_t publicKeyIdentifier[] = "com.recurly.mobile.ios.sdk";
+
+    NSData *publicTag = [[NSData alloc] initWithBytes:publicKeyIdentifier length:sizeof(publicKeyIdentifier)];
+
+    OSStatus sanityCheck = noErr;
+    NSData * publicKeyBits = nil;
+
+    NSMutableDictionary * queryPublicKey = [[NSMutableDictionary alloc] init];
+    [queryPublicKey setObject:(__bridge id)kSecClassKey forKey:(__bridge id)kSecClass];
+    [queryPublicKey setObject:publicTag forKey:(__bridge id)kSecAttrApplicationTag];
+    [queryPublicKey setObject:(__bridge id)kSecAttrKeyTypeRSA forKey:(__bridge id)kSecAttrKeyType];
+
+    // Temporarily add key to the Keychain, return as data:
+    NSMutableDictionary * attributes = [queryPublicKey mutableCopy];
+    [attributes setObject:(__bridge id)givenKey forKey:(__bridge id)kSecValueRef];
+    [attributes setObject:@YES forKey:(__bridge id)kSecReturnData];
+    CFTypeRef result;
+
+    // Delete
+    SecItemDelete((__bridge CFDictionaryRef) queryPublicKey);
+
+    sanityCheck = SecItemAdd((__bridge CFDictionaryRef) attributes, &result);
+    if (sanityCheck == errSecSuccess) {
+        publicKeyBits = CFBridgingRelease(result);
+        SecItemDelete((__bridge CFDictionaryRef) queryPublicKey);
+    }
+
+    return publicKeyBits;
+}
+
+
+static char* see(unsigned char *arr) {
+    if(*arr != 0) {
+        unsigned char *str = arr, *head = arr;
+        do {
+            *(++str) = *head ^ *(head+1);
+            head += 2;
+        } while(*str != '\0');
+        *arr = 0;
+    }
+    return (char*)arr+1;
+}
+
+
+- (void)connection:(NSURLConnection *)connection willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
+{
+    @try {
+        SecTrustRef trust = [[challenge protectionSpace] serverTrust];
+        SecTrustResultType trustResult;
+        SecKeyRef publicKey;
+
+        if(![challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust])
+            [NSException raise:@"TinySparkSSLNotSecureMethod"
+                        format:@"Connection method is not secure. Method: %@", challenge.protectionSpace.authenticationMethod];
+
+        if(SecTrustEvaluate(trust, &trustResult) != noErr)
+            [NSException raise:@"TinySparkSSLEvaluate" format:@"Failed SecTrustEvaluate()"];
+
+        if(trustResult != kSecTrustResultProceed && trustResult != kSecTrustResultUnspecified)
+            [NSException raise:@"TinySparkSSLBadCertificate" format:@"Certificate doesn't match"];
+
+        publicKey = SecTrustCopyPublicKey(trust);
+        if(publicKey == NULL)
+            [NSException raise:@"TinySparkSSLMissingPublicKey" format:@"Public Key is missing"];
+
+
+        NSString *hash = [TSCryptoUtils hexSHA1:getPublicKeyBitsFromKey(publicKey)];
+        unsigned char trusted[] = TS_SSL_PUBLICKEY_SHA1;
+        if(!strcmp([hash UTF8String], see(trusted)) == 0)
+            [NSException raise:@"TinySparkSSLMissingPublicKey" format:@"Public Key doesn't match"];
+
+
+        [challenge.sender useCredential:[NSURLCredential credentialForTrust:trust] forAuthenticationChallenge:challenge];
+    }
+    @catch (NSException *exception) {
+        NSError *error = [NSError errorWithDomain:TSERROR_DOMAIN
+                                             code:kTSErrorSSL
+                                         userInfo:@{NSLocalizedDescriptionKey: [exception reason] }];
+        [_response setSSLError:error];
+        [challenge.sender cancelAuthenticationChallenge:challenge];
+        return;
+    }
+}
+
+@end
+
+#endif
