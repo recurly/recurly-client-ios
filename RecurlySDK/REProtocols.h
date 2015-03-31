@@ -35,30 +35,23 @@
 @end
 
 
+/** Conforms to objects that can be validated */
 @protocol REValidable <NSObject>
 - (NSError *)validate;
 
 @end
 
 
+/** Conforms to objects that can be serialized into a JSON byte stream */
 @protocol RESerializable <REValidable>
 - (NSDictionary *)JSONDictionary;
 
 @end
 
-@protocol REDeserializable
-- (instancetype)initWithDictionary:(NSDictionary *)JSONDictionary;
 
-@end
-
-
+/** Conforms to objects that encapsulate an API request */
 @protocol RERequestable <REValidable>
 - (REAPIRequest *)request;
 
 @end
 
-
-@protocol REPayable <NSObject>
-- (void)paymentRequest:(void(^)(id<RERequestable> requestData, NSError *error))handler;
-
-@end

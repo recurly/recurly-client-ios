@@ -25,6 +25,12 @@
 #import "REProtocols.h"
 
 
+/** Encapsulates an addon included in a plan. Instances of this class are populared with the response of a 
+ REPlanRequest.
+ @see REPlan
+ @see REPlanRequest
+ @see Recurly
+ */
 @interface REAddon : NSObject
 
 /** Addon id */

@@ -34,6 +34,12 @@
 #import "REPricing.h"
 
 
+@protocol REDeserializable
+- (instancetype)initWithDictionary:(NSDictionary *)JSONDictionary;
+
+@end
+
+
 @interface REPricingResult ()
 
 - (instancetype)initWithNow:(REPriceSummary *)now

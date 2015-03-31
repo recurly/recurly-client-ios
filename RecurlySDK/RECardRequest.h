@@ -34,6 +34,10 @@ typedef NS_ENUM(NSInteger, RECardType) {
     RECardTypeUnknown,
 };
 
+
+/** Used to describe a payment operation with Card. This object must be used to retrieve a payment token
+ using [Recurly tokenWithRequest: completion:]
+ */
 @interface RECardRequest : REPayment
 
 /**  Parses the card number and returns the card type.

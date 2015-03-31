@@ -54,6 +54,10 @@
 #import "RETaxRequest.h"
 
 
+/** Configures the SDK and provides the main APIs for interacting with the Recurly backend.
+ The SDK should be initialized calling `[Recurly configure:]` or `[Recurly setConfiguration:]` before any other
+ 
+ */
 @interface Recurly : NSObject
 
 #pragma mark - Configuration

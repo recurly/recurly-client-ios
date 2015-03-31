@@ -28,6 +28,10 @@
 FOUNDATION_EXTERN NSString *const RecurlyCouponTypeFixed;
 FOUNDATION_EXTERN NSString *const RecurlyCouponTypePercent;
 
+/** Encapsulates the response of a RECouponRequest.
+ @see RECouponRequest
+ @see Recurly
+ */
 @interface RECoupon : NSObject
 
 /** Coupon code */

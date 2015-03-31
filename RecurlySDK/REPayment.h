@@ -28,7 +28,7 @@
 
 
 @class RECardRequest;
-@interface REPayment : NSObject <REPayable, RERequestable, RESerializable>
+@interface REPayment : NSObject <RERequestable, RESerializable>
 
 @property (nonatomic) REAddress *billingAddress;
 @property (nonatomic) REAddress *shippingAddress;

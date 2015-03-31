@@ -26,6 +26,8 @@
 #import "REProtocols.h"
 
 
+/** Encapculates all the required user information, including name, last name and address.
+ */
 @interface REAddress : NSObject <REValidable, RESerializable>
 
 /** First name */

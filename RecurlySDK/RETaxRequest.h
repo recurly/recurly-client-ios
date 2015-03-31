@@ -26,6 +26,10 @@
 
 
 @class REAddress;
+
+/** Describes an HTTP API request of tax information.
+ Use [Recurly taxFor
+ */
 @interface RETaxRequest : NSObject <RERequestable, RESerializable>
 
 /** Postal code */

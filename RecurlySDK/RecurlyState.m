@@ -33,7 +33,9 @@
 
 static RecurlyState *__sharedInstance = nil;
 
+
 @implementation RecurlyState
+@synthesize configuration = _configuration;
 
 + (instancetype)sharedInstance
 {
@@ -49,8 +51,27 @@ static RecurlyState *__sharedInstance = nil;
     self = [super init];
     if (self) {
         _networker = [[RENetworker alloc] init];
+        _configuration = nil;
     }
     return self;
+}
+
+- (REConfiguration *)configuration
+{
+    @synchronized(_configuration) {
+        if(!_configuration) {
+            [NSException raise:@"RecurlyWasNotInitialized" format:nil];
+        }
+        return _configuration;
+    }
+    return nil;
+}
+
+- (void)setConfiguration:(REConfiguration *)configuration
+{
+    @synchronized(_configuration) {
+        _configuration = configuration;
+    }
 }
 
 + (NSString *)version

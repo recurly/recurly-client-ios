@@ -112,11 +112,11 @@
     return output;
 }
 
-- (void)paymentRequest:(void(^)(id<RERequestable> requestData, NSError *err))handler
-{
-    NSParameterAssert(handler);
-    handler(self, nil);
-}
+//- (void)paymentRequest:(void(^)(id<RERequestable> requestData, NSError *err))handler
+//{
+//    NSParameterAssert(handler);
+//    handler(self, nil);
+//}
 
 - (NSError *)validate
 {

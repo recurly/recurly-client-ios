@@ -25,6 +25,9 @@
 #import "REProtocols.h"
 
 
+/** Describes an HTTP API request of plan information.
+ Use [Recurly planForCode: completion:] instead.
+ */
 @interface REPlanRequest : NSObject <RERequestable>
 
 @property (nonatomic, strong) NSString *planCode;

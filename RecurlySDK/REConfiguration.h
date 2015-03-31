@@ -25,6 +25,8 @@
 #import "REProtocols.h"
 
 
+/** Encapsulates all the configuration settings of the SDK, including the required public key
+ */
 @interface REConfiguration : NSObject <REValidable>
 
 /** Currency standarized code ISO 4217, by default it is "USD" */

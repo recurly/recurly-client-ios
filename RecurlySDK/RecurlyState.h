@@ -32,7 +32,7 @@
 @interface RecurlyState : NSObject
 
 @property (nonatomic, readonly) RENetworker *networker;
-@property (atomic, strong) REConfiguration *configuration;
+@property (nonatomic, strong) REConfiguration *configuration;
 
 + (instancetype)sharedInstance;
 + (NSString *)version;
