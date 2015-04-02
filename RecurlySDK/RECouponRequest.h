@@ -27,7 +27,7 @@
 
 @interface RECouponRequest : NSObject <RERequestable>
 
-/** Plan's code */
+/** Plan code */
 @property (nonatomic, strong) NSString *planCode;
 
 /** Coupon code */
@@ -36,6 +36,7 @@
 /** Initializes a RECouponRequest with a plan code and the coupon code to redeem.
  @param plan Plan's code
  @param coupon Coupon code
+ @see RECoupon
  */
 - (instancetype)initWithPlanCode:(NSString *)plan couponCode:(NSString *)coupon NS_DESIGNATED_INITIALIZER;
 

@@ -30,11 +30,12 @@
  */
 @interface REPlanRequest : NSObject <RERequestable>
 
+/** Plan code */
 @property (nonatomic, strong) NSString *planCode;
 
 /** Initializes a plan request with the code of the requested plan. The plan's codes are configured in
  the recurly's dashboard.
- @param planCode Plan's code
+ @param planCode Plan code
  */
 - (instancetype)initWithPlanCode:(NSString *)planCode NS_DESIGNATED_INITIALIZER;
 

@@ -27,6 +27,9 @@
 
 
 /** Encapculates all the required user information, including name, last name and address.
+ It is used to encapsulate the billing address in a payment request.
+ @see RECardRequest
+ @see Recurly
  */
 @interface REAddress : NSObject <REValidable, RESerializable>
 

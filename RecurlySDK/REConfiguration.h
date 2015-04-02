@@ -48,10 +48,15 @@
 
 /** Initializes REConfiguration with the specified public key and the default settings.
  You can use [Recurly configure:] directly.
+ @param aPublicKey Recurly's public key
  */
 - (instancetype)initWithPublicKey:(NSString *)aPublicKey NS_DESIGNATED_INITIALIZER;
 
 /** Initialized a REConfiguration with the public key and custom settings
+ @param aPublicKey Public key
+ @param aCurrency Currency code
+ @param apiEndpoint API endpoint
+ @param timeout Timeout until a 
  */
 - (instancetype)initWithPublicKey:(NSString *)aPublicKey
                          currency:(NSString *)aCurrency

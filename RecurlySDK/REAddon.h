@@ -49,7 +49,7 @@
 @property (nonatomic, readonly) NSDictionary *price; // key = currency, value = price
 
 /** Returns the addon's price for the specified currency code. ISO 4217
- @param aCurrency Currency
+ @param aCurrency Currency code
  @return nil if there is not a defined price for the given currency.
  */
 - (NSDecimalNumber *)priceForCurrency:(NSString *)aCurrency;

@@ -54,8 +54,8 @@
 
 /** Initializes a tax request using the postal code and the country code, the currency is the default one.
  @param postalCode Postal code
- @param country
- @see REConfiguration
+ @param country Country code
+ @see REAddress
  */
 - (instancetype)initWithPostalCode:(NSString *)postalCode
                        countryCode:(NSString *)country;

@@ -40,7 +40,7 @@ FOUNDATION_EXTERN NSString *const RecurlyCouponTypePercent;
 /** Coupon name */
 @property (nonatomic, readonly) NSString *name;
 
-/** Coupon type */
+/** Coupon type, it can be a rated discount or a fixed amount */
 @property (nonatomic, readonly) NSString *type; // enum: RecurlyCouponType
 
 /** Discount rate

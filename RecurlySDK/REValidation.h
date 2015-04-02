@@ -37,8 +37,8 @@
 + (BOOL)validateCVV:(NSString *)cvv;
 
 /** Validates the expiration date
- @param month Card number
- @param year Card number
+ @param month Month
+ @param year Year
  */
 + (BOOL)validateExpirationMonth:(NSInteger)month year:(NSInteger)year;
 
