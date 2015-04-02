@@ -25,10 +25,6 @@
 #import "REProtocols.h"
 
 
-/** Encapsulates the response of a RETaxRequest.
- @see RETaxRequest
- @see Recurly
- */
 @interface RETax : NSObject
 
 /** The kind of tax: VAT, IVA... */
@@ -43,6 +39,11 @@
 @end
 
 
+/** Encapsulates the response of a RETaxRequest. It is a collection of RETax because multiple different 
+ taxes can be applied in the same region.
+ @see RETaxRequest
+ @see Recurly
+ */
 @interface RETaxes : NSObject
 
 /** Array containing all the applied taxes */

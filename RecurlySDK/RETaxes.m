@@ -31,9 +31,6 @@
 #import "REAPIUtils.h"
 
 
-// TODO
-// unit tests
-
 @implementation RETax
 
 - (instancetype)initWithDictionary:(NSDictionary *)dict

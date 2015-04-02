@@ -36,6 +36,11 @@
 @end
 
 
+/** Encapsulates the response of a REPlanRequest. This includes all the information of a specific plan,
+ including addons.
+ @see REPlanRequest
+ @see Recurly
+ */
 @interface REPlan : NSObject
 
 /** Plan id */

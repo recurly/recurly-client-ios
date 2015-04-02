@@ -26,11 +26,17 @@
 
 
 typedef NS_ENUM(NSInteger, RECardType) {
+    /** Visa, card type */
     RECardTypeVisa,
+    /** Master Card, card type */
     RECardTypeMasterCard,
+    /** American Express, card type */
     RECardTypeAmericanExpress,
+    /** Discover, card type */
     RECardTypeDiscover,
+    /** Diners Club, card type */
     RECardTypeDinersClub,
+    /** The card type is unknown */
     RECardTypeUnknown,
 };
 

@@ -43,7 +43,7 @@
 + (BOOL)validateExpirationMonth:(NSInteger)month year:(NSInteger)year;
 
 /** Validates a country code
- @param year countryCode Country Code
+ @param countryCode countryCode Country Code
 */
 + (BOOL)validateCountryCode:(NSString *)countryCode;
 
