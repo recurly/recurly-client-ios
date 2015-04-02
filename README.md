@@ -33,7 +33,7 @@ For more information on cocoapods, visit: [http://guides.cocoapods.org/syntax/po
 ##2. Import
 Once the framework is added to your project (via either of the methods above) you only need to import the SDK headers.
 
-``` obj-c
+```obj-c
 #import <RecurlySDK/RecurlySDK.h>
 ```
 

@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+sed "s/\`\`\`obj-c/\`\`\`/g" README.md > docs-README.md
 
 appledoc \
 --create-html \
@@ -17,8 +18,10 @@ appledoc \
 --docset-platform-family iphoneos \
 --ignore "*.m" \
 --ignore "*.mm" \
---index-desc "README.md" \
+--index-desc "docs-README.md" \
 "output/RecurlyLib/include"
+
+rm docs-README.md
 
 #--ignore "TinySparkSDK/Vendor" \
 #--ignore "TinySparkSDK/Private" \
