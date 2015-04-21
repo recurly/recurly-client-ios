@@ -98,8 +98,8 @@ RECardRequest *card = [RECardRequest requestWithCardNumber:@"4111111111111111"
 ###Get a tax for a country/postal code
 
 ```obj-c
-[Recurly taxForPostalCode:@"94566"
-              countryCode:@"US"
+[Recurly taxForPostalCode:@"WA16 8GS"
+              countryCode:@"GB"
                completion:^(RETaxes *tax, NSError *error)
 {
     if(!error) {
