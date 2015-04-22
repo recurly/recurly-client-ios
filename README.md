@@ -2,6 +2,8 @@
 
 The Recurly SDK allows you to integrate recurrent payments in your exisiting iOS app in a matter of minutes.
 
+We encourage our partners to review Apple's guidelines on mobile application development. In particular, please review Section 11 to familiarize yourself with the purchases and currencies guidelines. https://developer.apple.com/app-store/review/guidelines/
+
 By using the Recurly SDK, you can tokenize your users payment information and safely use it to process transactions. Because you never handle any sensitive payment information, your PCI scope is drastically reduced.
 
 ##1. Download
