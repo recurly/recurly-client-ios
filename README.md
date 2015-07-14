@@ -1,65 +1,65 @@
-#Recurly iOS SDK
+# Recurly iOS SDK
 
-The Recurly SDK allows you to integrate recurrent payments in your exisiting iOS app in a matter of minutes.
+The Recurly SDK allows you to integrate recurrent payments in your existing iOS app in a matter of minutes.
 
-We encourage our partners to review Apple's guidelines on mobile application development. In particular, please review Section 11 to familiarize yourself with the purchases and currencies guidelines. https://developer.apple.com/app-store/review/guidelines/
+We encourage our partners to review Apple's guidelines on mobile application development. In particular, please review Section 11 to familiarize yourself with the purchases and currencies guidelines: <https://developer.apple.com/app-store/review/guidelines/#purchasing-currencies>
 
-By using the Recurly SDK, you can tokenize your users payment information and safely use it to process transactions. Because you never handle any sensitive payment information, your PCI scope is drastically reduced.
+By using the Recurly SDK, you can tokenize your users' payment information and safely use it to process transactions – since sensitive payment information is passed on directly to Recurly, your PCI scope is drastically reduced.
 
-##1. Download
-There are three ways to begin using the Recurly iOS SDK.
+## 1. Download
+There are two ways to begin using the Recurly iOS SDK.
 
-###Using cocoapods
-If you are currently using cocoapods in your Xcode, add this line your `PodFile`.
+### Using CocoaPods
+If you are currently using CocoaPods in your Xcode project (or would like to), simply add this line your `Podfile`.
 
+```ruby
+  pod 'RecurlySDK'
 ```
-	pod 'RecurlySDK'
-```
 
-For more information on cocoapods, visit: [http://guides.cocoapods.org/syntax/podfile.html](http://guides.cocoapods.org/syntax/podfile.html)
+For more information on CocoaPods, visit: <http://guides.cocoapods.org/syntax/podfile.html>
 
 
-###Using the RecurlySDK.framework
-1. Download the framework.
-2. Drop it in your existing Xcode project.
-3. Recurly needs the following frameworks:
-	- Foundation
-	- UIKit
-	- AddressBook
-	- Security
-	- CoreTelephony
+### Using the RecurlySDK.framework
+1. Download the framework from the releases page (or build it yourself using the `build.sh` script provided).
+2. [Drop it in](https://developer.apple.com/library/ios/recipes/xcode_help-structure_navigator/articles/Adding_a_Framework.html) your existing Xcode project.
+3. RecurlySDK needs the following frameworks:
+  - Foundation
+  - UIKit
+  - AddressBook
+  - Security
+  - CoreTelephony
 
-4. Add the flag `-ObjC` to `Other Linker Flags`.
+4. Add the flag `-ObjC` to `Other Linker Flags` (located in Build Settings > Linking).
 
 
-##2. Import
+## 2. Import
 Once the framework is added to your project (via either of the methods above) you only need to import the SDK headers.
 
 ```obj-c
 #import <RecurlySDK/RecurlySDK.h>
 ```
 
-##3. Configure
-In order to connect to the Recurly API, you must initialize the SDK with the public key provided in your Recurly's dashboard which is availble here: [https://app.recurly.com/go/developer/api_access](https://app.recurly.com/go/developer/api_access)
+## 3. Configure
+In order to connect to the Recurly API, you must initialize the SDK with the API public key. This is found on the API credentials page of your Recurly site: <https://app.recurly.com/go/developer/api_access>
 
 ```obj-c
-[Recurly configure:@"sc-YOUR_PUBLIC_KEY"];
-// here, after configuring, you can perform any operation with recurly!
+[Recurly configure:@"YOUR_PUBLIC_KEY"];
+// after configuring, you can perform any operation with the SDK!
 ```
 
-We strongly recomend that you configure the RecurlySDK when your application is launched.
+We strongly recommend that you configure the SDK when your application is launched (in your `AppDelegate.m`, for example).
 
 ```obj-c
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [Recurly configure:@"sc-YOUR_PUBLIC_KEY"];
+    [Recurly configure:@"YOUR_PUBLIC_KEY"];
     // continue initializing your app
 }    
 ```
 
-##4. Examples
-Once the SDK is imported and configured, we can start builing stuff with it!
-###Get a payment token
+## 4. Examples
+Once the SDK is imported and configured, we can start building stuff with it!
+### Get a payment token
 
 ```obj-c
 RECardRequest *card = [RECardRequest new];
@@ -67,7 +67,7 @@ card.number = @"4111111111111111";
 card.cvv = @"123";
 card.expirationMonth = 12;
 card.expirationYear = 2015;
-card.billingAddress.firstName = @"Jonh";
+card.billingAddress.firstName = @"John";
 card.billingAddress.lastName = @"Smith";
 card.billingAddress.countryCode = @"US";
 
@@ -97,7 +97,7 @@ RECardRequest *card = [RECardRequest requestWithCardNumber:@"4111111111111111"
 ```
 
 
-###Get a tax for a country/postal code
+### Get tax details for a specific locale
 
 ```obj-c
 [Recurly taxForPostalCode:@"WA16 8GS"
@@ -105,12 +105,12 @@ RECardRequest *card = [RECardRequest requestWithCardNumber:@"4111111111111111"
                completion:^(RETaxes *tax, NSError *error)
 {
     if(!error) {
-        NSLog(@"The VAT imposed in that location is: %@%%", [tax totalTax]);
+        NSLog(@"The VAT imposed in that location is: %@%%", [[tax totalTax] decimalNumberByMultiplyingByPowerOf10:2]);
     }
 }];
 ```
 
-###Get Plan's information
+### Get the details of a plan
 
 ```obj-c
 [Recurly planForCode:@"premium"
@@ -121,7 +121,7 @@ RECardRequest *card = [RECardRequest requestWithCardNumber:@"4111111111111111"
 }];
 ```
 
-###Get Coupon's information
+### Get the details of a coupon
 
 ```obj-c
 [Recurly couponForPlan:@"premium"
@@ -134,9 +134,9 @@ RECardRequest *card = [RECardRequest requestWithCardNumber:@"4111111111111111"
 }];
 ```
 
-##Validating input data manually
+## Validate input data manually
 
-###Card number
+### Card number
 
 ```obj-c
 if([REValidation validateCardNumber:@"4111 1111 1111 1111"]) {
@@ -146,7 +146,7 @@ if([REValidation validateCardNumber:@"4111 1111 1111 1111"]) {
 }
 ```
 
-###CVV
+### CVV
 
 ```obj-c
 if([REValidation validateCVV:@"123"]) {
@@ -157,7 +157,7 @@ if([REValidation validateCVV:@"123"]) {
 ```
 
 
-###Country code
+### Country code
 
 ```obj-c
 if([REValidation validateCountryCode:@"US"]) {
@@ -168,7 +168,7 @@ if([REValidation validateCountryCode:@"US"]) {
 ```
 
 
-###Expiration date
+### Expiration date
 
 ```obj-c
 if([REValidation validateExpirationMonth:11 year:20]) {
