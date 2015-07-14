@@ -76,12 +76,12 @@ static RecurlyState *__sharedInstance = nil;
 
 + (NSString *)version
 {
-    return @"3.0.9";
+    return @"0.9.0";
 }
 
 + (double)versionNumber
 {
-    return 3.0009;
+    return 0.0900;
 }
 
 @end
