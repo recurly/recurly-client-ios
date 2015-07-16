@@ -1025,6 +1025,7 @@
 		32CF71A51A8913AC004B8E6A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CURRENT_PROJECT_VERSION = 0.9.0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -1042,6 +1043,7 @@
 		32CF71A61A8913AC004B8E6A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CURRENT_PROJECT_VERSION = 0.9.0;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",
