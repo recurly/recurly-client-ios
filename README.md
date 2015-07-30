@@ -7,19 +7,31 @@ We encourage our partners to review Apple's guidelines on mobile application dev
 By using the Recurly SDK, you can tokenize your users' payment information and safely use it to process transactions – since sensitive payment information is passed on directly to Recurly, your PCI scope is drastically reduced.
 
 ## 1. Download
-There are two ways to begin using the Recurly iOS SDK.
 
-### Using CocoaPods
-If you are currently using CocoaPods in your Xcode project (or would like to), simply add this line your `Podfile`.
+Access our SDK via GitHub: [iOS Client Repository](https://github.com/recurly/recurly-client-ios)
 
-```ruby
-  pod 'RecurlySDK'
-```
+After reviewing our SDK via GitHub, use one of these two options to begin using the Recurly iOS SDK.
 
-For more information on CocoaPods, visit: <http://guides.cocoapods.org/syntax/podfile.html>
+### 1.1 Using CocoaPods
+If you already have and use Cocoapods, skip to step 3.
+
+1. [Install CocoaPods](https://guides.cocoapods.org/using/getting-started.html) if you don't already have it.  
+2. [Set up](https://guides.cocoapods.org/using/using-cocoapods.html) CocoaPods in your project.
+3. Add this line your `Podfile`.
+
+	```ruby
+	pod 'RecurlySDK'
+	```
+4. Download `RecurlySDK` and any other specified pods by running:
+
+	```bash
+	$ pod install
+	```
+  
+For more information on CocoaPods and the `Podfile`, visit: <https://guides.cocoapods.org/using/the-podfile.html>
 
 
-### Using the RecurlySDK.framework
+### 1.2 Using the RecurlySDK.framework
 1. Download the framework from the releases page (or build it yourself using the `build.sh` script provided).
 2. [Drop it in](https://developer.apple.com/library/ios/recipes/xcode_help-structure_navigator/articles/Adding_a_Framework.html) your existing Xcode project.
 3. RecurlySDK needs the following frameworks:
