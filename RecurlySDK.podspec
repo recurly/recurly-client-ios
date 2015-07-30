@@ -1,7 +1,7 @@
 
 Pod::Spec.new do |s|
   s.name         = "RecurlySDK"
-  s.version      = "0.9.0"
+  s.version      = "1.0.0"
   s.summary      = "Integrate recurrent payments in your iOS app in a matter of minutes."
 
   s.homepage     = "https://recurly.com"
