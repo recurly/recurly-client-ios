@@ -9,14 +9,14 @@
          <BuildActionEntry
             buildForTesting = "YES"
             buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "32CF71931A8913AC004B8E6A"
-               BuildableName = "librecurly.a"
-               BlueprintName = "RecurlyLib"
+               BlueprintIdentifier = "322916D31A92462A00339A3D"
+               BuildableName = "RecurlySDKTests.xctest"
+               BlueprintName = "RecurlyLibTests"
                ReferencedContainer = "container:RecurlySDK.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -28,7 +28,26 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       buildConfiguration = "Debug">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "322916D31A92462A00339A3D"
+               BuildableName = "RecurlySDKTests.xctest"
+               BlueprintName = "RecurlyLibTests"
+               ReferencedContainer = "container:RecurlySDK.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "322916D31A92462A00339A3D"
+            BuildableName = "RecurlySDKTests.xctest"
+            BlueprintName = "RecurlyLibTests"
+            ReferencedContainer = "container:RecurlySDK.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </TestAction>
    <LaunchAction
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
@@ -42,9 +61,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "32CF71931A8913AC004B8E6A"
-            BuildableName = "librecurly.a"
-            BlueprintName = "RecurlyLib"
+            BlueprintIdentifier = "322916D31A92462A00339A3D"
+            BuildableName = "RecurlySDKTests.xctest"
+            BlueprintName = "RecurlyLibTests"
             ReferencedContainer = "container:RecurlySDK.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -60,9 +79,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "32CF71931A8913AC004B8E6A"
-            BuildableName = "librecurly.a"
-            BlueprintName = "RecurlyLib"
+            BlueprintIdentifier = "322916D31A92462A00339A3D"
+            BuildableName = "RecurlySDKTests.xctest"
+            BlueprintName = "RecurlyLibTests"
             ReferencedContainer = "container:RecurlySDK.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
