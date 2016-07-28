@@ -95,7 +95,7 @@ static NSDictionary *readAddress(ABRecordRef record)
     [dict setOptionalObject:_firstName forKey:@"first_name"];
     [dict setOptionalObject:_lastName forKey:@"last_name"];
     [dict setOptionalObject:_companyName forKey:@"company"];
-    [dict setOptionalObject:_vatCode forKey:@"vat_code"];
+    [dict setOptionalObject:_vatCode forKey:@"vat_number"];
     [dict setOptionalObject:_phone forKey:@"phone"];
 
     [dict setOptionalObject:_address1 forKey:@"address1"];
