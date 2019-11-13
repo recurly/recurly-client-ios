@@ -50,7 +50,7 @@
  You can use [Recurly configure:] directly.
  @param aPublicKey Recurly's public key
  */
-- (instancetype)initWithPublicKey:(NSString *)aPublicKey NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithPublicKey:(NSString *)aPublicKey;
 
 /** Initialized a REConfiguration with the public key and custom settings
  @param aPublicKey Public key
@@ -61,6 +61,6 @@
 - (instancetype)initWithPublicKey:(NSString *)aPublicKey
                          currency:(NSString *)aCurrency
                       apiEndpoint:(NSString *)apiEndpoint
-                          timeout:(NSUInteger)timeout NS_DESIGNATED_INITIALIZER;
+                          timeout:(NSUInteger)timeout;
 
 @end

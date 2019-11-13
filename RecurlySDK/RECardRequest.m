@@ -68,7 +68,7 @@
 
 - (REAddress *)shippingAddress
 {
-    [NSException raise:@"Not implemented" format:nil];
+    [NSException raise:@"Not implemented" format:@""];
     return nil;
 }
 

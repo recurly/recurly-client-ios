@@ -38,6 +38,6 @@
  @param coupon Coupon code
  @see RECoupon
  */
-- (instancetype)initWithPlanCode:(NSString *)plan couponCode:(NSString *)coupon NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithPlanCode:(NSString *)plan couponCode:(NSString *)coupon;
 
 @end

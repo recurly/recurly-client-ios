@@ -66,11 +66,10 @@
 /** Country code */
 @property (nonatomic, strong) NSString *countryCode;
 
-
 /** Initializes a REAddress from an AddressBook reference
  @param record AddressBook's record
  */
-- (instancetype)initWithABRecord:(ABRecordRef)record NS_DESIGNATED_INITIALIZER API_DEPRECATED("Use CNContact instead.", ios(2.0, 9.0));
-- (instancetype)initWithCNContact:(CNContact *)contact NS_DESIGNATED_INITIALIZER API_AVAILABLE(ios(9.0));
+- (instancetype)initWithABRecord:(ABRecordRef)record API_DEPRECATED("Use CNContact instead.", ios(2.0, 9.0));
+- (instancetype)initWithCNContact:(CNContact *)contact API_AVAILABLE(ios(9.0));
 
 @end
