@@ -32,6 +32,7 @@
 #import "REMacros.h"
 #import "REError.h"
 #import "Foundation+Recurly.h"
+@import Contacts;
 
 
 static NSString *readProperty(ABRecordRef record, ABPropertyID propertyId)
@@ -72,6 +73,28 @@ static NSDictionary *readAddress(ABRecordRef record)
     return self;
 }
 
+- (instancetype)initWithCNContact:(id)contact
+{
+    self = [super init];
+    if (self) {
+        [self parseCNContact:contact];
+    }
+    return self;
+}
+
+- (void)parseCNContact:(CNContact *)contact
+{
+    _firstName      = contact.givenName;
+    _lastName       = contact.familyName;
+    _companyName    = contact.organizationName;
+
+    CNLabeledValue<CNPostalAddress *> *firstAddress = [contact.postalAddresses firstObject];
+    _address1       = firstAddress.value.street;
+    _city           = firstAddress.value.city;
+    _postalCode     = firstAddress.value.postalCode;
+    _state          = firstAddress.value.state;
+    _countryCode    = firstAddress.value.ISOCountryCode;
+}
 
 - (void)parseABRecord:(ABRecordRef)record
 {
