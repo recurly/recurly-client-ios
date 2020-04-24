@@ -131,7 +131,7 @@
     [label setText:@"loading... please wait"];
     [label setTextColor:[UIColor blackColor]];
     [label setTextAlignment:NSTextAlignmentCenter];
-    [view addSubview:label];
+    [[view contentView] addSubview:label];
 
     _loadingView = view;
     [self.view addSubview:_loadingView];
