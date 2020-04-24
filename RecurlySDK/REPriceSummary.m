@@ -91,7 +91,7 @@
     NSDecimalNumber *discount = nil;
     if(coupon) {
         discount = [coupon discountForSubtotal:subtotal currency:_currency];
-        subtotal = [subtotal decimalNumberBySubtracting:_discount];
+        subtotal = [subtotal decimalNumberBySubtracting:discount];
     }else{
         discount = [NSDecimalNumber zero];
     }
