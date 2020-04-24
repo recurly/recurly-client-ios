@@ -55,7 +55,7 @@
 
 - (void)testValidExpirationDate
 {
-    XCTAssertTrue([REValidation validateExpirationMonth:1 year:2020]);
+    XCTAssertTrue([REValidation validateExpirationMonth:1 year:2030]);
     XCTAssertTrue([REValidation validateExpirationMonth:9 year:20]);
 }
 
@@ -67,9 +67,9 @@
 
 - (void)testBadExpirationMonth
 {
-    XCTAssertFalse([REValidation validateExpirationMonth:0 year:20], @"0 natural number");
-    XCTAssertFalse([REValidation validateExpirationMonth:-1 year:20], @"negative case");
-    XCTAssertFalse([REValidation validateExpirationMonth:13 year:2020], @"greater than 12");
+    XCTAssertFalse([REValidation validateExpirationMonth:0 year:30], @"0 natural number");
+    XCTAssertFalse([REValidation validateExpirationMonth:-1 year:30], @"negative case");
+    XCTAssertFalse([REValidation validateExpirationMonth:13 year:30], @"greater than 12");
 }
 
 - (void)testBadExpirationYear

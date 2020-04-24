@@ -80,7 +80,7 @@ RECardRequest *card = [RECardRequest new];
 card.number = @"4111111111111111";
 card.cvv = @"123";
 card.expirationMonth = 12;
-card.expirationYear = 2015;
+card.expirationYear = 2025;
 card.billingAddress.firstName = @"John";
 card.billingAddress.lastName = @"Smith";
 card.billingAddress.countryCode = @"US";
@@ -98,7 +98,7 @@ or (exactly the same):
 RECardRequest *card = [RECardRequest requestWithCardNumber:@"4111111111111111"
                                                        CVV:@"123"
                                                      month:12
-                                                      year:2015
+                                                      year:2025
                                                  firstName:@"John"
                                                   lastName:@"Smith"
                                                countryCode:@"US"];
@@ -185,7 +185,7 @@ if([REValidation validateCountryCode:@"US"]) {
 ### Expiration date
 
 ```obj-c
-if([REValidation validateExpirationMonth:11 year:20]) {
+if([REValidation validateExpirationMonth:11 year:30]) {
     NSLog(@"Expiration date is valid");
 }else{
     NSLog(@"Expiration date is invalid");
