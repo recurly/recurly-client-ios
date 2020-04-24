@@ -25,7 +25,7 @@
 #import <AddressBook/AddressBook.h>
 #import "REProtocols.h"
 
-
+@class CNContact;
 /** Encapculates all the required user information, including name, last name and address.
  It is used to encapsulate the billing address in a payment request.
  @see RECardRequest
@@ -66,10 +66,10 @@
 /** Country code */
 @property (nonatomic, strong) NSString *countryCode;
 
-
 /** Initializes a REAddress from an AddressBook reference
  @param record AddressBook's record
  */
-- (instancetype)initWithABRecord:(ABRecordRef)record NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithABRecord:(ABRecordRef)record API_DEPRECATED("Use CNContact instead.", ios(2.0, 9.0));
+- (instancetype)initWithCNContact:(CNContact *)contact API_AVAILABLE(ios(9.0));
 
 @end

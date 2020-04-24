@@ -60,7 +60,7 @@ static RecurlyState *__sharedInstance = nil;
 {
     @synchronized(_configuration) {
         if(!_configuration) {
-            [NSException raise:@"RecurlyWasNotInitialized" format:nil];
+            [NSException raise:@"RecurlyWasNotInitialized" format:@""];
         }
         return _configuration;
     }

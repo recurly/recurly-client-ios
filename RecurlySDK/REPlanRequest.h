@@ -37,6 +37,6 @@
  the recurly's dashboard.
  @param planCode Plan code
  */
-- (instancetype)initWithPlanCode:(NSString *)planCode NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithPlanCode:(NSString *)planCode;
 
 @end

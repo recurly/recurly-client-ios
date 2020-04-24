@@ -53,6 +53,6 @@
 - (instancetype)initWithURL:(NSURL *)endpoint
                      method:(NSString *)method
                        data:(NSData *)data
-                    timeout:(NSUInteger)timeout NS_DESIGNATED_INITIALIZER;
+                    timeout:(NSUInteger)timeout;
 
 @end

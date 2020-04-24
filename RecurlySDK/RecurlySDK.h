@@ -141,6 +141,7 @@
 /** Helper method to create UIAlerViews based in any error provided by this SDK.
  @param error Error used to create the UIAlertView
  */
-+ (UIAlertView *)alertViewWithError:(NSError *)error;
++ (UIAlertView *)alertViewWithError:(NSError *)error API_DEPRECATED("Use UIAlertController instead.", ios(2.0, 9.0));
++ (UIAlertController *)alertControllerWithError:(NSError *)error API_AVAILABLE(ios(10.0));
 
 @end

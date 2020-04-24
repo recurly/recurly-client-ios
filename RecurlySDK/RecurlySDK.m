@@ -105,4 +105,15 @@
                             otherButtonTitles:nil];
 }
 
++ (UIAlertController *)alertControllerWithError:(NSError *)error
+{
+    if(error == nil) {
+        return nil;
+    }
+
+    return [UIAlertController alertControllerWithTitle:[error localizedFailureReason]
+                                               message:[error localizedDescription]
+                                        preferredStyle:UIAlertControllerStyleAlert];
+}
+
 @end

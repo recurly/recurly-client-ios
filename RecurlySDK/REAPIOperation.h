@@ -37,6 +37,6 @@ typedef void (^REAPICompletion)(REAPIResponse *response, NSError *error);
 @property (nonatomic, readonly) REAPICompletion completionHandler;
 
 - (instancetype)initWithRequest:(REAPIRequest *)request
-                     completion:(REAPICompletion)handler NS_DESIGNATED_INITIALIZER;
+                     completion:(REAPICompletion)handler;
 
 @end

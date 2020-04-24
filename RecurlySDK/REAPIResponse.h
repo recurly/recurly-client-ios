@@ -42,7 +42,7 @@
 
 - (instancetype)initWithRequest:(REAPIRequest *)request
                      statusCode:(NSInteger)statusCode
-                       HTTPBody:(NSData *)receivedData NS_DESIGNATED_INITIALIZER;
+                       HTTPBody:(NSData *)receivedData;
 
 - (NSDictionary *)JSONDictionary;
 - (NSArray *)JSONArray;
