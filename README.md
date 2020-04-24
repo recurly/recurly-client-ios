@@ -4,9 +4,9 @@ The Recurly SDK allows you to integrate recurrent payments in your existing iOS 
 
 We encourage our partners to review Apple's guidelines on mobile application development. In particular, please review Section 11 to familiarize yourself with the purchases and currencies guidelines: <https://developer.apple.com/app-store/review/guidelines/#purchasing-currencies>
 
-When a customer submits your payment form, the Recurly iOS SDK sends customer payment information to be encrypted and stored at Recurly and gives you an authorization key to complete the subscription process using our powerful API.
+When a customer submits your payment form, the Recurly iOS SDK sends customer payment information to be encrypted and stored at Recurly and gives you an billing token to complete the subscription process using our powerful API.
 
-With this authorization key (or token), you can do anything with our API that requires payment information. Because you never handle any sensitive payment information, your PCI scope is drastically reduced.
+With this billing token, you can do anything with our API that requires payment information. Because you never handle any sensitive payment information, your PCI scope is drastically reduced.
 
 ## 1. Download
 
@@ -17,7 +17,7 @@ After reviewing our SDK via GitHub, use one of these two options to begin using 
 ### 1.1 Using CocoaPods
 If you already have and use Cocoapods, skip to step 3.
 
-1. [Install CocoaPods](https://guides.cocoapods.org/using/getting-started.html) if you don't already have it.  
+1. [Install CocoaPods](https://guides.cocoapods.org/using/getting-started.html) if you don't already have it.
 2. [Set up](https://guides.cocoapods.org/using/using-cocoapods.html) CocoaPods in your project.
 3. Add this line your `Podfile`.
 
@@ -68,7 +68,7 @@ We strongly recommend that you configure the SDK when your application is launch
 {
     [Recurly configure:@"YOUR_PUBLIC_KEY"];
     // continue initializing your app
-}    
+}
 ```
 
 ## 4. Examples
@@ -200,9 +200,9 @@ Tokens can be used to populate any account Billing Info data through our API. Si
 
 **These endpoints accept tokens within billing info.**
 
-* Subscription [`create`](https://dev.recurly.com/docs/create-subscription)
-* Account [`create`](https://dev.recurly.com/docs/create-an-account), [`update`](https://dev.recurly.com/docs/update-account)
-* Billing Info [`update`](https://dev.recurly.com/docs/update-an-accounts-billing-info-token)
-* Transaction [`create`](https://dev.recurly.com/docs/create-transaction)
+* Purchase [`create`](https://developers.recurly.com/api/latest/index.html#operation/create_purchase)
+* Subscription [`create`](https://developers.recurly.com/api/latest/index.html#operation/create_subscription)
+* Account [`create`](https://developers.recurly.com/api/latest/index.html#operation/create_account), [`update`](https://developers.recurly.com/api/latest/index.html#operation/update_account)
+* Billing Info [`update`](https://developers.recurly.com/api/latest/index.html#operation/update_billing_info)
 
 > If you use a token, no other attributes will be allowed on that Billing Info for that request.
