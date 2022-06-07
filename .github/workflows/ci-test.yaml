@@ -9,5 +9,7 @@ jobs:
       run: ls /Applications | grep Xcode
     - name: Select Xcode
       run: sudo xcode-select -switch /Applications/Xcode_13.2.app && /usr/bin/xcodebuild -version
+    - name: Listing projects
+      run: xcodebuild test -list 
     - name: Run unit tests
       run: xcodebuild test 
