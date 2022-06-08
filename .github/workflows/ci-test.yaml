@@ -2,7 +2,7 @@ name: Swift
 on: [push, pull_request]
 jobs:
   Run_Tests:
-    runs-on: macOS-latest
+    runs-on: macOS-12
     steps:
     - uses: actions/checkout@v3
     - name: List available Xcode versions
