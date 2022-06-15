@@ -800,6 +800,7 @@
 		27DF9DBF274BC77D0093E7BA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGNING_ALLOWED = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 10;
 				DEFINES_MODULE = YES;
@@ -828,6 +829,7 @@
 		27DF9DC0274BC77D0093E7BA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGNING_ALLOWED = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 10;
 				DEFINES_MODULE = YES;
