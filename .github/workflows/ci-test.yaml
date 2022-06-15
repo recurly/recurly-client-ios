@@ -1,5 +1,7 @@
-name: Swift
-on: [push, pull_request]
+name: Test
+on:
+  pull_request:
+    types: [opened, synchronize]
 jobs:
   Run_Tests:
     runs-on: macOS-12
