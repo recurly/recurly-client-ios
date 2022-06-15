@@ -5,5 +5,6 @@ set -eo pipefail
 
 xcodebuild  -project RecurlySDK-iOS.xcodeproj \
 	    -scheme RecurlySDK-iOS \
-            -destination platform=iOS\ Simulator,OS=13.3,name=iPhone\ 11 \
-            clean Debug | xcpretty
+	    - sdk -sdk iphonesimulator
+            -destination platform=iOS\ Simulator,OS=15.2,name=iPhone\ 15 \
+            clean test | xcpretty
