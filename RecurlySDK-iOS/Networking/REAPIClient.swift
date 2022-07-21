@@ -12,9 +12,9 @@ struct REAPIClient {
     
     private let networkEngine = NetworkEngine()
     
-    func getTokenID(dataRequest: RETokenRequest) -> AnyPublisher<String, Error>  {
+    func getTokenID<T: Codable>(with dataRequest: T, requestType: TokenizationAPI) -> AnyPublisher<String, Error> {
         let subject = PassthroughSubject<String, Error>()
-        guard let request = networkEngine.createPOSTRequest(requestType: .getTokenID,
+        guard let request = networkEngine.createPOSTRequest(requestType: requestType,
                                                             requestBody: dataRequest) else {
             return subject.eraseToAnyPublisher()
         }
@@ -31,4 +31,5 @@ struct REAPIClient {
         
         return subject.eraseToAnyPublisher()
     }
+    
 }

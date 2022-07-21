@@ -24,8 +24,8 @@ public struct REApplePayInfo {
     // https://developer.apple.com/apple-pay/sandbox-testing/
     public var merchantIdentifier: String = "merchant.com.YOURDOMAIN.YOURAPPNAME"
     
-    // Required fields of user contact details
-    public var requiredContactFields: Set<PKContactField> = [.phoneNumber, .emailAddress]
+    // Required fields of user to create billing info
+    public var requiredContactFields: Set<PKContactField> = [.name, .phoneNumber, .postalAddress]
     
     // Items displayed on the summary of purchase
     public var purchaseItems: [REApplePayItem]

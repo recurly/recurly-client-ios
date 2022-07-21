@@ -52,7 +52,7 @@ struct ContentView: View {
                 
                 Button {
                     getToken { myToken in
-                        print(myToken)
+                        print("Token: \(myToken)")
                         currentStatusLabel = myToken
                     }
                 } label: {
@@ -66,8 +66,8 @@ struct ContentView: View {
             VStack(alignment: .center) {
                 Group {
                     REApplePayButton(action: {
-                        getTokenApplePayment { completed in
-                            // Do something
+                        getTokenApplePayment { myToken in
+                            print("Apple Pay Token: \(myToken)")
                         }
                     })
                     .padding()
@@ -119,7 +119,7 @@ struct ContentView: View {
     }
     
     // Get token from ApplePay button
-    private func getTokenApplePayment(completion: @escaping (Bool) -> ()) {
+    private func getTokenApplePayment(completion: @escaping (String) -> ()) {
         
         // Test items
         var items = [REApplePayItem]()
@@ -133,45 +133,76 @@ struct ContentView: View {
          
         // Using 'var' instance to change some default properties values
         var applePayInfo = REApplePayInfo(purchaseItems: items)
-        // By default only require .phoneNumber and emailAddress
-        applePayInfo.requiredContactFields = [.name, .phoneNumber, .emailAddress]
         applePayInfo.merchantIdentifier = "merchant.com.ch2solutions.recurlySDK-iOS"
         applePayInfo.countryCode = "US"
         applePayInfo.currencyCode = "USD"
         
         /// Starting the Apple Pay flow
-        self.paymentHandler.startApplePayment(with: applePayInfo) { (success, token) in
+        self.paymentHandler.startApplePayment(with: applePayInfo) { (success, token, billingInfo) in
             
             if success {
                 /// Token object 'PKPaymentToken' returned by Apple Pay
                 guard let token = token else { return }
                 
-                /// Decode Token
-                let paymentData = String(data: token.paymentData, encoding: .utf8)
-                guard let paymentJson = paymentData else { return }
+                /// Billing info
+                guard let billingInfo = billingInfo else { return }
+                
+                /// Decode ApplePaymentData from Token
+                let decoder = JSONDecoder()
+                var applePaymentData = REApplePaymentData()
+                
+                do {
+                    // This only works with a Sandbox Apple Pay enviroment in real device
+                    let applePaymentDataBody = try decoder.decode(REApplePaymentDataBody.self, from: token.paymentData)
+                    applePaymentData = REApplePaymentData(paymentData: applePaymentDataBody)
+                } catch {
+                    print("Apple Payment Data Error")
+                    
+                    // Creating a Simulated Data for Apple Pay
+                    let paymentDataBody = REApplePaymentDataBody(version: "EC_v1", data: "test", signature: "test", header: REApplePaymentDataHeader(ephemeralPublicKey: "test_public_key", publicKeyHash: "test_public_hash", transactionId: "abc123"))
+                    applePaymentData = REApplePaymentData(paymentData: paymentDataBody)
+                }
                 
                 let displayName = token.paymentMethod.displayName ?? "unknown"
                 let network = token.paymentMethod.network?.rawValue ?? "unknown"
-                let type = token.paymentMethod.type
-                let txId = token.transactionIdentifier
+                let type = token.paymentMethod.type.rawValue
                 
-                // Creating a test object to send Recurly
-                let applePayTokenString = """
-                {\"merchantIdentifier\":\"\(applePayInfo.merchantIdentifier)\",\
-                \"payment\":{\"token\":{
-                \"paymentData\":\(paymentJson),\
-                \"paymentMethod\":{\"displayName\":\"\(displayName)\",\"network\":\"\(network)\",\"type\":\"\(type)\"},\
-                \"transactionIdentifier\":\"\(txId)\"}}}
-                """
+                // Creating Apple Payment Method
+                let applePaymentMethod = REApplePaymentMethod(paymentMethod: REApplePaymentMethodBody(displayName: displayName, network: network, type: "\(type)"))
                 
-                self.currentStatusLabel = applePayTokenString
-                print("Success Apple Payment with token: \(applePayTokenString)")
+                // Creating Billing Info
+                let billingData = REBillingInfo(firstName: billingInfo.name?.givenName ?? String(),
+                                                lastName: billingInfo.name?.familyName ?? String(),
+                                                address1: billingInfo.postalAddress?.street ?? String(),
+                                                address2: "",
+                                                country: billingInfo.postalAddress?.country ?? String(),
+                                                city: billingInfo.postalAddress?.city ?? String(),
+                                                state: billingInfo.postalAddress?.state ?? String(),
+                                                postalCode: billingInfo.postalAddress?.postalCode ?? String(),
+                                                taxIdentifier: "",
+                                                taxIdentifierType: "")
+                
+                RETokenizationManager.shared.setBillingInfo(billingInfo: billingData)
+                RETokenizationManager.shared.setApplePaymentData(applePaymentData: applePaymentData)
+                RETokenizationManager.shared.setApplePaymentMethod(applePaymentMethod: applePaymentMethod)
+                
+                // This method is used to send ApplePay data for Tokenization
+                RETokenizationManager.shared.getApplePayTokenId { tokenId, error in
+                    
+                    if let errorResponse = error {
+                        print(errorResponse.error.message ?? "")
+                        currentStatusLabel = errorResponse.error.message ?? ""
+                        return
+                    }
+                    
+                    self.currentStatusLabel = tokenId ?? ""
+                    completion(tokenId ?? "")
+                }
                 
             } else {
                 print("Apple Payment Failed")
+                completion("")
             }
-            
-            completion(success)
         }
     }
     

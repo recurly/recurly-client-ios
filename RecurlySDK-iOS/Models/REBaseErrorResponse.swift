@@ -19,7 +19,7 @@ public struct RETokenError: Codable {
     /// Internal error message contains diagnostic information intended to help you diagnose problems with the form, and we do not recommend displaying its contents to your customers.
     public var message: String?
     /// details about the error
-    public var details: [RETokenDetails]
+    public var details: [RETokenDetails]?
 }
 
 /// Codable Model for mapping Error details

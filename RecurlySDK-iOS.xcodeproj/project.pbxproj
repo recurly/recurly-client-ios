@@ -80,6 +80,9 @@
 		86898691279228D800485118 /* REApplePayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86898690279228D800485118 /* REApplePayButton.swift */; };
 		86898692279228D800485118 /* REApplePayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86898690279228D800485118 /* REApplePayButton.swift */; };
 		868986982792450B00485118 /* REApplePaymentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F548DD27724D4B001014C8 /* REApplePaymentHandler.swift */; };
+		86EEFFAD2862CA4000F8059E /* REApplePayTokenRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86EEFFAC2862CA4000F8059E /* REApplePayTokenRequest.swift */; };
+		86EEFFAF2862E25A00F8059E /* REApplePaymentData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86EEFFAE2862E25A00F8059E /* REApplePaymentData.swift */; };
+		86EEFFB12862EC2D00F8059E /* REApplePaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86EEFFB02862EC2D00F8059E /* REApplePaymentMethod.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -158,6 +161,9 @@
 		866B9B93278F4E6A009035C2 /* REApplePayInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = REApplePayInfo.swift; sourceTree = "<group>"; };
 		868986882791EC8E00485118 /* REApplePayItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = REApplePayItem.swift; sourceTree = "<group>"; };
 		86898690279228D800485118 /* REApplePayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = REApplePayButton.swift; sourceTree = "<group>"; };
+		86EEFFAC2862CA4000F8059E /* REApplePayTokenRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = REApplePayTokenRequest.swift; sourceTree = "<group>"; };
+		86EEFFAE2862E25A00F8059E /* REApplePaymentData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = REApplePaymentData.swift; sourceTree = "<group>"; };
+		86EEFFB02862EC2D00F8059E /* REApplePaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = REApplePaymentMethod.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -361,6 +367,9 @@
 				27F498E72759BBA1009227F5 /* REBaseErrorResponse.swift */,
 				866B9B93278F4E6A009035C2 /* REApplePayInfo.swift */,
 				868986882791EC8E00485118 /* REApplePayItem.swift */,
+				86EEFFAC2862CA4000F8059E /* REApplePayTokenRequest.swift */,
+				86EEFFAE2862E25A00F8059E /* REApplePaymentData.swift */,
+				86EEFFB02862EC2D00F8059E /* REApplePaymentMethod.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -524,6 +533,7 @@
 				866B9B94278F4E6A009035C2 /* REApplePayInfo.swift in Sources */,
 				27C8CD0F274BE58500B4D601 /* REPlaceholderTextField.swift in Sources */,
 				27F548DE27724D4B001014C8 /* REApplePaymentHandler.swift in Sources */,
+				86EEFFB12862EC2D00F8059E /* REApplePaymentMethod.swift in Sources */,
 				27F498F2275D1A78009227F5 /* RETokenizationManager.swift in Sources */,
 				27F498E82759BBA1009227F5 /* REBaseErrorResponse.swift in Sources */,
 				27830A4527553F5F00B2620C /* RECardNumberTextField.swift in Sources */,
@@ -539,10 +549,12 @@
 				27F498EE275D118F009227F5 /* RECardData.swift in Sources */,
 				27F498D927597D35009227F5 /* REAPIClient.swift in Sources */,
 				27F498EC275A504B009227F5 /* UIDevice+Extension.swift in Sources */,
+				86EEFFAD2862CA4000F8059E /* REApplePayTokenRequest.swift in Sources */,
 				27F498DB2759818C009227F5 /* BaseRequest.swift in Sources */,
 				27BC1486276B90D4004FD5E0 /* String+Extension.swift in Sources */,
 				27DF9DC5274BC8DE0093E7BA /* RECreditCardInputUI.swift in Sources */,
 				27AFBB29275F8C00005274B3 /* REConfiguration.swift in Sources */,
+				86EEFFAF2862E25A00F8059E /* REApplePaymentData.swift in Sources */,
 				86898691279228D800485118 /* REApplePayButton.swift in Sources */,
 				27F498F0275D146C009227F5 /* RETokenRequest.swift in Sources */,
 				868986892791EC8E00485118 /* REApplePayItem.swift in Sources */,
@@ -613,11 +625,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = ContainerApp/ContainerApp.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_ASSET_PATHS = "\"ContainerApp/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 3236BJY7Q6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -625,7 +637,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -633,7 +645,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ch2solutions.recurlySDK-iOS";
 				PRODUCT_NAME = "SDK ContainerApp";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = "match Development com.ch2solutions.recurlySDK-iOS";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -646,11 +658,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = ContainerApp/ContainerApp.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_ASSET_PATHS = "\"ContainerApp/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 3236BJY7Q6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -658,7 +670,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -666,7 +678,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ch2solutions.recurlySDK-iOS";
 				PRODUCT_NAME = "SDK ContainerApp";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.ch2solutions.recurlySDK-iOS";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -799,7 +811,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 3236BJY7Q6;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -828,7 +840,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 3236BJY7Q6;
 				DYLIB_COMPATIBILITY_VERSION = 1;

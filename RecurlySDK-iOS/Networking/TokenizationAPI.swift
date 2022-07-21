@@ -10,6 +10,7 @@ import CoreTelephony
 
 enum TokenizationAPI {
     case getTokenID
+    case getApplePayTokenID
 }
 
 extension TokenizationAPI: BaseRequest {
@@ -32,6 +33,8 @@ extension TokenizationAPI: BaseRequest {
         switch self {
         case .getTokenID:
             return "/tokens"
+        case .getApplePayTokenID:
+            return "/apple_pay/token"
         }
     }
     
@@ -44,7 +47,7 @@ extension TokenizationAPI: BaseRequest {
     
     var method: String {
         switch self {
-        case .getTokenID:
+        case .getTokenID, .getApplePayTokenID:
             return "POST"
         }
     }

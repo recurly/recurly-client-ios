@@ -8,7 +8,7 @@
 import PassKit
 
 // Callback for payment status
-public typealias PaymentCompletionHandler = (Bool, PKPaymentToken?) -> Void
+public typealias PaymentCompletionHandler = (Bool, PKPaymentToken?, PKContact?) -> Void
 
 // Primary Apple Payment class to handle all logic about ApplePay Button
 public class REApplePaymentHandler: NSObject {
@@ -28,6 +28,8 @@ public class REApplePaymentHandler: NSObject {
     var paymentStatus = PKPaymentAuthorizationStatus.failure
     // ApplePay token
     var currentToken: PKPaymentToken?
+    // Billing info
+    var currentBillingInfo: PKContact?
     var completionHandler: PaymentCompletionHandler?
     
     // TDD
@@ -61,11 +63,11 @@ public class REApplePaymentHandler: NSObject {
                 self.isPaymentControllerPresented = true
                 
                 if self.isTesting {
-                    self.completionHandler!(true, nil)
+                    self.completionHandler!(true, nil, nil)
                 }
             } else {
                 NSLog("Failed to present payment controller")
-                self.completionHandler!(false, nil)
+                self.completionHandler!(false, nil, nil)
             }
         })
     }
@@ -111,8 +113,8 @@ extension REApplePaymentHandler: PKPaymentAuthorizationControllerDelegate {
         paymentStatus = .failure
         
         // Perform some very basic validation on the provided contact information
-        if payment.shippingContact?.emailAddress == nil {
-            let emailError = PKPaymentRequest.paymentContactInvalidError(withContactField: .emailAddress, localizedDescription: "An error with email address occurred")
+        if payment.shippingContact?.postalAddress == nil {
+            let emailError = PKPaymentRequest.paymentContactInvalidError(withContactField: .postalAddress, localizedDescription: "An error with postal address occurred")
             errors.append(emailError)
         } else if payment.shippingContact?.phoneNumber == nil {
             let phoneError = PKPaymentRequest.paymentContactInvalidError(withContactField: .phoneNumber, localizedDescription: "An error with phone number occurred")
@@ -123,6 +125,9 @@ extension REApplePaymentHandler: PKPaymentAuthorizationControllerDelegate {
         } else {
             // Here you would send the payment token to your server or payment provider to process
             currentToken = payment.token
+            
+            // Set current billing info
+            currentBillingInfo = payment.shippingContact
             
             // Once processed, return an appropriate status in the completion handler (success, failure, etc)
             paymentStatus = .success
@@ -136,9 +141,9 @@ extension REApplePaymentHandler: PKPaymentAuthorizationControllerDelegate {
         controller.dismiss {
             DispatchQueue.main.async {
                 if self.paymentStatus == .success {
-                    self.completionHandler!(true, self.currentToken)
+                    self.completionHandler!(true, self.currentToken, self.currentBillingInfo)
                 } else {
-                    self.completionHandler!(false, nil)
+                    self.completionHandler!(false, nil, nil)
                 }
             }
         }

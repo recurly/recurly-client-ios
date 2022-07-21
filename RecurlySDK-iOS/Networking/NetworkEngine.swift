@@ -40,6 +40,9 @@ class NetworkEngine {
         
         if let data = try? JSONEncoder().encode(requestBody) {
             request.httpBody = data
+            #if DEBUG
+            print("JSON ENCODE: \(String(data: data, encoding: .utf8) ?? "")")
+            #endif
         }
         
         return request
