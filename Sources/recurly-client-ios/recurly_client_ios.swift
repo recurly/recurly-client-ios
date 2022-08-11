@@ -1,5 +1,5 @@
 public struct recurly_client_ios {
-    public private(set) var text = "Hello, World!"
+    public private(set) var text = "RecurlySDK!"
 
     public init() {
     }
