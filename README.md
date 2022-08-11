@@ -1,4 +1,5 @@
 # Recurly iOS SDK
+![Recurly Client iOS](https://github.com/recurly/recurly-client-ios/actions/workflows/ci-test.yaml/badge.svg?branch=master)
 
 The Recurly SDK allows you to integrate recurrent payments in your existing iOS app in a matter of minutes.
 
