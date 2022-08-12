@@ -133,7 +133,7 @@ struct ContentView: View {
          
         // Using 'var' instance to change some default properties values
         var applePayInfo = REApplePayInfo(purchaseItems: items)
-        applePayInfo.merchantIdentifier = "merchant.com.ch2solutions.recurlySDK-iOS"
+        applePayInfo.merchantIdentifier = "merchant.com.recurly.recurlySDK-iOS"
         applePayInfo.countryCode = "US"
         applePayInfo.currencyCode = "USD"
         

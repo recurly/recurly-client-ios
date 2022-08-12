@@ -643,9 +643,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.ch2solutions.recurlySDK-iOS";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.recurly.recurlySDK-iOS";
 				PRODUCT_NAME = "SDK ContainerApp";
-				PROVISIONING_PROFILE_SPECIFIER = "match Development com.ch2solutions.recurlySDK-iOS";
+				PROVISIONING_PROFILE_SPECIFIER = "match Development com.recurly.recurlySDK-iOS";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -676,9 +676,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.ch2solutions.recurlySDK-iOS";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.recurly.recurlySDK-iOS";
 				PRODUCT_NAME = "SDK ContainerApp";
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.ch2solutions.recurlySDK-iOS";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.recurly.recurlySDK-iOS";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
