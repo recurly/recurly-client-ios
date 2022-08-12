@@ -3,6 +3,7 @@ name: deploy_to_cocoapods
 on:
   release:
     types: [released]
+  workflow_dispatch:  
 
 jobs:
   build:
