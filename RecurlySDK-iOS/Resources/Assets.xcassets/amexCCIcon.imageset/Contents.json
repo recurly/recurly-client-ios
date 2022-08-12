@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "Payment Card.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

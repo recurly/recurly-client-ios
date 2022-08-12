@@ -1,0 +1,21 @@
+name: Test
+on:
+  pull_request:
+    types: [opened, synchronize]
+  release:
+    types: [prereleased]
+  push:
+    branches:
+      - 'master'
+
+jobs:
+  Run_Tests:
+    runs-on: macOS-12
+    steps:
+    - uses: actions/checkout@v3
+    - name: Select Xcode
+      run: sudo xcode-select -switch /Applications/Xcode_13.2.app && /usr/bin/xcodebuild -version
+    - name: Test iOS app
+      run: exec ./.github/scripts/test_app.sh 
+    - name: Test Swift package
+      run: exec ./.github/scripts/test_swift.sh

@@ -1,8 +1,9 @@
 # Recurly iOS SDK
+![Recurly Client iOS](https://github.com/recurly/recurly-client-ios/actions/workflows/ci-test.yaml/badge.svg?branch=master)
 
 The Recurly SDK allows you to integrate recurrent payments in your existing iOS app in a matter of minutes.
 
-We encourage our partners to review Apple's guidelines on mobile application development. In particular, please review Section 11 to familiarize yourself with the purchases and currencies guidelines: <https://developer.apple.com/app-store/review/guidelines/#purchasing-currencies>
+We encourage our partners to review Apple's guidelines on mobile application development. In particular, please review Payments section to familiarize yourself with the purchases and currencies guidelines: <https://developer.apple.com/app-store/review/guidelines/#payments>
 
 When a customer submits your payment form, the Recurly iOS SDK sends customer payment information to be encrypted and stored at Recurly and gives you an billing token to complete the subscription process using our powerful API.
 
@@ -42,167 +43,233 @@ For more information on CocoaPods and the `Podfile`, visit: <https://guides.coco
   - AddressBook
   - Security
   - CoreTelephony
+  - PassKit
 
 4. Add the flag `-ObjC` to `Other Linker Flags` (located in Build Settings > Linking).
 
 
 ## 2. Import
-Once the framework is added to your project (via either of the methods above) you only need to import the SDK headers.
+Once the framework is added to your project (via either of the methods above) you only need to import the SDK.
 
-```obj-c
-#import <RecurlySDK/RecurlySDK.h>
+```SwiftUI
+import RecurlySDK_iOS
 ```
 
 ## 3. Configure
 In order to connect to the Recurly API, you must initialize the SDK with the API public key. This is found on the API credentials page of your Recurly site: <https://app.recurly.com/go/developer/api_access>
 
-```obj-c
-[Recurly configure:@"YOUR_PUBLIC_KEY"];
+```Swift
+REConfiguration.shared.initialize(publicKey: "Your Public Key")
 // after configuring, you can perform any operation with the SDK!
 ```
 
-We strongly recommend that you configure the SDK when your application is launched (in your `AppDelegate.m`, for example).
+We strongly recommend that you configure the SDK when your application is launched (in your `AppDelegate` or creating a custom init for your @main App (SwiftUI), for example).
 
-```obj-c
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
-    [Recurly configure:@"YOUR_PUBLIC_KEY"];
-    // continue initializing your app
+```Swift
+@main
+struct ContainerApp: App {
+    init() {
+        REConfiguration.shared.initialize(publicKey: "Your Public Key")
+    }
+    var body: some Scene {
+
+        WindowGroup {
+            ContentView()
+        }
+    }
 }
 ```
 
 ## 4. Examples
 Once the SDK is imported and configured, we can start building stuff with it!
+
+### Display our RECreditCardInputUI TextField
+
+```Swift
+       VStack(alignment: .center) {
+            RECreditCardInputUI(cardNumberPlaceholder: "Card number",
+                                expDatePlaceholder: "MM/YY",
+                                cvvPlaceholder: "CVV")
+                .padding(10)
+
+            Button {
+                getToken { myToken in
+                    print(myToken)
+                }
+            } label: {
+                Text("Subscribe")
+                    .fontWeight(.bold)
+            }
+        }.padding(.vertical, 100)
+```
+### Display Individual Components
+
+```Swift
+        VStack(alignment: .center, spacing: 20) {
+            VStack(alignment: .leading) {
+                RECardNumberTextField(placeholder: " Card number")
+                    .padding(.bottom, 30)
+
+                HStack(spacing: 15) {
+                    REExpDateTextField(placeholder: "MM/YY")
+                    RECVVTextField(placeholder: "CVV")
+                }.padding(.bottom, 3)
+
+            }.padding(.horizontal, 51)
+            .padding(.vertical, 10)
+
+            Button {
+                getToken { myToken in
+                    print(myToken)
+                }
+            } label: {
+                Text("Subscribe")
+                    .fontWeight(.bold)
+            }
+        }
+```
+
+### Apply Custom Fonts and Sizes
+
+```Swift
+
+    RECreditCardInputUI(cardNumberPlaceholder: "Card number",
+                                expDatePlaceholder: "MM/YY",
+                                cvvPlaceholder: "CVV",
+                                textFieldFont: Font.system(size: 15, weight: .bold, design: .default),
+                                titleLabelFont: Font.system(size: 13, weight: .bold, design: .default))
+```
+
 ### Get a payment token
 
-```obj-c
-RECardRequest *card = [RECardRequest new];
-card.number = @"4111111111111111";
-card.cvv = @"123";
-card.expirationMonth = 12;
-card.expirationYear = 2025;
-card.billingAddress.firstName = @"John";
-card.billingAddress.lastName = @"Smith";
-card.billingAddress.countryCode = @"US";
+```Swift
+let billingInfo = REBillingInfo(firstName: "David",
+                                lastName: "Figueroa",
+                                address1: "123 Main St",
+                                address2: "",
+                                company: "CH2",
+                                country: "USA",
+                                city: "Miami",
+                                state: "Florida",
+                                postalCode: "33101",
+                                phone: "555-555-5555",
+                                vatNumber: "",
+                                taxIdentifier: "",
+                                taxIdentifierType: "")
+//Inject the BillingInfo
+RETokenizationManager.shared.billingInfo = billingInfo
 
-[Recurly tokenWithRequest:card completion:^(NSString *token, NSError *error) {
-    if(!error) {
-        // DO STUFF WITH THE TOKEN
+//Get the TokenId for your Billing Info
+RETokenizationManager.shared.getTokenId { tokenId, error in
+        if let errorResponse = error {
+            print(errorResponse.error.message ?? "")
+            return
+        }    
+            print(tokenId ?? "")
+        }
+```
+
+or (exactly the same for requesting a tokenId just with your CardData):
+
+**The Card Data its passed to our Framework as the user types it so you don't need it nor have access to sensitive user info**
+```Swift
+// Display The RECreditCardInputUI or The Individual Components and as the User types in, the info will be ready to submitt inside our Framework
+
+//Get the TokenId for your Card Data
+RETokenizationManager.shared.getTokenId { tokenId, error in
+        if let errorResponse = error {
+            print(errorResponse.error.message ?? "")
+            return
+        }    
+            print(tokenId ?? "")
+        }
+```
+
+## 5. Apple Pay support
+To include the Apple Pay support using our SDK you need to following the next steps:
+
+### Instantiate REApplePaymentHandler class
+```Swift
+// Apple Payment handler instance
+    let paymentHandler = REApplePaymentHandler()
+```
+
+### Use our REApplePayButton
+```Swift
+/// Apple Pay
+            VStack(alignment: .center) {
+                Group {
+                    REApplePayButton(action: {
+                        getTokenApplePayment { completed in
+                            // Do something
+                        }
+                    })
+                    .padding()
+                    .preferredColorScheme(.light)
+                }
+                .previewLayout(.sizeThatFits)
+            }
+
+```
+
+### Apple Pay Token Callback
+```Swift
+// Get token from ApplePay button
+    private func getTokenApplePayment(completion: @escaping (Bool) -> ()) {
+
+        // Test items
+        var items = [REApplePayItem]()
+
+        items.append(REApplePayItem(amountLabel: "Foo",
+                                    amount: NSDecimalNumber(string: "3.80")))
+        items.append(REApplePayItem(amountLabel: "Bar",
+                                    amount: NSDecimalNumber(string: "0.99")))
+        items.append(REApplePayItem(amountLabel: "Tax",
+                                    amount: NSDecimalNumber(string: "1.53")))
+
+        // Using 'var' instance to change some default properties values
+        var applePayInfo = REApplePayInfo(purchaseItems: items)
+        // By default only require .phoneNumber and emailAddress
+        applePayInfo.requiredContactFields = [.name, .phoneNumber, .emailAddress]
+        // This MerchantID is required by Apple, you can learn more about:
+        // https://developer.apple.com/apple-pay/sandbox-testing/
+        applePayInfo.merchantIdentifier = "merchant.com.YOURDOMAIN.YOURAPPNAME"
+        applePayInfo.countryCode = "US"
+        applePayInfo.currencyCode = "USD"
+
+        /// Starting the Apple Pay flow
+        self.paymentHandler.startApplePayment(with: applePayInfo) { (success, token) in
+
+            if success {
+                /// Token object 'PKPaymentToken' returned by Apple Pay
+                guard let token = token else { return }
+
+                /// Decode Token
+                let paymentData = String(data: token.paymentData, encoding: .utf8)
+                guard let paymentJson = paymentData else { return }
+
+                let displayName = token.paymentMethod.displayName ?? "unknown"
+                let network = token.paymentMethod.network?.rawValue ?? "unknown"
+                let type = token.paymentMethod.type
+                let txId = token.transactionIdentifier
+
+                // Creating a test object to send Recurly
+                let applePayTokenString = """
+                {\"merchantIdentifier\":\"\(applePayInfo.merchantIdentifier)\",\
+                \"payment\":{\"token\":{
+                \"paymentData\":\(paymentJson),\
+                \"paymentMethod\":{\"displayName\":\"\(displayName)\",\"network\":\"\(network)\",\"type\":\"\(type)\"},\
+                \"transactionIdentifier\":\"\(txId)\"}}}
+                """
+
+                print("Success Apple Payment with token: \(applePayTokenString)")
+
+            } else {
+                print("Apple Payment Failed")
+            }
+
+            completion(success)
+        }
     }
-}];
 ```
-
-or (exactly the same):
-
-```obj-c
-RECardRequest *card = [RECardRequest requestWithCardNumber:@"4111111111111111"
-                                                       CVV:@"123"
-                                                     month:12
-                                                      year:2025
-                                                 firstName:@"John"
-                                                  lastName:@"Smith"
-                                               countryCode:@"US"];
-
-[Recurly tokenWithRequest:card completion:^(NSString *token, NSError *error) {
-    if(!error) {
-        // DO STUFF WITH THE TOKEN
-    }
-}];
-```
-
-
-### Get tax details for a specific locale
-
-```obj-c
-[Recurly taxForPostalCode:@"WA16 8GS"
-              countryCode:@"GB"
-               completion:^(RETaxes *tax, NSError *error)
-{
-    if(!error) {
-        NSLog(@"The VAT imposed in that location is: %@%%", [[tax totalTax] decimalNumberByMultiplyingByPowerOf10:2]);
-    }
-}];
-```
-
-### Get the details of a plan
-
-```obj-c
-[Recurly planForCode:@"premium"
-          completion:^(REPlan *plan, NSError *error) {
-    if(!error) {
-        NSLog(@"Plan info: %@", plan);
-    }
-}];
-```
-
-### Get the details of a coupon
-
-```obj-c
-[Recurly couponForPlan:@"premium"
-                  code:@"123Win"
-            completion:^(RECoupon *coupon, NSError *error)
-{
-    if(!error) {
-        NSLog(@"Coupon info: %@", coupon);
-    }
-}];
-```
-
-## 5. Validate input data manually
-
-### Card number
-
-```obj-c
-if([REValidation validateCardNumber:@"4111 1111 1111 1111"]) {
-    NSLog(@"Card number is valid");
-}else{
-    NSLog(@"Card number is invalid");
-}
-```
-
-### CVV
-
-```obj-c
-if([REValidation validateCVV:@"123"]) {
-    NSLog(@"CVV is valid");
-}else{
-    NSLog(@"CVV is invalid");
-}
-```
-
-
-### Country code
-
-```obj-c
-if([REValidation validateCountryCode:@"US"]) {
-    NSLog(@"Country code is valid");
-}else{
-    NSLog(@"Country code is invalid");
-}
-```
-
-
-### Expiration date
-
-```obj-c
-if([REValidation validateExpirationMonth:11 year:30]) {
-    NSLog(@"Expiration date is valid");
-}else{
-    NSLog(@"Expiration date is invalid");
-}
-```
-
-## 6. Using a Token
-
-Once the SDK has stored your customer’s sensitive data and given you a token reference, you will have 20 minutes to use it in our [API](https://dev.recurly.com/). Expired tokens are permanently removed from the Recurly servers.
-
-Tokens can be used to populate any account Billing Info data through our API. Simply assign it to the Billing Info’s `token_id` property and we’ll do the rest.
-
-**These endpoints accept tokens within billing info.**
-
-* Purchase [`create`](https://developers.recurly.com/api/latest/index.html#operation/create_purchase)
-* Subscription [`create`](https://developers.recurly.com/api/latest/index.html#operation/create_subscription)
-* Account [`create`](https://developers.recurly.com/api/latest/index.html#operation/create_account), [`update`](https://developers.recurly.com/api/latest/index.html#operation/update_account)
-* Billing Info [`update`](https://developers.recurly.com/api/latest/index.html#operation/update_billing_info)
-
-> If you use a token, no other attributes will be allowed on that Billing Info for that request.
+To learn more about how to active Apple Pay capability in Xcode project and create the Certificate for Merchant ID you can following the next link: https://developer.apple.com/documentation/passkit/apple_pay/setting_up_apple_pay

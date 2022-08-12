@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "RecurlySDK"
-  s.version      = "1.0.0"
+  s.version      = ENV['LIB_VERSION'] || "2.0.0" 
   s.summary      = "Integrate recurrent payments in your iOS app in a matter of minutes."
 
   s.homepage     = "https://dev.recurly.com/docs/client-libraries"
@@ -8,7 +8,7 @@ Pod::Spec.new do |s|
   s.author       = { "Recurly, Inc." => "support@recurly.com" }
 
 
-  s.platform     = :ios, '7.0'
+  s.platform     = :ios, '15.6'
   s.source       = { :git => "https://github.com/recurly/recurly-client-ios.git", :tag => "v#{s.version}" }
   s.source_files = 'RecurlySDK/*.{h,m}'
 
