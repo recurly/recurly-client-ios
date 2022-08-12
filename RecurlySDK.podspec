@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "RecurlySDK"
-  s.version      = ENV['LIB_VERSION'] #Replace with latest version on release page 
+  s.version      = ENV['LIB_VERSION'] || "2.0.0" 
   s.summary      = "Integrate recurrent payments in your iOS app in a matter of minutes."
 
   s.homepage     = "https://dev.recurly.com/docs/client-libraries"
