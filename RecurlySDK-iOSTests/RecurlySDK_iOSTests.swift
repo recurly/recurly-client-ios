@@ -67,7 +67,7 @@ class RecurlySDK_iOSTests: XCTestCase {
          
         var applePayInfo = REApplePayInfo(purchaseItems: items)
         applePayInfo.requiredContactFields = []
-        applePayInfo.merchantIdentifier = "merchant.com.ch2solutions.recurlySDK-iOS"
+        applePayInfo.merchantIdentifier = "merchant.com.recurly.recurlySDK-iOS"
         applePayInfo.countryCode = "US"
         applePayInfo.currencyCode = "USD"
         
