@@ -10,7 +10,7 @@ Pod::Spec.new do |s|
 
   s.platform     = :ios, '15.2'
   s.source       = { :git => "https://github.com/recurly/recurly-client-ios.git", :tag => "v#{s.version}" }
-  s.source_files = 'RecurlySDK-iOS/*.{h,m}'
+  s.source_files = 'RecurlySDK-iOS/**/*.{h,m,swift}'
 
   s.frameworks   = 'UIKit', 'Foundation', 'Security', 'CoreGraphics', 'QuartzCore', 'PassKit', 'AddressBook', 'CoreTelephony'
   s.requires_arc = true
