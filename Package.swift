@@ -10,7 +10,7 @@ let package = Package(
         .library(
             name: "RecurlySDK-iOS",
             targets: ["RecurlySDK-iOS"],
-            path: "RecurlySDK-iOS")
+            path: "RecurlySDK-iOS"),
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -25,7 +25,7 @@ let package = Package(
             dependencies: []),
         .testTarget(
             name: "RecurlySDK-iOSTests",
-            dependencies: ["recurly-client-ios"],
+            dependencies: ["RecurlySDK-iOS"],
             path: "RecurlySDK-iOSTests")
     ]
 )
