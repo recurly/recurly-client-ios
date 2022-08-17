@@ -9,7 +9,8 @@ let package = Package(
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
             name: "RecurlySDK-iOS",
-            targets: ["RecurlySDK-iOS"]),
+            targets: ["RecurlySDK-iOS"],
+            path: "RecurlySDK-iOS")
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -20,9 +21,11 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "RecurlySDK-iOS",
+            path: "RecurlySDK-iOS",
             dependencies: []),
         .testTarget(
             name: "RecurlySDK-iOSTests",
-            dependencies: ["recurly-client-ios"]),
+            dependencies: ["recurly-client-ios"],
+            path: "RecurlySDK-iOSTests")
     ]
 )
