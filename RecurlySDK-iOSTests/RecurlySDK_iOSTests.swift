@@ -10,7 +10,7 @@ import XCTest
 
 class RecurlySDK_iOSTests: XCTestCase {
     
-    let paymentHandler = PaymentHandler()
+    let paymentHandler = REApplePaymentHandler()
 
     func testTokenization() throws {
         //Initialize the SDK
