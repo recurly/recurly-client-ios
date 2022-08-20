@@ -45,6 +45,8 @@
 		27F498F0275D146C009227F5 /* RETokenRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F498EF275D146C009227F5 /* RETokenRequest.swift */; };
 		27F498F2275D1A78009227F5 /* RETokenizationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F498F1275D1A78009227F5 /* RETokenizationManager.swift */; };
 		27F548DE27724D4B001014C8 /* REApplePaymentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F548DD27724D4B001014C8 /* REApplePaymentHandler.swift */; };
+		5E5C346E28B178BC000680CF /* RecurlySDK-iOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E5C346D28B178BC000680CF /* RecurlySDK-iOSTests.swift */; };
+		5E5C346F28B178BC000680CF /* RecurlySDK_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27DF9DAA274BC77D0093E7BA /* RecurlySDK_iOS.framework */; };
 		866B9B94278F4E6A009035C2 /* REApplePayInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866B9B93278F4E6A009035C2 /* REApplePayInfo.swift */; };
 		868986892791EC8E00485118 /* REApplePayItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 868986882791EC8E00485118 /* REApplePayItem.swift */; };
 		86898691279228D800485118 /* REApplePayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86898690279228D800485118 /* REApplePayButton.swift */; };
@@ -55,6 +57,13 @@
 
 /* Begin PBXContainerItemProxy section */
 		27C8CD07274BD55700B4D601 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 27DF9DA1274BC77D0093E7BA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 27DF9DA9274BC77D0093E7BA;
+			remoteInfo = "RecurlySDK-iOS";
+		};
+		5E5C347028B178BC000680CF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 27DF9DA1274BC77D0093E7BA /* Project object */;
 			proxyType = 1;
@@ -116,6 +125,8 @@
 		27F498EF275D146C009227F5 /* RETokenRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RETokenRequest.swift; sourceTree = "<group>"; };
 		27F498F1275D1A78009227F5 /* RETokenizationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RETokenizationManager.swift; sourceTree = "<group>"; };
 		27F548DD27724D4B001014C8 /* REApplePaymentHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = REApplePaymentHandler.swift; sourceTree = "<group>"; };
+		5E5C346B28B178BC000680CF /* RecurlySDK-iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "RecurlySDK-iOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5E5C346D28B178BC000680CF /* RecurlySDK-iOSTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RecurlySDK-iOSTests.swift"; sourceTree = "<group>"; };
 		86450E1A2790BDF700DD5399 /* ContainerApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ContainerApp.entitlements; sourceTree = "<group>"; };
 		866B9B93278F4E6A009035C2 /* REApplePayInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = REApplePayInfo.swift; sourceTree = "<group>"; };
 		868986882791EC8E00485118 /* REApplePayItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = REApplePayItem.swift; sourceTree = "<group>"; };
@@ -138,6 +149,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5E5C346828B178BC000680CF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5E5C346F28B178BC000680CF /* RecurlySDK_iOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -256,6 +275,7 @@
 			isa = PBXGroup;
 			children = (
 				27DF9DAC274BC77D0093E7BA /* RecurlySDK-iOS */,
+				5E5C346C28B178BC000680CF /* RecurlySDK-iOSTests */,
 				27DF9DAB274BC77D0093E7BA /* Products */,
 				27C8CCF7274BD52E00B4D601 /* ContainerApp */,
 			);
@@ -266,6 +286,7 @@
 			children = (
 				27DF9DAA274BC77D0093E7BA /* RecurlySDK_iOS.framework */,
 				27C8CCF6274BD52E00B4D601 /* SDK ContainerApp.app */,
+				5E5C346B28B178BC000680CF /* RecurlySDK-iOSTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -313,6 +334,14 @@
 				86EEFFB02862EC2D00F8059E /* REApplePaymentMethod.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		5E5C346C28B178BC000680CF /* RecurlySDK-iOSTests */ = {
+			isa = PBXGroup;
+			children = (
+				5E5C346D28B178BC000680CF /* RecurlySDK-iOSTests.swift */,
+			);
+			path = "RecurlySDK-iOSTests";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -366,6 +395,24 @@
 			productReference = 27DF9DAA274BC77D0093E7BA /* RecurlySDK_iOS.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		5E5C346A28B178BC000680CF /* RecurlySDK-iOSTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5E5C347428B178BC000680CF /* Build configuration list for PBXNativeTarget "RecurlySDK-iOSTests" */;
+			buildPhases = (
+				5E5C346728B178BC000680CF /* Sources */,
+				5E5C346828B178BC000680CF /* Frameworks */,
+				5E5C346928B178BC000680CF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5E5C347128B178BC000680CF /* PBXTargetDependency */,
+			);
+			name = "RecurlySDK-iOSTests";
+			productName = "RecurlySDK-iOSTests";
+			productReference = 5E5C346B28B178BC000680CF /* RecurlySDK-iOSTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -381,6 +428,9 @@
 					};
 					27DF9DA9274BC77D0093E7BA = {
 						CreatedOnToolsVersion = 13.0;
+					};
+					5E5C346A28B178BC000680CF = {
+						CreatedOnToolsVersion = 13.4.1;
 					};
 				};
 			};
@@ -399,6 +449,7 @@
 			targets = (
 				27DF9DA9274BC77D0093E7BA /* RecurlySDK-iOS */,
 				27C8CCF5274BD52E00B4D601 /* ContainerApp */,
+				5E5C346A28B178BC000680CF /* RecurlySDK-iOSTests */,
 			);
 		};
 /* End PBXProject section */
@@ -420,6 +471,13 @@
 				277F56B5274E87260067E4E1 /* Inter-Bold.ttf in Resources */,
 				277F56AD274E7DFE0067E4E1 /* Inter-Regular.ttf in Resources */,
 				27C8CD0B274BE56300B4D601 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5E5C346928B178BC000680CF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -476,6 +534,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		5E5C346728B178BC000680CF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5E5C346E28B178BC000680CF /* RecurlySDK-iOSTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -484,6 +550,11 @@
 			platformFilter = ios;
 			target = 27DF9DA9274BC77D0093E7BA /* RecurlySDK-iOS */;
 			targetProxy = 27C8CD07274BD55700B4D601 /* PBXContainerItemProxy */;
+		};
+		5E5C347128B178BC000680CF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 27DF9DA9274BC77D0093E7BA /* RecurlySDK-iOS */;
+			targetProxy = 5E5C347028B178BC000680CF /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -732,6 +803,38 @@
 			};
 			name = Release;
 		};
+		5E5C347228B178BC000680CF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.recurly.RecurlySDK-iOSTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		5E5C347328B178BC000680CF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.recurly.RecurlySDK-iOSTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -758,6 +861,15 @@
 			buildConfigurations = (
 				27DF9DBF274BC77D0093E7BA /* Debug */,
 				27DF9DC0274BC77D0093E7BA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5E5C347428B178BC000680CF /* Build configuration list for PBXNativeTarget "RecurlySDK-iOSTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5E5C347228B178BC000680CF /* Debug */,
+				5E5C347328B178BC000680CF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
