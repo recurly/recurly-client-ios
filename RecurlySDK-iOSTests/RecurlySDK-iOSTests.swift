@@ -10,14 +10,13 @@ import XCTest
 
 class RecurlySDK_iOSTests: XCTestCase {
     
-    let publicKey = "ewr1-ulY3A5cxeTUlcZv44awb6U"
+    // Make sure you provide a valid public key (See the repository's README.md for more info)
+    let publicKey = "YOUR-PUBLIC-KEY"
     let paymentHandler = REApplePaymentHandler()
     
-    //    override func setUpWithError() throws { }
-    
-    func testTokenization() throws {
-        //Initialize the SDK
-        REConfiguration.shared.initialize(publicKey: publicKey)
+    // This utility function will setup the TokenizationManager
+    // with valid billingInfo and cardData
+    private func setupTokenizationManager() {
         RETokenizationManager.shared.setBillingInfo(
             billingInfo: REBillingInfo(
                 firstName: "David",
@@ -39,6 +38,37 @@ class RecurlySDK_iOSTests: XCTestCase {
         RETokenizationManager.shared.cardData.month = "12"
         RETokenizationManager.shared.cardData.year = "2022"
         RETokenizationManager.shared.cardData.cvv = "123"
+    }
+    
+    func testPublicKeyIsValid() throws {
+        REConfiguration.shared.initialize(publicKey: publicKey)
+        setupTokenizationManager()
+        
+        let tokenResponseExpectation = expectation(description: "TokenResponse")
+        RETokenizationManager.shared.getTokenId { tokenId, errorResponse in
+            if
+                let errorMessage = errorResponse?.error.message,
+                errorMessage == "Public key not found"
+            {
+                XCTFail(errorMessage + " : Is your public key valid?")
+                return
+            }
+            
+            if let errorResponse = errorResponse {
+                XCTFail(errorResponse.error.message ?? "Something went wrong. No error message arrived with error.")
+                return
+            }
+            
+            XCTAssertFalse(tokenId?.isEmpty ?? true, "tokenID was unexpectedly empty.")
+            tokenResponseExpectation.fulfill()
+        }
+        wait(for: [tokenResponseExpectation], timeout: 5.0)
+    }
+    
+    func testTokenization() throws {
+        //Initialize the SDK
+        REConfiguration.shared.initialize(publicKey: publicKey)
+        setupTokenizationManager()
         
         let tokenResponseExpectation = expectation(description: "TokenResponse")
         RETokenizationManager.shared.getTokenId { tokenId, error in
@@ -103,17 +133,15 @@ class RecurlySDK_iOSTests: XCTestCase {
     
     func testRecurlyErrorResponse() throws {
         //Initialize the SDK
-        REConfiguration.shared.initialize(publicKey: "ewr1-4TIXlPCkR68woNJp7UYMSL")
-        
-        RETokenizationManager.shared.cardData.number = "4111111111111111"
-//        RETokenizationManager.shared.cardData.month = "12" MISSED THIS ON PURPOSE
-        RETokenizationManager.shared.cardData.year = "2022"
-        RETokenizationManager.shared.cardData.cvv = "123"
-        
+        REConfiguration.shared.initialize(publicKey: publicKey)
+        setupTokenizationManager()
+       
+        // Purposefully set this to empty as if it were missing
+        RETokenizationManager.shared.cardData.month = ""
+            
         let tokenResponseExpectation = expectation(description: "TokenErrorResponse")
         RETokenizationManager.shared.getTokenId { tokenId, error in
             if let errorResponse = error {
-                // TODO: Failing in unexpected way ~ "Public key not found"
                 XCTAssertTrue(errorResponse.error.code == "invalid-parameter")
                 tokenResponseExpectation.fulfill()
             }

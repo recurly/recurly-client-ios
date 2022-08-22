@@ -44,36 +44,41 @@ public struct RETokenizationManager {
     ///
     /// Sends the CardData (CardNumber, ExpDate, CVV) and/or the BillingInfo that you want to tokenize
     ///
-    ///
     /// - Parameter completion: (TokenId, Error)
     public mutating func getTokenId(completion: @escaping (String?, REBaseErrorResponse?) -> ()) {
         
-        let tokenizationRequest = RETokenRequest(cardData: cardData,
-                                                 billingInfo: billingInfo,
-                                                 version: UIApplication.version,
-                                                 key: REConfiguration.shared.apiPublicKey,
-                                                 deviceId: getDeviceID(),
-                                                 sessionId: getSessionID())
+        let tokenizationRequest = RETokenRequest(
+            cardData: cardData,
+            billingInfo: billingInfo,
+            version: UIApplication.version,
+            key: REConfiguration.shared.apiPublicKey,
+            deviceId: getDeviceID(),
+            sessionId: getSessionID()
+        )
         
-        if !cardData.cvv.isEmpty {
-            apiClient.getTokenID(with: tokenizationRequest, requestType: .getTokenID).sink { result in
-                switch result {
-                case .failure(let error as REBaseErrorResponse):
-                    completion(nil, error)
-                default: break
-                }
-            } receiveValue: { token in
-                completion(token, nil)
-            }.store(in: &subscriptions)
-        } else {
-            completion(nil,
-                       REBaseErrorResponse(
-                        error: RETokenError(code: "validation",
-                                            message: "cvv is required",
-                                            details: [])
-                       )
+        guard !cardData.cvv.isEmpty else {
+            completion(
+                nil,
+                REBaseErrorResponse(
+                    error: RETokenError(
+                        code: "validation",
+                        message: "cvv is required",
+                        details: []
+                    )
+                )
             )
+            return
         }
+        
+        apiClient.getTokenID(with: tokenizationRequest, requestType: .getTokenID).sink { result in
+            switch result {
+            case .failure(let error as REBaseErrorResponse):
+                completion(nil, error)
+            default: break
+            }
+        } receiveValue: { token in
+            completion(token, nil)
+        }.store(in: &subscriptions)
     }
     
     /// Returns the tokenId as String from a BillingInfo or/with ApplePaymentData, ApplePaymentMethod tokenization request.
