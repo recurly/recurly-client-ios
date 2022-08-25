@@ -10,8 +10,6 @@ import XCTest
 
 class RecurlySDK_iOSTests: XCTestCase {
     
-    // Make sure you provide a valid public key (See the repository's README.md for more info)
-    let publicKey = "YOUR-PUBLIC-KEY"
     let paymentHandler = REApplePaymentHandler()
     
     // This utility function will setup the TokenizationManager
@@ -40,6 +38,8 @@ class RecurlySDK_iOSTests: XCTestCase {
         RETokenizationManager.shared.cardData.cvv = "123"
     }
     
+    // Test not compiling? You need to provide your own `publicKey` in a separate file.
+    // See "3. Configure" in the README.md for more info.
     func testPublicKeyIsValid() throws {
         REConfiguration.shared.initialize(publicKey: publicKey)
         setupTokenizationManager()

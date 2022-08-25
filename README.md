@@ -80,6 +80,11 @@ struct ContainerApp: App {
 }
 ```
 
+### Unit Tests
+You can verify your API public key is working by running the tests in `RecurlySDK-iOSTests/RecurlySDK-iOSTests.swift`. This file does not compile out of the box because it expects you to provide your `publicKey` in a separate file.
+
+In the `RecurlySDK-iOSTests` directory, create a `env.swift` file with the line `val publicKey = "<your public key>"` and run the tests in Xcode.
+
 ## 4. Examples
 Once the SDK is imported and configured, we can start building stuff with it!
 
@@ -273,3 +278,4 @@ To include the Apple Pay support using our SDK you need to following the next st
     }
 ```
 To learn more about how to active Apple Pay capability in Xcode project and create the Certificate for Merchant ID you can following the next link: https://developer.apple.com/documentation/passkit/apple_pay/setting_up_apple_pay
+
