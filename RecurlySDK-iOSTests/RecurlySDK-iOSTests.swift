@@ -1,8 +1,8 @@
 //
-//  RecurlySDK_iOSTests.swift
+//  RecurlySDK-iOSTests.swift
 //  RecurlySDK-iOSTests
 //
-//  Created by David Figueroa on 22/11/21.
+//  Created by George Andrew Shoemaker on 8/20/22.
 //
 
 import XCTest
@@ -10,31 +10,65 @@ import XCTest
 
 class RecurlySDK_iOSTests: XCTestCase {
     
-    let paymentHandler = PaymentHandler()
-
-    func testTokenization() throws {
-        //Initialize the SDK
-        REConfiguration.shared.initialize(publicKey: "ewr1-4TIXlPCkR68woNJp7UYMSL")
-        
-        let billingInfo = REBillingInfo(firstName: "David",
-                                        lastName: "Figueroa",
-                                        address1: "123 Main St",
-                                        address2: "",
-                                        company: "CH2",
-                                        country: "USA",
-                                        city: "Miami",
-                                        state: "Florida",
-                                        postalCode: "33101",
-                                        phone: "555-555-5555",
-                                        vatNumber: "",
-                                        taxIdentifier: "",
-                                        taxIdentifierType: "")
-        
-        RETokenizationManager.shared.setBillingInfo(billingInfo: billingInfo)
+    let paymentHandler = REApplePaymentHandler()
+    
+    // This utility function will setup the TokenizationManager
+    // with valid billingInfo and cardData
+    private func setupTokenizationManager() {
+        RETokenizationManager.shared.setBillingInfo(
+            billingInfo: REBillingInfo(
+                firstName: "David",
+                lastName: "Figueroa",
+                address1: "123 Main St",
+                address2: "",
+                company: "CH2",
+                country: "USA",
+                city: "Miami",
+                state: "Florida",
+                postalCode: "33101",
+                phone: "555-555-5555",
+                vatNumber: "",
+                taxIdentifier: "",
+                taxIdentifierType: ""
+            )
+        )
         RETokenizationManager.shared.cardData.number = "4111111111111111"
         RETokenizationManager.shared.cardData.month = "12"
         RETokenizationManager.shared.cardData.year = "2022"
         RETokenizationManager.shared.cardData.cvv = "123"
+    }
+    
+    // Test not compiling? You need to provide your own `publicKey` in a separate file.
+    // See "3. Configure" in the README.md for more info.
+    func testPublicKeyIsValid() throws {
+        REConfiguration.shared.initialize(publicKey: publicKey)
+        setupTokenizationManager()
+        
+        let tokenResponseExpectation = expectation(description: "TokenResponse")
+        RETokenizationManager.shared.getTokenId { tokenId, errorResponse in
+            if
+                let errorMessage = errorResponse?.error.message,
+                errorMessage == "Public key not found"
+            {
+                XCTFail(errorMessage + " : Is your public key valid?")
+                return
+            }
+            
+            if let errorResponse = errorResponse {
+                XCTFail(errorResponse.error.message ?? "Something went wrong. No error message arrived with error.")
+                return
+            }
+            
+            XCTAssertFalse(tokenId?.isEmpty ?? true, "tokenID was unexpectedly empty.")
+            tokenResponseExpectation.fulfill()
+        }
+        wait(for: [tokenResponseExpectation], timeout: 5.0)
+    }
+    
+    func testTokenization() throws {
+        //Initialize the SDK
+        REConfiguration.shared.initialize(publicKey: publicKey)
+        setupTokenizationManager()
         
         let tokenResponseExpectation = expectation(description: "TokenResponse")
         RETokenizationManager.shared.getTokenId { tokenId, error in
@@ -57,14 +91,11 @@ class RecurlySDK_iOSTests: XCTestCase {
         
         paymentHandler.isTesting = true
         
-        var items = [REApplePayItem]()
-        items.append(REApplePayItem(amountLabel: "Foo",
-                                    amount: NSDecimalNumber(string: "3.80")))
-        items.append(REApplePayItem(amountLabel: "Bar",
-                                    amount: NSDecimalNumber(string: "0.99")))
-        items.append(REApplePayItem(amountLabel: "Tax",
-                                    amount: NSDecimalNumber(string: "1.53")))
-         
+        let items = [
+            REApplePayItem(amountLabel: "Foo", amount: 3.80),
+            REApplePayItem(amountLabel: "Bar", amount: 0.99),
+            REApplePayItem(amountLabel: "Tax", amount: 1.53)
+        ]
         var applePayInfo = REApplePayInfo(purchaseItems: items)
         applePayInfo.requiredContactFields = []
         applePayInfo.merchantIdentifier = "merchant.com.recurly.recurlySDK-iOS"
@@ -72,8 +103,7 @@ class RecurlySDK_iOSTests: XCTestCase {
         applePayInfo.currencyCode = "USD"
         
         let tokenResponseExpectation = expectation(description: "ApplePayTokenResponse")
-        paymentHandler.startApplePayment(with: applePayInfo) { (success, token) in
-            
+        paymentHandler.startApplePayment(with: applePayInfo) { (success, token, nil) in
             XCTAssertTrue(success, "Apple Pay is not ready")
             tokenResponseExpectation.fulfill()
         }
@@ -103,13 +133,12 @@ class RecurlySDK_iOSTests: XCTestCase {
     
     func testRecurlyErrorResponse() throws {
         //Initialize the SDK
-        REConfiguration.shared.initialize(publicKey: "ewr1-4TIXlPCkR68woNJp7UYMSL")
-        
-        RETokenizationManager.shared.cardData.number = "4111111111111111"
-//        RETokenizationManager.shared.cardData.month = "12" MISSED THIS ON PURPOSE
-        RETokenizationManager.shared.cardData.year = "2022"
-        RETokenizationManager.shared.cardData.cvv = "123"
-        
+        REConfiguration.shared.initialize(publicKey: publicKey)
+        setupTokenizationManager()
+       
+        // Purposefully set this to empty as if it were missing
+        RETokenizationManager.shared.cardData.month = ""
+            
         let tokenResponseExpectation = expectation(description: "TokenErrorResponse")
         RETokenizationManager.shared.getTokenId { tokenId, error in
             if let errorResponse = error {
