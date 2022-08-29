@@ -22,7 +22,7 @@ jobs:
     - name: Test iOS app
       run: exec ./.github/scripts/test_app.sh 
 
-    - name: Test Swift package
-      run: exec ./.github/scripts/test_swift.sh
-      env: 
-        API_TOKEN: ${{ secrets.API_TOKEN }}
+#    - name: Test Swift package
+#      run: exec ./.github/scripts/test_swift.sh
+#      env: 
+#        API_TOKEN: ${{ secrets.API_TOKEN }}
