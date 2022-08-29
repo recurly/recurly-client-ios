@@ -1,1 +1,1 @@
-let publicKey = "$API_TOKEN"
+let publicKey = ProcessInfo.processInfo.environment["API_TOKEN"]
