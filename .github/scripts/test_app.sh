@@ -3,7 +3,7 @@
 
 set -eo pipefail
 
-xcodebuild test -project RecurlySDK-iOS.xcodeproj \
-	            -scheme RecurlySDK-iOS \
-                -destination 'platform=iOS Simulator,OS=15.5,name=iPhone 13' \
-	            -only-testing RecurlySDK-iOSTests
+xcodebuild -project RecurlySDK-iOS.xcodeproj \
+	       -scheme RecurlySDK-iOS \
+           -destination 'platform=iOS Simulator,OS=15.5,name=iPhone 13' \
+	       -only-testing RecurlySDK-iOSTests
