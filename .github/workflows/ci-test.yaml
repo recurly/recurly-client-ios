@@ -22,10 +22,4 @@ jobs:
       run: xcrun simctl list runtimes
 
     - name: Test iOS app
-      run: echo "Here -> $API_TOKEN"
-#      run: exec ./.github/scripts/test_app.sh
-
-#    - name: Test Swift package
-#      run: exec ./.github/scripts/test_swift.sh
-#      env: 
-#        API_TOKEN: ${{ secrets.API_TOKEN }}
+      run: exec ./.github/scripts/test_app.sh
