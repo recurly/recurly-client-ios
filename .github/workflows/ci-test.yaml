@@ -21,5 +21,11 @@ jobs:
     - name: List Simulators
       run: xcrun simctl list runtimes
 
+    - name: Swift test
+      run: |
+        set -eo pipefail
+        swift build 
+        swift test --parallel
+        
     - name: Test iOS app
       run: exec ./.github/scripts/test_app.sh
