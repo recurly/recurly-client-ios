@@ -191,6 +191,9 @@ RETokenizationManager.shared.getTokenId { tokenId, error in
 ```
 
 ## 5. Apple Pay support
+
+The following assumes your company is setup as an Apple Pay merchant. For more info on configuration and setup, look at the `README-APPLE-PAY-CONFIG.md` documentation in the repo.
+
 To include the Apple Pay support using our SDK you need to following the next steps:
 
 ### Instantiate REApplePaymentHandler class
@@ -277,5 +280,3 @@ To include the Apple Pay support using our SDK you need to following the next st
         }
     }
 ```
-To learn more about how to active Apple Pay capability in Xcode project and create the Certificate for Merchant ID you can following the next link: https://developer.apple.com/documentation/passkit/apple_pay/setting_up_apple_pay
-
