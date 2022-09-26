@@ -1,23 +1,38 @@
 name: deploy_to_cocoapods
 
 on:
-  release:
-    types: [released]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version e.g.: v2.0.0'
+        required: true
 
 jobs:
-  build:
+  Create_Release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
+        with:
+          tag_name: ${{ github.event.inputs.version }}
+          release_name: ${{ github.event.inputs.version }}
+          draft: false
+          prerelease: false
 
+  Cocoa_Uploads:
     runs-on: macOS-latest
-
     steps:
     - uses: actions/checkout@v3
     - name: Select Xcode
-      run: sudo xcode-select -switch /Applications/Xcode_13.2.app && /usr/bin/xcodebuild -version  
+      run: sudo xcode-select -switch /Applications/Xcode_13.2.app && /usr/bin/xcodebuild -version
     - name: List Simulators
-      run: xcrun simctl list runtimes      
+      run: xcrun simctl list runtimes
     - name: Install Cocoapods
       run: gem install cocoapods
-      
+
     - name: Deploy to Cocoapods
       run: |
         set -eo pipefail
