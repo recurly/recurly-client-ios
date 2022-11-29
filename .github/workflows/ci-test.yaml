@@ -22,4 +22,10 @@ jobs:
       run: xcrun simctl list runtimes
 
     - name: Test iOS app
-      run: exec ./.github/scripts/test_app.sh
+      run: |
+        xcodebuild \
+          -project RecurlySDK-iOS.xcodeproj \
+          -scheme RecurlySDK-iOS \
+          -destination 'platform=iOS Simulator,name=iPhone 13' \
+          PUBLIC_KEY=$API_TOKEN \
+          test \
