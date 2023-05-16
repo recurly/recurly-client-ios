@@ -10,7 +10,10 @@ import RecurlySDK_iOS
 
 struct ContentView: View {
     @State private var currentStatusLabel = "Logs here"
-    
+    @State private var isButtonClicked: Bool = false
+    @State private var cardNumber = ""
+    @State private var expDate = ""
+    @State private var cvv = ""
     // Apple Payment handler instance
     let paymentHandler = REApplePaymentHandler()
 
@@ -21,18 +24,20 @@ struct ContentView: View {
             /// Components UI
             VStack(alignment: .center, spacing: 20) {
                 VStack(alignment: .leading) {
-                    RECardNumberTextField(placeholder: " Card number")
+                    RECardNumberTextField(placeholder: " Card number", isButtonClicked: $isButtonClicked)
+
                         .padding(.bottom, 30)
                     
                     HStack(spacing: 15) {
-                        REExpDateTextField(placeholder: "MM/YY")
-                        RECVVTextField(placeholder: "CVV")
+                        REExpDateTextField(placeholder: "MM/YY", isButtonClicked: $isButtonClicked)
+                        RECVVTextField(placeholder: "CVV", isButtonClicked: $isButtonClicked)
                     }.padding(.bottom, 3)
         
                 }.padding(.horizontal, 51)
                 .padding(.vertical, 10)
                 
                 Button {
+                    isButtonClicked = true
                     getToken { myToken in
                         print(myToken)
                         currentStatusLabel = myToken

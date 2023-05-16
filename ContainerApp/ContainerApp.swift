@@ -15,7 +15,7 @@ struct ContainerApp: App {
     
     init() {
         // Initialization of Recurly SDK
-        REConfiguration.shared.initialize(publicKey: "YOUR-PUBLIC-KEY")
+        REConfiguration.shared.initialize(publicKey: "ewr1-ryr9xkIHSwYw7QnTs4gA59")
     }
     
     var body: some Scene {

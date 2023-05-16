@@ -153,7 +153,7 @@ class UnifiedViewModel: ObservableObject {
     
     init() {
         FontLoader.loadFont(name: "Inter-Regular", fileExtension: "ttf")
-    }
+      }
     
     // MARK: - Helpers
     

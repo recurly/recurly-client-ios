@@ -15,15 +15,18 @@ public struct REExpDateTextField: View {
     private var placeholder: String
     private var onEditingChanged: (Bool) -> Void
     private var textFieldFont: Font
+    @Binding var isButtonClicked: Bool
     
     /// Creates a RECardNumberTextField object
     /// - Parameters:
     ///   - placeholder: The placeholder for the Card Number TextField
     ///   - textFieldFont: Optional Textfield Custom Font, Default its ("Inter-Regular", size: 17)
     public init(placeholder: String,
+                isButtonClicked: Binding<Bool>,
                 onEditingChanged: @escaping (Bool) -> Void = { _ in },
                 textFieldFont: Font = Font.custom("Inter-Regular", size: 17)){
         
+        self._isButtonClicked = isButtonClicked
         self.placeholder = placeholder
         self.onEditingChanged = onEditingChanged
         self.textFieldFont = textFieldFont
@@ -35,7 +38,12 @@ public struct REExpDateTextField: View {
                 
                 TextField("", text: $viewModel.expDate, onEditingChanged: onEditingChanged)
                     .placeholder(when: viewModel.expDate.isEmpty) {
-                        Text(placeholder).foregroundColor(.gray)
+                        if(viewModel.expDate.isEmpty && isButtonClicked){
+                            Text(placeholder).foregroundColor(.red)
+                        }else{
+                            Text(placeholder).foregroundColor(.gray)
+                        }
+                        
                     }
                     .keyboardType(.numberPad)
                     .foregroundColor(viewModel.expDateError ? .red : .black)
@@ -54,7 +62,7 @@ public struct REExpDateTextField: View {
                 
                 Divider()
                     .frame(height: 0.7)
-                    .background(viewModel.tfBorderColor)
+                    .background(viewModel.expDate.isEmpty && isButtonClicked ? Color.red : viewModel.lastTfBorderColor)
             }
         }
     }
