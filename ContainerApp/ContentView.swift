@@ -11,9 +11,7 @@ import RecurlySDK_iOS
 struct ContentView: View {
     @State private var currentStatusLabel = "Logs here"
     @State private var isButtonClicked: Bool = false
-    @State private var cardNumber = ""
-    @State private var expDate = ""
-    @State private var cvv = ""
+
     // Apple Payment handler instance
     let paymentHandler = REApplePaymentHandler()
 
