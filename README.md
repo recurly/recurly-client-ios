@@ -52,7 +52,7 @@ For more information on CocoaPods and the `Podfile`, visit: <https://guides.coco
 Once the framework is added to your project (via either of the methods above) you only need to import the SDK.
 
 ```SwiftUI
-import RecurlySDK_iOS
+import RecurlySDK
 ```
 
 ## 3. Configure

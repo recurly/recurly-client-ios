@@ -10,12 +10,11 @@ import Combine
 
 /// Recurly Custom Secure TextField for Card Number Input.
 public struct RECardNumberTextField: View {
-    
     @StateObject private var viewModel = IndividualViewModel()
     private var placeholder: String
     private var onEditingChanged: (Bool) -> Void
     private var textFieldFont: Font
-    
+
     /// Creates a RECardNumberTextField object
     /// - Parameters:
     ///   - placeholder: The placeholder for the Card Number TextField
@@ -23,12 +22,12 @@ public struct RECardNumberTextField: View {
     public init(placeholder: String,
                 onEditingChanged: @escaping (Bool) -> Void = { _ in },
                 textFieldFont: Font = Font.custom("Inter-Regular", size: 17)){
-        
+
         self.placeholder = placeholder
         self.onEditingChanged = onEditingChanged
         self.textFieldFont = textFieldFont
     }
-    
+
     private func didOnEditingChanged(editingChanged: Bool) -> Void {
         if editingChanged {
             viewModel.lastCardStatus = .entering
@@ -37,12 +36,12 @@ public struct RECardNumberTextField: View {
             viewModel.lastCardStatus = viewModel.cardStatus
         }
     }
-    
+
     public var body: some View {
         ZStack {
             VStack {
                 HStack {
-                    Image(viewModel.mainImageName, bundle: Bundle(identifier: "recurly.RecurlySDK-iOS"))
+                    Image(viewModel.mainImageName)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 40, height: 26, alignment: .center)
@@ -69,13 +68,12 @@ public struct RECardNumberTextField: View {
                             }
                         }
                 }
-                
+
                 Divider()
                     .frame(height: 0.7)
                     .padding(.horizontal, 0)
                     .background(viewModel.lastTfBorderColor)
             }
         }
-        
     }
 }

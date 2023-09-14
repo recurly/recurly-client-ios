@@ -12,11 +12,11 @@ env:
 
 jobs:
   Run_Tests:
-    runs-on: macOS-12
+    runs-on: macos-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Select Xcode
-      run: sudo xcode-select -switch /Applications/Xcode_13.4.app && /usr/bin/xcodebuild -version
+      run: sudo xcode-select -switch /Applications/Xcode_14.2.app && /usr/bin/xcodebuild -version
 
     - name: List Simulators
       run: xcrun simctl list runtimes
@@ -26,6 +26,6 @@ jobs:
         xcodebuild \
           -project RecurlySDK-iOS.xcodeproj \
           -scheme RecurlySDK-iOS \
-          -destination 'platform=iOS Simulator,name=iPhone 13' \
+          -destination 'platform=iOS Simulator,name=iPhone 14' \
           PUBLIC_KEY=$API_TOKEN \
           test \

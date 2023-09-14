@@ -54,6 +54,8 @@
 		86EEFFAD2862CA4000F8059E /* REApplePayTokenRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86EEFFAC2862CA4000F8059E /* REApplePayTokenRequest.swift */; };
 		86EEFFAF2862E25A00F8059E /* REApplePaymentData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86EEFFAE2862E25A00F8059E /* REApplePaymentData.swift */; };
 		86EEFFB12862EC2D00F8059E /* REApplePaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86EEFFB02862EC2D00F8059E /* REApplePaymentMethod.swift */; };
+		E925776A2AB4E76F00820B2C /* Image+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92577692AB4E76F00820B2C /* Image+Extension.swift */; };
+		E925776C2AB4F32200820B2C /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E925776B2AB4F32200820B2C /* Resource.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -136,6 +138,8 @@
 		86EEFFAC2862CA4000F8059E /* REApplePayTokenRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = REApplePayTokenRequest.swift; sourceTree = "<group>"; };
 		86EEFFAE2862E25A00F8059E /* REApplePaymentData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = REApplePaymentData.swift; sourceTree = "<group>"; };
 		86EEFFB02862EC2D00F8059E /* REApplePaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = REApplePaymentMethod.swift; sourceTree = "<group>"; };
+		E92577692AB4E76F00820B2C /* Image+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+Extension.swift"; sourceTree = "<group>"; };
+		E925776B2AB4F32200820B2C /* Resource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resource.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -190,6 +194,7 @@
 				277F56AF274E7ECE0067E4E1 /* FontLoader.swift */,
 				27830A402754FE4700B2620C /* CreditCardValidator.swift */,
 				27F548DD27724D4B001014C8 /* REApplePaymentHandler.swift */,
+				E925776B2AB4F32200820B2C /* Resource.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -201,6 +206,7 @@
 				27F498EB275A504B009227F5 /* UIDevice+Extension.swift */,
 				27AFBB532766DD84005274B3 /* UIApplication+Extension.swift */,
 				27BC1485276B90D4004FD5E0 /* String+Extension.swift */,
+				E92577692AB4E76F00820B2C /* Image+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -500,6 +506,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E925776A2AB4E76F00820B2C /* Image+Extension.swift in Sources */,
 				27830A4927553F7F00B2620C /* RECVVTextField.swift in Sources */,
 				27830A51275569AD00B2620C /* TextFieldClearButton.swift in Sources */,
 				866B9B94278F4E6A009035C2 /* REApplePayInfo.swift in Sources */,
@@ -508,6 +515,7 @@
 				86EEFFB12862EC2D00F8059E /* REApplePaymentMethod.swift in Sources */,
 				27F498F2275D1A78009227F5 /* RETokenizationManager.swift in Sources */,
 				27F498E82759BBA1009227F5 /* REBaseErrorResponse.swift in Sources */,
+				E925776C2AB4F32200820B2C /* Resource.swift in Sources */,
 				27830A4527553F5F00B2620C /* RECardNumberTextField.swift in Sources */,
 				27F498E62759B99F009227F5 /* RETokenResponse.swift in Sources */,
 				27830A4F27554FDC00B2620C /* UnifiedViewModel.swift in Sources */,
