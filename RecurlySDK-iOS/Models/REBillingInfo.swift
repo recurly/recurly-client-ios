@@ -33,9 +33,9 @@ public struct REBillingInfo: Codable {
     /// Customer VAT number. Used for VAT exclusion
     var vatNumber: String
     /// A valid CPF or CUIT. Required if it is a consumer card in Brazil early access or in Argentina.
-    var taxIdentifier: String
+    var taxIdentifier: String? = nil
     ///  cpf and cuit are the only accepted values for this field. Required if it is a consumer card in Brazil early access or in Argentina.
-    var taxIdentifierType: String
+    var taxIdentifierType: String? = nil
     
     enum CodingKeys: String, CodingKey {
         case firstName = "first_name"
@@ -64,8 +64,8 @@ public struct REBillingInfo: Codable {
                 postalCode: String = "",
                 phone: String = "",
                 vatNumber: String = "",
-                taxIdentifier: String = "",
-                taxIdentifierType: String = "") {
+                taxIdentifier: String? = nil,
+                taxIdentifierType: String? = nil) {
         
         self.firstName = firstName
         self.lastName = lastName

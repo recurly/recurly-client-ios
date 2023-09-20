@@ -12,10 +12,8 @@ public struct REConfiguration {
     public var apiPublicKey = ""
     public var sessionId = UUID()
     public static var shared = REConfiguration()
-    
+
     public mutating func initialize(publicKey: String) {
         self.apiPublicKey = publicKey
     }
-    
-    
 }

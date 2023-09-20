@@ -10,14 +10,13 @@ import Combine
 
 /// Recurly Custom Secure TextField for Card Input.
 public struct RECreditCardInputUI: View {
-    
     @StateObject private var viewModel = UnifiedViewModel()
     private var cardNumberPlaceholder: String
     private var expDatePlaceholder: String
     private var cvvPlaceholder: String
     private var textFieldFont: Font
     private var titleLabelFont: Font
-    
+
     /// Creates a RECreditCardInputUI object
     /// - Parameters:
     ///   - cardNumberPlaceholder: The placeholder for the Card Number TextField
@@ -30,14 +29,14 @@ public struct RECreditCardInputUI: View {
                 cvvPlaceholder: String,
                 textFieldFont: Font = Font.custom("Inter-Regular", size: 15),
                 titleLabelFont: Font = Font.custom("Inter-Regular", size: 13)) {
-        
+
         self.cardNumberPlaceholder = cardNumberPlaceholder
         self.expDatePlaceholder = expDatePlaceholder
         self.cvvPlaceholder = cvvPlaceholder
         self.textFieldFont = textFieldFont
         self.titleLabelFont = titleLabelFont
     }
-    
+
     private func didOnEditingChanged(editingChanged: Bool) -> Void {
         if editingChanged {
             viewModel.lastCardStatus = .entering
@@ -46,12 +45,11 @@ public struct RECreditCardInputUI: View {
             viewModel.lastCardStatus = viewModel.cardStatus
         }
     }
-    
+
     public var body: some View {
-        
         HStack(alignment: .center, spacing: 0){
-            
-            Image(viewModel.mainImageName, bundle: Bundle(identifier: "recurly.RecurlySDK-iOS"))
+
+            Image(viewModel.mainImageName)
                 .resizable()
                 .frame(width: 40, height: 26, alignment: .center)
                 .aspectRatio(contentMode: .fit)
@@ -59,7 +57,8 @@ public struct RECreditCardInputUI: View {
                 .padding(.leading, 12)
                 .rotation3DEffect(.degrees(viewModel.rotation), axis: (x: 1, y: 0, z: 0))
                 .animation(.easeIn, value: viewModel.rotation)
-            
+
+
             REPlaceholderTextField(placeholder: cardNumberPlaceholder,
                                    mainText: $viewModel.cardNumber,
                                    onEditingChanged: didOnEditingChanged(editingChanged:),
@@ -79,7 +78,7 @@ public struct RECreditCardInputUI: View {
                         viewModel.cardNumber = String(viewModel.cardNumber.prefix(cardLenght))
                     }
                 }
-            
+
             REPlaceholderTextField(placeholder: expDatePlaceholder, mainText: $viewModel.expDate, textFieldFont: textFieldFont, titleLabelFont: titleLabelFont)
                 .keyboardType(.numberPad)
                 .frame(width: 70, alignment: .leading)
@@ -93,7 +92,7 @@ public struct RECreditCardInputUI: View {
                         viewModel.expDate = String(viewModel.expDate.prefix(5))
                     }
                 })
-            
+
             REPlaceholderTextField(placeholder: cvvPlaceholder, mainText: $viewModel.cvv, onEditingChanged: { (editingChanged) in
                 viewModel.cvvFocus = editingChanged
             }, textFieldFont: textFieldFont, titleLabelFont: titleLabelFont)
@@ -112,7 +111,7 @@ public struct RECreditCardInputUI: View {
                         viewModel.cvv = String(viewModel.cvv.prefix(cvvLenght))
                     }
                 })
-            
+
         }.frame(height: 50)
             .background(
                 RoundedRectangle(cornerRadius: 10)

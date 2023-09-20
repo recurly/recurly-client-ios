@@ -9,7 +9,7 @@ import SwiftUI
 
 class FontLoader {
     static public func loadFont(name: String, fileExtension: String) {
-        if let fontUrl = Bundle(for: FontLoader.self).url(forResource: name, withExtension: fileExtension),
+        if let fontUrl = Resource.getProjectBundle().url(forResource: name, withExtension: fileExtension),
            let dataProvider = CGDataProvider(url: fontUrl as CFURL),
            let newFont = CGFont(dataProvider) {
             var error: Unmanaged<CFError>?
