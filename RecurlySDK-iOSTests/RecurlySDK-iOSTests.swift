@@ -32,9 +32,7 @@ class RecurlySDK_iOSTests: XCTestCase {
                 state: "Florida",
                 postalCode: "33101",
                 phone: "555-555-5555",
-                vatNumber: "",
-                taxIdentifier: "972.791.615-53",
-                taxIdentifierType: "cpf"
+                vatNumber: ""
             )
         )
         RETokenizationManager.shared.cardData.number = "4111111111111111"
