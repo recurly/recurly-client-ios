@@ -139,14 +139,13 @@ struct ContentView: View {
         applePayInfo.currencyCode = "USD"
         
         /// Starting the Apple Pay flow
-        self.paymentHandler.startApplePayment(with: applePayInfo) { (success, token, billingInfo) in
+        paymentHandler.startApplePayment(with: applePayInfo) { result in
             
-            if success {
+            switch result {
+            case .success(let pkPaymentData):
                 /// Token object 'PKPaymentToken' returned by Apple Pay
-                guard let token = token else { return }
-                
-                /// Billing info
-                guard let billingInfo = billingInfo else { return }
+                let token = pkPaymentData.0
+                let billingInfo = pkPaymentData.1
                 
                 /// Decode ApplePaymentData from Token
                 let decoder = JSONDecoder()
@@ -200,8 +199,8 @@ struct ContentView: View {
                     completion(tokenId ?? "")
                 }
                 
-            } else {
-                print("Apple Payment Failed")
+            case .failure(let paymentError):
+                print("Apple Payment Failed: ", paymentError)
                 completion("")
             }
         }

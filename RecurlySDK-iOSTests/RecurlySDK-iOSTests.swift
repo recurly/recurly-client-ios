@@ -110,8 +110,12 @@ class RecurlySDK_iOSTests: XCTestCase {
         applePayInfo.currencyCode = "USD"
 
         let tokenResponseExpectation = expectation(description: "ApplePayTokenResponse")
-        paymentHandler.startApplePayment(with: applePayInfo) { (success, token, nil) in
-            XCTAssertTrue(success, "Apple Pay is not ready")
+        paymentHandler.startApplePayment(with: applePayInfo) { result in
+            /// Wrap workaround for: https://github.com/apple/swift/issues/43104
+            func assertNoThrow() {
+                XCTAssertNoThrow(try result.get(), "Apple Pay is not ready")
+            }
+            assertNoThrow()
             tokenResponseExpectation.fulfill()
         }
         wait(for: [tokenResponseExpectation], timeout: 3.0)

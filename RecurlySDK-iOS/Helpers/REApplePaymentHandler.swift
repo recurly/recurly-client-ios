@@ -7,8 +7,14 @@
 
 import PassKit
 
+public enum REApplePaymentError: Error {
+    case failedToPresentController
+    case paymentAuthorization
+    case cancelled
+}
+
 // Callback for payment status
-public typealias PaymentCompletionHandler = (Bool, PKPaymentToken?, PKContact?) -> Void
+public typealias PaymentCompletionHandler = (Result<(PKPaymentToken, PKContact), REApplePaymentError>) -> Void
 
 // Primary Apple Payment class to handle all logic about ApplePay Button
 public class REApplePaymentHandler: NSObject {
@@ -25,12 +31,12 @@ public class REApplePaymentHandler: NSObject {
     // Reference to REApplePayItem
     var paymentSummaryItems = [PKPaymentSummaryItem]()
     // Current status of the transaction
-    var paymentStatus = PKPaymentAuthorizationStatus.failure
+    var paymentStatus: PKPaymentAuthorizationStatus?
     // ApplePay token
     var currentToken: PKPaymentToken?
     // Billing info
     var currentBillingInfo: PKContact?
-    var completionHandler: PaymentCompletionHandler?
+    var completionHandler: PaymentCompletionHandler!
     
     // TDD
     var isPaymentControllerPresented = false
@@ -57,17 +63,18 @@ public class REApplePaymentHandler: NSObject {
     private func presentPaymentRequest(with paymentRequest: PKPaymentRequest) {
         paymentController = PKPaymentAuthorizationController(paymentRequest: paymentRequest)
         paymentController?.delegate = self
-        paymentController?.present(completion: { (presented: Bool) in
+        paymentController?.present(completion: { [weak self] (presented: Bool) in
+            guard let self = self else { return }
             if presented {
                 NSLog("Presented payment controller")
                 self.isPaymentControllerPresented = true
                 
                 if self.isTesting {
-                    self.completionHandler!(true, nil, nil)
+                    self.completionHandler(.success((PKPaymentToken(), PKContact())))
                 }
             } else {
                 NSLog("Failed to present payment controller")
-                self.completionHandler!(false, nil, nil)
+                self.completionHandler(.failure(.failedToPresentController))
             }
         })
     }
@@ -97,7 +104,7 @@ public class REApplePaymentHandler: NSObject {
     
     // This method is intented to use from XCTest
     public func paymentControllerIsPresented() -> Bool {
-        self.isPaymentControllerPresented
+        isPaymentControllerPresented
     }
     
 }
@@ -132,18 +139,22 @@ extension REApplePaymentHandler: PKPaymentAuthorizationControllerDelegate {
             // Once processed, return an appropriate status in the completion handler (success, failure, etc)
             paymentStatus = .success
         }
-        
-        completion(PKPaymentAuthorizationResult(status: paymentStatus, errors: errors))
+        completion(PKPaymentAuthorizationResult(status: paymentStatus!, errors: errors))
     }
     
     // Responsible for dismissing and releasing the controller
     public func paymentAuthorizationControllerDidFinish(_ controller: PKPaymentAuthorizationController) {
-        controller.dismiss {
-            DispatchQueue.main.async {
-                if self.paymentStatus == .success {
-                    self.completionHandler!(true, self.currentToken, self.currentBillingInfo)
+        controller.dismiss { [weak self] in
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                if let paymentStatus = self.paymentStatus {
+                    if paymentStatus == .success {
+                        self.completionHandler(.success((self.currentToken!, self.currentBillingInfo!)))
+                    } else {
+                        self.completionHandler(.failure(.paymentAuthorization))
+                    }
                 } else {
-                    self.completionHandler!(false, nil, nil)
+                    self.completionHandler(.failure(.cancelled))
                 }
             }
         }
