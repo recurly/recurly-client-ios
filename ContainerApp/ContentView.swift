@@ -171,14 +171,14 @@ struct ContentView: View {
                 let applePaymentMethod = REApplePaymentMethod(paymentMethod: REApplePaymentMethodBody(displayName: displayName, network: network, type: "\(type)"))
                 
                 // Creating Billing Info
-                let billingData = REBillingInfo(firstName: billingInfo.name?.givenName ?? String(),
-                                                lastName: billingInfo.name?.familyName ?? String(),
-                                                address1: billingInfo.postalAddress?.street ?? String(),
+                let billingData = REBillingInfo(firstName: billingInfo?.name?.givenName ?? String(),
+                                                lastName: billingInfo?.name?.familyName ?? String(),
+                                                address1: billingInfo?.postalAddress?.street ?? String(),
                                                 address2: "",
-                                                country: billingInfo.postalAddress?.country ?? String(),
-                                                city: billingInfo.postalAddress?.city ?? String(),
-                                                state: billingInfo.postalAddress?.state ?? String(),
-                                                postalCode: billingInfo.postalAddress?.postalCode ?? String(),
+                                                country: billingInfo?.postalAddress?.country ?? String(),
+                                                city: billingInfo?.postalAddress?.city ?? String(),
+                                                state: billingInfo?.postalAddress?.state ?? String(),
+                                                postalCode: billingInfo?.postalAddress?.postalCode ?? String(),
                                                 taxIdentifier: "",
                                                 taxIdentifierType: "")
                 
