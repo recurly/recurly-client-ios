@@ -51,10 +51,12 @@ class NetworkEngine {
     func sendRequest<T:Codable>(responseModel: T.Type, request: URLRequest, completionHandler: @escaping (Result<T, REBaseErrorResponse>) -> ()) {
         
         URLSession.shared.dataTask(with: request as URLRequest, completionHandler: { data, response, error in
-            guard error == nil else {
+            if let error = error {
+                completionHandler(.failure(REBaseErrorResponse(error: RETokenError(code: "sdk-internal \(error._code)", message: error.localizedDescription))))
                 return
             }
             guard let data = data else {
+                completionHandler(.failure(REBaseErrorResponse(error: RETokenError(code: "sdk-internal", message: "No data"))))
                 return
             }
             
