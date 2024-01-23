@@ -39,6 +39,12 @@ public struct RETokenizationManager {
     public mutating func setApplePaymentMethod(applePaymentMethod: REApplePaymentMethod) {
         self.applePaymentMethod = applePaymentMethod
     }
+
+    /// Set the Card Data that its going to be send for tokenization
+    /// - Parameter cardData: The CardData received from the User
+    public mutating func setCardData(cardData: RECardData) {
+        self.cardData = cardData
+    }
     
     /// Returns the tokenId as String from a BillingInfo or/with CardData tokenization request.
     ///
