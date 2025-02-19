@@ -11,7 +11,7 @@ let package = Package(
     products: [
         .library(
             name: "Recurly",
-            targets: ["RecurlySDK-iOS"]
+            targets: ["Recurly"]
         )
     ],
     dependencies: [
@@ -22,12 +22,12 @@ let package = Package(
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
-            name: "RecurlySDK-iOS",
+            name: "Recurly",
             dependencies: [],
             path: "RecurlySDK-iOS"),
         .testTarget(
-            name: "RecurlySDK-iOSTests",
-            dependencies: ["RecurlySDK-iOS"],
+            name: "RecurlyTests",
+            dependencies: ["Recurly"],
             path: "RecurlySDK-iOSTests")
     ]
 )
