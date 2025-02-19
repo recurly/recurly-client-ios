@@ -4,13 +4,13 @@
 import PackageDescription
 
 let package = Package(
-    name: "recurly-client-ios",
+    name: "Recurly",
     platforms: [
         .iOS(.v14) // Adjust if you need to support an earlier version
     ],
     products: [
         .library(
-            name: "RecurlySDK",
+            name: "Recurly",
             targets: ["RecurlySDK-iOS"]
         )
     ],
@@ -28,6 +28,6 @@ let package = Package(
         .testTarget(
             name: "RecurlySDK-iOSTests",
             dependencies: ["RecurlySDK-iOS"],
-            path: "RecurlySDK-iOSTests"),
+            path: "RecurlySDK-iOSTests")
     ]
 )
