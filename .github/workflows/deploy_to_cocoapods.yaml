@@ -1,18 +1,14 @@
 name: deploy_to_cocoapods
-
 on:
   release:
     types: [released]
-
 jobs:
   build:
-
-    runs-on: macOS-latest
-
+    runs-on: macos-14
     steps:
     - uses: actions/checkout@v3
     - name: Select Xcode
-      run: sudo xcode-select -switch /Applications/Xcode_14.2.app && /usr/bin/xcodebuild -version  
+      run: sudo xcode-select -switch /Applications/Xcode_16.2.app && /usr/bin/xcodebuild -version
     - name: List Simulators
       run: xcrun simctl list runtimes      
     - name: Install Cocoapods

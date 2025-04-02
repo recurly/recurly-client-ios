@@ -2,21 +2,24 @@ name: Test
 on:
   pull_request:
     types: [opened, synchronize]
+  workflow_dispatch:
   release:
     types: [prereleased]
   push:
     branches:
-      - 'master'
+      - ci
+      - master
+
 env:
   API_TOKEN: ${{ secrets.API_TOKEN }}
 
 jobs:
   Run_Tests:
-    runs-on: macos-latest
+    runs-on: macos-14
     steps:
     - uses: actions/checkout@v4
     - name: Select Xcode
-      run: sudo xcode-select -switch /Applications/Xcode_14.2.app && /usr/bin/xcodebuild -version
+      run: sudo xcode-select -switch /Applications/Xcode_16.2.app && /usr/bin/xcodebuild -version
 
     - name: List Simulators
       run: xcrun simctl list runtimes
@@ -26,6 +29,6 @@ jobs:
         xcodebuild \
           -project RecurlySDK-iOS.xcodeproj \
           -scheme RecurlySDK-iOS \
-          -destination 'platform=iOS Simulator,name=iPhone 14' \
+          -destination 'platform=iOS Simulator,name=iPhone 15' \
           PUBLIC_KEY=$API_TOKEN \
           test \
