@@ -94,7 +94,8 @@ class RecurlySDK_iOSTests: XCTestCase {
         XCTAssertTrue(paymentHandler.applePaySupported(), "Apple Pay is not supported")
     }
 
-    func testApplePayTokenization() {
+    func testApplePayTokenization() throws {
+        throw XCTSkip("Apple Pay not supported on CI account")
 
         paymentHandler.isTesting = true
 
