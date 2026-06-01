@@ -2,7 +2,6 @@ name: deploy_to_cocoapods
 on:
   release:
     types: [released]
-
 jobs:
   build:
     runs-on: macos-14
