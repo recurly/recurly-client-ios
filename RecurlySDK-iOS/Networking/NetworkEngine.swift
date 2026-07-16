@@ -9,6 +9,12 @@ import Foundation
 
 class NetworkEngine {
     
+    private let session: URLSession
+    
+    init(session: URLSession = .shared) {
+        self.session = session
+    }
+    
     private func createRequest(requestType: BaseRequest) -> URLRequest? {
         guard let components = URLComponents(string: requestType.absoluteString),
               let url = components.url else { return nil }
@@ -53,7 +59,7 @@ class NetworkEngine {
     
     func sendRequest<T:Codable>(responseModel: T.Type, request: URLRequest, completionHandler: @escaping (Result<T, REBaseErrorResponse>) -> ()) {
         
-        URLSession.shared.dataTask(with: request as URLRequest, completionHandler: { data, response, error in
+        session.dataTask(with: request as URLRequest, completionHandler: { data, response, error in
             if let error = error {
                 completionHandler(.failure(REBaseErrorResponse(error: RETokenError(code: "network-error",
                                                                                     message: error.localizedDescription,
