@@ -43,10 +43,7 @@ class RecurlySDK_iOSTests: XCTestCase {
     
     func testPublicKeyIsValid() throws {
         
-        guard !publicKey.isEmpty else {
-            XCTFail("PUBLIC_KEY was not set")
-            return
-        }
+        try XCTSkipIf(publicKey.isEmpty, "PUBLIC_KEY not set")
         
         REConfiguration.shared.initialize(publicKey: publicKey)
         setupTokenizationManager()
@@ -73,6 +70,8 @@ class RecurlySDK_iOSTests: XCTestCase {
     }
 
     func testTokenization() throws {
+        try XCTSkipIf(publicKey.isEmpty, "PUBLIC_KEY not set")
+        
         //Initialize the SDK
         REConfiguration.shared.initialize(publicKey: publicKey)
         setupTokenizationManager()
@@ -140,6 +139,8 @@ class RecurlySDK_iOSTests: XCTestCase {
     }
 
     func testRecurlyErrorResponse() throws {
+        try XCTSkipIf(publicKey.isEmpty, "PUBLIC_KEY not set")
+        
         //Initialize the SDK
         REConfiguration.shared.initialize(publicKey: publicKey)
         setupTokenizationManager()

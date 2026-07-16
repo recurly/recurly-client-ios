@@ -8,5 +8,5 @@
 import Foundation
 
 func getEnviornmentVar(_ name: String) -> String?{
-    return ProcessInfo.processInfo.environment["PUBLIC_KEY"]
+    return ProcessInfo.processInfo.environment[name]
 }

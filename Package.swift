@@ -26,7 +26,7 @@ let package = Package(
             dependencies: [],
             path: "RecurlySDK-iOS"),
         .testTarget(
-            name: "RecurlyTests",
+            name: "RecurlySDK-iOSTests",
             dependencies: ["RecurlySDK-iOS"],
             path: "RecurlySDK-iOSTests")
     ]

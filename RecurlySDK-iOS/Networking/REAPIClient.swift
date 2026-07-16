@@ -13,16 +13,25 @@ struct REAPIClient {
     private let networkEngine = NetworkEngine()
     
     func getTokenID<T: Codable>(with dataRequest: T, requestType: TokenizationAPI) -> AnyPublisher<String, Error> {
-        let subject = PassthroughSubject<String, Error>()
         guard let request = networkEngine.createPOSTRequest(requestType: requestType,
                                                             requestBody: dataRequest) else {
-            return subject.eraseToAnyPublisher()
+            let error = REBaseErrorResponse(error: RETokenError(code: "sdk-internal",
+                                                                 message: "Failed to build request",
+                                                                 details: []))
+            return Fail(error: error).eraseToAnyPublisher()
         }
         
+        let subject = PassthroughSubject<String, Error>()
         networkEngine.sendRequest(responseModel: RETokenResponse.self, request: request) { result in
             switch result {
             case .success(let response):
-                subject.send(response.id ?? "")
+                guard let id = response.id, !id.isEmpty else {
+                    subject.send(completion: .failure(REBaseErrorResponse(error: RETokenError(code: "sdk-internal",
+                                                                                               message: "Token response missing id",
+                                                                                               details: []))))
+                    return
+                }
+                subject.send(id)
                 subject.send(completion: .finished)
             case .failure(let errorResponse):
                 subject.send(completion: .failure(errorResponse))
