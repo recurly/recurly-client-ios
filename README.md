@@ -80,6 +80,9 @@ struct ContainerApp: App {
 }
 ```
 
+#### EU Data Residency
+If your Recurly site is hosted in Recurly's EU data center, your public key is prefixed with `fra-`. The SDK automatically detects this prefix and routes tokenization requests to the EU endpoint (`api.eu.recurly.com`) instead of the default US endpoint (`api.recurly.com`) — no additional configuration is required. Make sure `REConfiguration.shared.initialize(publicKey:)` is called before performing any tokenization so the correct endpoint is used.
+
 ### Unit Tests
 `RecurlySDK-iOSTests/RecurlySDK-iOSTests.swift` expects to receive environment variables (such as PUBLIC\_KEY) from the command line.
 
