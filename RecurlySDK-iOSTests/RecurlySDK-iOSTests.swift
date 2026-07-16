@@ -127,6 +127,14 @@ class RecurlySDK_iOSTests: XCTestCase {
         //Test American Express
         ccValidator = CreditCardValidator("377813011144444")
         XCTAssertTrue(ccValidator.type == .amex)
+
+        //Test Mastercard
+        ccValidator = CreditCardValidator("5555555555554444")
+        XCTAssertTrue(ccValidator.type == .masterCard)
+
+        //Test Diners Club
+        ccValidator = CreditCardValidator("36227206271667")
+        XCTAssertTrue(ccValidator.type == .dinersClub)
     }
 
     func testValidCreditCard() throws {
