@@ -74,7 +74,12 @@ public struct RETokenizationManager {
             switch result {
             case .failure(let error as REBaseErrorResponse):
                 completion(nil, error)
-            default: break
+            case .failure(let error):
+                completion(nil, REBaseErrorResponse(error: RETokenError(code: "sdk-internal",
+                                                                         message: error.localizedDescription,
+                                                                         details: [])))
+            case .finished:
+                break
             }
         } receiveValue: { token in
             completion(token, nil)
@@ -101,7 +106,12 @@ public struct RETokenizationManager {
             switch result {
             case .failure(let error as REBaseErrorResponse):
                 completion(nil, error)
-            default: break
+            case .failure(let error):
+                completion(nil, REBaseErrorResponse(error: RETokenError(code: "sdk-internal",
+                                                                         message: error.localizedDescription,
+                                                                         details: [])))
+            case .finished:
+                break
             }
         } receiveValue: { token in
             completion(token, nil)

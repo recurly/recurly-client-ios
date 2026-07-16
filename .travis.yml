@@ -1,4 +1,0 @@
-language: objective-c
-xcode_project: RecurlySDK.xcodeproj # path to your xcodeproj folder
-xcode_scheme: RecurlyLib
-xcode_destination: platform=iOS Simulator,name=iPhone SE,OS=latest
