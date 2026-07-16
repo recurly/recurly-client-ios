@@ -22,6 +22,10 @@ class RecurlySDK_iOSTests: XCTestCase {
         // Prevent state from a stubbed MockURLProtocol.requestHandler leaking into
         // the next test (XCTest execution order is not guaranteed).
         MockURLProtocol.requestHandler = nil
+        // Prevent REConfiguration.shared.apiPublicKey (global static) from leaking
+        // between tests — e.g. EU-routing tests set a "fra-" key that must not
+        // bleed into other TokenizationAPI assertions (XCTest order is not guaranteed).
+        REConfiguration.shared.apiPublicKey = ""
         super.tearDown()
     }
     
@@ -564,6 +568,28 @@ class RecurlySDK_iOSTests: XCTestCase {
     func testTokenizationAPI_getApplePayTokenID_path() {
         XCTAssertEqual(TokenizationAPI.getApplePayTokenID.path, "/apple_pay/token")
         XCTAssertEqual(TokenizationAPI.getApplePayTokenID.absoluteString, "https://api.recurly.com/js/v1/apple_pay/token")
+    }
+
+    func testTokenizationAPI_euKeyPrefix_routesToEUHost() {
+        REConfiguration.shared.apiPublicKey = "fra-test123"
+        XCTAssertEqual(TokenizationAPI.getTokenID.baseURL, "api.eu.recurly.com/js/v1")
+        XCTAssertEqual(TokenizationAPI.getTokenID.absoluteString, "https://api.eu.recurly.com/js/v1/tokens")
+    }
+
+    func testTokenizationAPI_euKeyPrefix_routesApplePayToEUHost() {
+        REConfiguration.shared.apiPublicKey = "fra-test123"
+        XCTAssertEqual(TokenizationAPI.getApplePayTokenID.absoluteString, "https://api.eu.recurly.com/js/v1/apple_pay/token")
+    }
+
+    func testTokenizationAPI_usKey_routesToUSHost() {
+        REConfiguration.shared.apiPublicKey = "pub-test123"
+        XCTAssertEqual(TokenizationAPI.getTokenID.baseURL, "api.recurly.com/js/v1")
+        XCTAssertEqual(TokenizationAPI.getTokenID.absoluteString, "https://api.recurly.com/js/v1/tokens")
+    }
+
+    func testTokenizationAPI_emptyKey_defaultsToUSHost() {
+        REConfiguration.shared.apiPublicKey = ""
+        XCTAssertEqual(TokenizationAPI.getTokenID.baseURL, "api.recurly.com/js/v1")
     }
 
     // MARK: Extensions
