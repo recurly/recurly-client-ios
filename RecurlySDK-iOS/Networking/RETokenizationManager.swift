@@ -19,8 +19,12 @@ public struct RETokenizationManager {
     internal var billingInfo = REBillingInfo()
     internal var applePaymentData = REApplePaymentData()
     internal var applePaymentMethod = REApplePaymentMethod()
-    private let apiClient = REAPIClient()
+    private let apiClient: REAPIClient
     private var subscriptions = Set<AnyCancellable>()
+
+    internal init(apiClient: REAPIClient = REAPIClient()) {
+        self.apiClient = apiClient
+    }
 
     /// Set the Billing Info that its going to be send for tokenization
     /// - Parameter billingInfo: The BillingInfo received from the User

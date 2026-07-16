@@ -10,7 +10,11 @@ import Combine
 
 struct REAPIClient {
     
-    private let networkEngine = NetworkEngine()
+    private let networkEngine: NetworkEngine
+    
+    init(networkEngine: NetworkEngine = NetworkEngine()) {
+        self.networkEngine = networkEngine
+    }
     
     func getTokenID<T: Codable>(with dataRequest: T, requestType: TokenizationAPI) -> AnyPublisher<String, Error> {
         guard let request = networkEngine.createPOSTRequest(requestType: requestType,
