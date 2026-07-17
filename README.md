@@ -15,7 +15,24 @@ Access our SDK via GitHub: [iOS Client Repository](https://github.com/recurly/re
 
 After reviewing our SDK via GitHub, use one of these two options to begin using the Recurly iOS SDK.
 
-### 1.1 Using CocoaPods
+### 1.1 Using Swift Package Manager (recommended)
+1. In Xcode, go to **File → Add Package Dependencies…**
+2. Enter the repository URL:
+
+	```
+	https://github.com/recurly/recurly-client-ios.git
+	```
+3. Select the version rule you want (e.g. "Up to Next Major") and add the package to your app target.
+
+Alternatively, add it directly to your `Package.swift`:
+
+	```swift
+	.package(url: "https://github.com/recurly/recurly-client-ios.git", from: "3.0.0")
+	```
+
+### 1.2 Using CocoaPods
+> **CocoaPods trunk goes read-only on December 2, 2026.** Versions published before then stay installable forever, but **no new RecurlySDK versions will publish to CocoaPods after 2026-12-02** — use Swift Package Manager (above) for the latest releases. See <https://blog.cocoapods.org/CocoaPods-Specs-Repo/>.
+
 If you already have and use Cocoapods, skip to step 3.
 
 1. [Install CocoaPods](https://guides.cocoapods.org/using/getting-started.html) if you don't already have it.
@@ -34,24 +51,16 @@ If you already have and use Cocoapods, skip to step 3.
 For more information on CocoaPods and the `Podfile`, visit: <https://guides.cocoapods.org/using/the-podfile.html>
 
 
-### 1.2 Using the RecurlySDK.framework
-1. Download the framework from the releases page (or build it yourself using the `build.sh` script provided).
-2. [Drop it in](https://developer.apple.com/library/ios/recipes/xcode_help-structure_navigator/articles/Adding_a_Framework.html) your existing Xcode project.
-3. RecurlySDK needs the following frameworks:
-  - Foundation
-  - UIKit
-  - AddressBook
-  - Security
-  - CoreTelephony
-  - PassKit
-
-4. Add the flag `-ObjC` to `Other Linker Flags` (located in Build Settings > Linking).
-
-
 ## 2. Import
-Once the framework is added to your project (via either of the methods above) you only need to import the SDK.
+Once the package is added to your project (via either of the methods above) you only need to import the SDK.
 
-```SwiftUI
+```Swift
+// Swift Package Manager
+import RecurlySDK_iOS
+```
+
+```Swift
+// CocoaPods
 import RecurlySDK
 ```
 
@@ -82,6 +91,9 @@ struct ContainerApp: App {
 
 #### EU Data Residency
 If your Recurly site is hosted in Recurly's EU data center, your public key is prefixed with `fra-`. The SDK automatically detects this prefix and routes tokenization requests to the EU endpoint (`api.eu.recurly.com`) instead of the default US endpoint (`api.recurly.com`) — no additional configuration is required. Make sure `REConfiguration.shared.initialize(publicKey:)` is called before performing any tokenization so the correct endpoint is used.
+
+#### App Transport Security (ATS)
+The SDK only communicates with Recurly's tokenization endpoints (`api.recurly.com` / `api.eu.recurly.com`) over HTTPS. No ATS exceptions (e.g. `NSAllowsArbitraryLoads`) are required in your app's `Info.plist` to use the SDK.
 
 ### Unit Tests
 `RecurlySDK-iOSTests/RecurlySDK-iOSTests.swift` expects to receive environment variables (such as PUBLIC\_KEY) from the command line.
@@ -151,8 +163,8 @@ Once the SDK is imported and configured, we can start building stuff with it!
 ### Get a payment token
 
 ```Swift
-let billingInfo = REBillingInfo(firstName: "David",
-                                lastName: "Figueroa",
+let billingInfo = REBillingInfo(firstName: "Jane",
+                                lastName: "Doe",
                                 address1: "123 Main St",
                                 address2: "",
                                 company: "CH2",
@@ -165,7 +177,7 @@ let billingInfo = REBillingInfo(firstName: "David",
                                 taxIdentifier: "",
                                 taxIdentifierType: "")
 //Inject the BillingInfo
-RETokenizationManager.shared.billingInfo = billingInfo
+RETokenizationManager.shared.setBillingInfo(billingInfo: billingInfo)
 
 //Get the TokenId for your Billing Info
 RETokenizationManager.shared.getTokenId { tokenId, error in
@@ -249,7 +261,7 @@ To include the Apple Pay support using our SDK you need to following the next st
         applePayInfo.currencyCode = "USD"
 
         /// Starting the Apple Pay flow
-        self.paymentHandler.startApplePayment(with: applePayInfo) { (success, token) in
+        self.paymentHandler.startApplePayment(with: applePayInfo) { (success, token, contact) in
 
             if success {
                 /// Token object 'PKPaymentToken' returned by Apple Pay

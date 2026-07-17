@@ -1,0 +1,4 @@
+// Generated from /VERSION by scripts/update_version.sh — do not edit directly.
+
+MARKETING_VERSION = 3.0.0
+CURRENT_PROJECT_VERSION = 3.0.0

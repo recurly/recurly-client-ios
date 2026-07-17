@@ -18,6 +18,9 @@ jobs:
     runs-on: macos-14
     steps:
     - uses: actions/checkout@v6.0.2
+    - name: Check version consistency
+      run: scripts/check_version.sh
+
     - name: Select Xcode
       run: sudo xcode-select -switch /Applications/Xcode_16.2.app && /usr/bin/xcodebuild -version
 
@@ -31,4 +34,5 @@ jobs:
           -scheme RecurlySDK-iOS \
           -destination 'platform=iOS Simulator,OS=latest,name=iPhone 16' \
           PUBLIC_KEY=$API_TOKEN \
+          SWIFT_STRICT_CONCURRENCY=targeted \
           test \

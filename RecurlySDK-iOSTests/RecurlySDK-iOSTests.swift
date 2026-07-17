@@ -2,8 +2,6 @@
 //  RecurlySDK-iOSTests.swift
 //  RecurlySDK-iOSTests
 //
-//  Created by George Andrew Shoemaker on 8/20/22.
-//
 
 import XCTest
 import Combine
@@ -34,8 +32,8 @@ class RecurlySDK_iOSTests: XCTestCase {
     private func setupTokenizationManager() {
         RETokenizationManager.shared.setBillingInfo(
             billingInfo: REBillingInfo(
-                firstName: "David",
-                lastName: "Figueroa",
+                firstName: "Jane",
+                lastName: "Doe",
                 address1: "123 Main St",
                 address2: "",
                 company: "CH2",
@@ -179,21 +177,16 @@ class RecurlySDK_iOSTests: XCTestCase {
     }
 
 
-    // MARK: - Offline coverage (Phase 1)
+    // MARK: - Offline coverage
     //
     // These tests run without PUBLIC_KEY / network access, exercising the real
     // NetworkEngine -> REAPIClient -> RETokenizationManager chain against a
     // MockURLProtocol-stubbed URLSession. They run on every PR, including forks.
     //
-    // NOTE: two branches are intentionally NOT covered here:
-    // - NetworkEngine.sendRequest's "nil data" guard: URLSession's documented
-    //   contract only surfaces nil data paired with a non-nil error, so this
-    //   branch is not reliably reachable via URLProtocol stubbing.
-    // - NetworkEngine.createPOSTRequest(requestBodyObject:) returning nil on
-    //   JSONSerialization failure: forcing JSONSerialization.data(withJSONObject:)
-    //   to fail (e.g. via NaN) can raise an uncatchable Objective-C exception
-    //   instead of a Swift error, which would crash the whole CI test run.
-    //   Not worth the risk without local Xcode to verify first.
+    // NOTE: two branches are intentionally not covered — NetworkEngine.sendRequest's
+    // "nil data" guard (not reliably reachable via URLProtocol stubbing) and
+    // createPOSTRequest(requestBodyObject:)'s JSONSerialization-failure path (forcing
+    // it can raise an uncatchable Objective-C exception instead of a Swift error).
 
     // MARK: NetworkEngine
 
@@ -256,12 +249,7 @@ class RecurlySDK_iOSTests: XCTestCase {
                 expectation.fulfill()
             }
         }
-        // NOTE: bumped from 1.0s -> 10.0s as a diagnostic experiment. URLProtocol's
-        // didFailWithError delivery timed out at 1s in CI on two prior attempts (with
-        // both a custom Error type and a URLError), despite the mock matching the
-        // documented contract and WeTransfer's Mocker reference implementation exactly.
-        // This determines whether delivery is merely slow in the CI simulator or
-        // never happens at all.
+        // Longer timeout: URLProtocol error delivery can be slow in CI.
         wait(for: [expectation], timeout: 10.0)
     }
 
@@ -475,12 +463,8 @@ class RecurlySDK_iOSTests: XCTestCase {
     }
 
     // Note: getApplePayTokenId's `case .failure(let error):` non-REBaseErrorResponse
-    // fallback (mirrors getTokenId's) is unreachable through the current public API —
-    // REAPIClient.getTokenID only ever fails its publisher with REBaseErrorResponse
-    // (both the build-failure Fail(error:) and NetworkEngine.sendRequest's completion
-    // wrap RETokenError in REBaseErrorResponse). Exercising that branch would require
-    // a fake APIClient conforming to a protocol, which Phase 1 deliberately defers to
-    // the 3.0 developer-first work (see decision/recurly-client-ios-phase-1-plan).
+    // fallback (mirrors getTokenId's) is unreachable through the public API —
+    // REAPIClient.getTokenID only ever fails its publisher with REBaseErrorResponse.
 
     // MARK: Model coding
 
@@ -590,6 +574,88 @@ class RecurlySDK_iOSTests: XCTestCase {
     func testTokenizationAPI_emptyKey_defaultsToUSHost() {
         REConfiguration.shared.apiPublicKey = ""
         XCTAssertEqual(TokenizationAPI.getTokenID.baseURL, "api.recurly.com/js/v1")
+    }
+
+    func testTokenizationAPI_userAgent_structure() {
+        let userAgent = TokenizationAPI.getTokenID.userAgent
+        XCTAssertTrue(userAgent.hasPrefix("recurly-ios/"), "User-Agent should start with recurly-ios/<version>")
+        XCTAssertTrue(userAgent.contains("device/"))
+        XCTAssertTrue(userAgent.contains("os/"))
+        XCTAssertTrue(userAgent.contains("appName/"))
+        XCTAssertFalse(userAgent.contains("carrierName"), "carrierName was removed with CoreTelephony/CTCarrier")
+    }
+
+    func testRecurlySDKVersion_isNonEmpty() {
+        XCTAssertFalse(RecurlySDK.version.isEmpty, "RecurlySDK.version must resolve to either the bundle version or the fallback constant")
+    }
+
+    func testRETokenizationManager_getTokenId_wireBodyIncludesSDKVersion() throws {
+        let url = URL(string: "https://api.recurly.com/js/v1/tokens")!
+        var capturedBody: Data?
+        let responseJSON = "{\"id\":\"tok-abc\",\"type\":\"credit_card\"}".data(using: .utf8)!
+
+        MockURLProtocol.requestHandler = { request in
+            if let stream = request.httpBodyStream {
+                stream.open()
+                defer { stream.close() }
+                var data = Data()
+                var buffer = [UInt8](repeating: 0, count: 1024)
+                while stream.hasBytesAvailable {
+                    let read = stream.read(&buffer, maxLength: buffer.count)
+                    guard read > 0 else { break }
+                    data.append(buffer, count: read)
+                }
+                capturedBody = data
+            }
+            return (HTTPURLResponse(url: request.url ?? url, statusCode: 200, httpVersion: nil, headerFields: nil), responseJSON, nil)
+        }
+
+        let manager = RETokenizationManager(apiClient: REAPIClient(networkEngine: NetworkEngine(session: MockURLProtocol.makeSession())))
+        manager.cardData.number = "4111111111111111"
+        manager.cardData.month = "12"
+        manager.cardData.year = "2030"
+        manager.cardData.cvv = "123"
+
+        let expectation = expectation(description: "tokenSuccess")
+        manager.getTokenId { _, _ in
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 1.0)
+
+        let body = try XCTUnwrap(capturedBody)
+        let json = try XCTUnwrap(JSONSerialization.jsonObject(with: body) as? [String: Any])
+        XCTAssertEqual(json["version"] as? String, RecurlySDK.version, "Wire 'version' field must be the SDK/client-library version, not the host app's version")
+    }
+
+    /// Regression guard: two threads writing to different fields of the lock-guarded
+    /// `cardData` struct concurrently must not clobber each other's updates.
+    func testCardData_concurrentFieldMutation_noLostUpdates() {
+        let manager = RETokenizationManager(apiClient: REAPIClient(networkEngine: NetworkEngine(session: MockURLProtocol.makeSession())))
+        let iterations = 200
+
+        for i in 0..<iterations {
+            manager.cardData.number = "baseline"
+            manager.cardData.cvv = "baseline"
+
+            let expectedNumber = "number-\(i)"
+            let expectedCVV = "cvv-\(i)"
+            let group = DispatchGroup()
+
+            group.enter()
+            DispatchQueue.global().async {
+                manager.cardData.number = expectedNumber
+                group.leave()
+            }
+            group.enter()
+            DispatchQueue.global().async {
+                manager.cardData.cvv = expectedCVV
+                group.leave()
+            }
+            group.wait()
+
+            XCTAssertEqual(manager.cardData.number, expectedNumber, "Concurrent write to a sibling field must not lose this field's update (iteration \(i))")
+            XCTAssertEqual(manager.cardData.cvv, expectedCVV, "Concurrent write to a sibling field must not lose this field's update (iteration \(i))")
+        }
     }
 
     // MARK: Extensions

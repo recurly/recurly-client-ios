@@ -2,8 +2,6 @@
 //  View+Extension.swift
 //  RecurlySDK-iOS
 //
-//  Created by David Figueroa on 24/11/21.
-//
 
 import SwiftUI
 

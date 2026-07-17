@@ -2,8 +2,6 @@
 //  NetworkEngine.swift
 //  RecurlySDK-iOS
 //
-//  Created by David Figueroa on 2/12/21.
-//
 
 import Foundation
 
@@ -50,9 +48,6 @@ class NetworkEngine {
             return nil
         }
         request.httpBody = data
-        #if DEBUG
-        print("JSON ENCODE: \(String(data: data, encoding: .utf8) ?? "")")
-        #endif
         
         return request
     }

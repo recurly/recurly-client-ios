@@ -2,11 +2,8 @@
 //  TokenizationAPI.swift
 //  RecurlySDK-iOS
 //
-//  Created by David Figueroa on 1/12/21.
-//
 
 import SwiftUI
-import CoreTelephony
 
 enum TokenizationAPI {
     case getTokenID
@@ -62,15 +59,10 @@ extension TokenizationAPI: BaseRequest {
     }
     
     var userAgent: String {
-        let carrier = CTCarrier()
         return """
-                recurly-ios/v1.0.0;
+                recurly-ios/\(RecurlySDK.version);
                 device/\(UIDevice.modelName);
                 os/\(UIDevice.current.systemVersion);
-                carrierName/\(carrier.carrierName ?? "");
-                isoCountryCode/\(carrier.isoCountryCode ?? "");
-                mobileCountryCode/\(carrier.mobileCountryCode ?? "");
-                mobileNetworkCode/\(carrier.mobileNetworkCode ?? "");
                 appName/\(Bundle.main.bundleIdentifier ?? "");
                 """
     }

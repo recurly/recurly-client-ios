@@ -2,8 +2,6 @@
 //  EnvHelper.swift
 //  RecurlySDK-iOSTests
 //
-//  Created by George Andrew Shoemaker on 9/12/22.
-//
 
 import Foundation
 

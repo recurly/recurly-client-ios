@@ -2,25 +2,74 @@
 //  RETokenizationManager.swift
 //  RecurlySDK-iOS
 //
-//  Created by David Figueroa on 5/12/21.
-//
 
 import Combine
-import UIKit.UIApplication
-import UIKit
+import SwiftUI
 
 /// Tokenization Manager for sending sensitive user data and receiving the tokenId from the submitted data.
-public struct RETokenizationManager {
+public final class RETokenizationManager {
     /// Singleton shared instance
-    public static var shared = RETokenizationManager()
+    public static let shared = RETokenizationManager()
+
+    private let lock = NSLock()
+
+    /// Runs `body` while holding `lock`, releasing it afterwards even if `body` throws/returns early.
+    private func withLock<T>(_ body: () -> T) -> T {
+        lock.lock()
+        defer { lock.unlock() }
+        return body()
+    }
+
+    private var _cardData = RECardData()
+    private var _billingInfo = REBillingInfo()
+    private var _applePaymentData = REApplePaymentData()
+    private var _applePaymentMethod = REApplePaymentMethod()
+    private var _subscriptions = Set<AnyCancellable>()
+
     /// CardData (CardNumber, ExpDate, CVV)
-    internal var cardData = RECardData()
+    ///
+    /// Whole-value assignment and compound field mutation are both atomic (lock held for
+    /// the full read-modify-write). `lock` is non-reentrant, so don't read a lock-guarded
+    /// property from within an assignment to itself or another one on this instance.
+    internal var cardData: RECardData {
+        get { withLock { _cardData } }
+        _modify {
+            lock.lock()
+            defer { lock.unlock() }
+            yield &_cardData
+        }
+    }
     /// Billing Info (First Name, Last Name, Billing Address, City, Country)
-    internal var billingInfo = REBillingInfo()
-    internal var applePaymentData = REApplePaymentData()
-    internal var applePaymentMethod = REApplePaymentMethod()
+    ///
+    /// See threading note on `cardData`.
+    internal var billingInfo: REBillingInfo {
+        get { withLock { _billingInfo } }
+        _modify {
+            lock.lock()
+            defer { lock.unlock() }
+            yield &_billingInfo
+        }
+    }
+    /// See threading note on `cardData`.
+    internal var applePaymentData: REApplePaymentData {
+        get { withLock { _applePaymentData } }
+        _modify {
+            lock.lock()
+            defer { lock.unlock() }
+            yield &_applePaymentData
+        }
+    }
+    /// See threading note on `cardData`.
+    internal var applePaymentMethod: REApplePaymentMethod {
+        get { withLock { _applePaymentMethod } }
+        _modify {
+            lock.lock()
+            defer { lock.unlock() }
+            yield &_applePaymentMethod
+        }
+    }
+
     private let apiClient: REAPIClient
-    private var subscriptions = Set<AnyCancellable>()
 
     internal init(apiClient: REAPIClient = REAPIClient()) {
         self.apiClient = apiClient
@@ -28,19 +77,19 @@ public struct RETokenizationManager {
 
     /// Set the Billing Info that its going to be send for tokenization
     /// - Parameter billingInfo: The BillingInfo received from the User
-    public mutating func setBillingInfo(billingInfo: REBillingInfo) {
+    public func setBillingInfo(billingInfo: REBillingInfo) {
         self.billingInfo = billingInfo
     }
     
     /// Set the ApplePaymentData that its going to be send for tokenization
     /// - Parameter applePaymentData: The ApplePaymentData received from the Apple Pay flow
-    public mutating func setApplePaymentData(applePaymentData: REApplePaymentData) {
+    public func setApplePaymentData(applePaymentData: REApplePaymentData) {
         self.applePaymentData = applePaymentData
     }
     
     /// Set the ApplePaymentMethod that its going to be send for tokenization
     /// - Parameter applePaymentData: The ApplePaymentMethod received from the Apple Pay flow
-    public mutating func setApplePaymentMethod(applePaymentMethod: REApplePaymentMethod) {
+    public func setApplePaymentMethod(applePaymentMethod: REApplePaymentMethod) {
         self.applePaymentMethod = applePaymentMethod
     }
     
@@ -49,12 +98,12 @@ public struct RETokenizationManager {
     /// Sends the CardData (CardNumber, ExpDate, CVV) and/or the BillingInfo that you want to tokenize
     ///
     /// - Parameter completion: (TokenId, Error)
-    public mutating func getTokenId(completion: @escaping (String?, REBaseErrorResponse?) -> ()) {
+    public func getTokenId(completion: @escaping (String?, REBaseErrorResponse?) -> ()) {
         
         let tokenizationRequest = RETokenRequest(
             cardData: cardData,
             billingInfo: billingInfo,
-            version: UIApplication.version,
+            version: RecurlySDK.version,
             key: REConfiguration.shared.apiPublicKey,
             deviceId: getDeviceID(),
             sessionId: getSessionID()
@@ -74,7 +123,8 @@ public struct RETokenizationManager {
             return
         }
         
-        apiClient.getTokenID(with: tokenizationRequest, requestType: .getTokenID).sink { result in
+        var cancellable: AnyCancellable?
+        cancellable = apiClient.getTokenID(with: tokenizationRequest, requestType: .getTokenID).sink(receiveCompletion: { [weak self] result in
             switch result {
             case .failure(let error as REBaseErrorResponse):
                 completion(nil, error)
@@ -85,9 +135,15 @@ public struct RETokenizationManager {
             case .finished:
                 break
             }
-        } receiveValue: { token in
+            if let cancellable = cancellable {
+                self?.remove(cancellable)
+            }
+        }, receiveValue: { token in
             completion(token, nil)
-        }.store(in: &subscriptions)
+        })
+        if let cancellable = cancellable {
+            store(cancellable)
+        }
     }
     
     /// Returns the tokenId as String from a BillingInfo or/with ApplePaymentData, ApplePaymentMethod tokenization request.
@@ -96,17 +152,18 @@ public struct RETokenizationManager {
     /// and/or the BillingInfo that you want to tokenize
     ///
     /// - Parameter completion: (TokenId, Error)
-    public mutating func getApplePayTokenId(completion: @escaping (String?, REBaseErrorResponse?) -> ()) {
+    public func getApplePayTokenId(completion: @escaping (String?, REBaseErrorResponse?) -> ()) {
         
         let applePayTokenizationRequest = REApplePayTokenRequest(paymentData: applePaymentData,
                                                                  paymentMethod: applePaymentMethod,
                                                                  billingInfo: billingInfo,
-                                                                 version: UIApplication.version,
+                                                                 version: RecurlySDK.version,
                                                                  key: REConfiguration.shared.apiPublicKey,
                                                                  deviceId: getDeviceID(),
                                                                  sessionId: getSessionID())
         
-        apiClient.getTokenID(with: applePayTokenizationRequest, requestType: .getApplePayTokenID).sink { result in
+        var cancellable: AnyCancellable?
+        cancellable = apiClient.getTokenID(with: applePayTokenizationRequest, requestType: .getApplePayTokenID).sink(receiveCompletion: { [weak self] result in
             switch result {
             case .failure(let error as REBaseErrorResponse):
                 completion(nil, error)
@@ -117,13 +174,29 @@ public struct RETokenizationManager {
             case .finished:
                 break
             }
-        } receiveValue: { token in
+            if let cancellable = cancellable {
+                self?.remove(cancellable)
+            }
+        }, receiveValue: { token in
             completion(token, nil)
-        }.store(in: &subscriptions)
-        
+        })
+        if let cancellable = cancellable {
+            store(cancellable)
+        }
     }
     
     // MARK: - Helpers
+    
+    /// Inserts `cancellable` into the subscription set atomically (single locked operation).
+    private func store(_ cancellable: AnyCancellable) {
+        withLock { _subscriptions.insert(cancellable) }
+    }
+
+    /// Drops a completed subscription so `_subscriptions` doesn't grow unbounded
+    /// across repeated calls.
+    private func remove(_ cancellable: AnyCancellable) {
+        withLock { _subscriptions.remove(cancellable) }
+    }
     
     private func getDeviceID() -> String {
         return UIDevice.current.identifierForVendor?.uuidString ?? ""

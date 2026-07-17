@@ -2,8 +2,6 @@
 //  PaymentHandler.swift
 //  RecurlySDK-iOS
 //
-//  Created by David Figueroa on 21/12/21.
-//
 
 import PassKit
 
@@ -59,15 +57,13 @@ public class REApplePaymentHandler: NSObject {
         paymentController?.delegate = self
         paymentController?.present(completion: { (presented: Bool) in
             if presented {
-                NSLog("Presented payment controller")
                 self.isPaymentControllerPresented = true
                 
                 if self.isTesting {
-                    self.completionHandler!(true, nil, nil)
+                    self.completionHandler?(true, nil, nil)
                 }
             } else {
-                NSLog("Failed to present payment controller")
-                self.completionHandler!(false, nil, nil)
+                self.completionHandler?(false, nil, nil)
             }
         })
     }
@@ -141,9 +137,9 @@ extension REApplePaymentHandler: PKPaymentAuthorizationControllerDelegate {
         controller.dismiss {
             DispatchQueue.main.async {
                 if self.paymentStatus == .success {
-                    self.completionHandler!(true, self.currentToken, self.currentBillingInfo)
+                    self.completionHandler?(true, self.currentToken, self.currentBillingInfo)
                 } else {
-                    self.completionHandler!(false, nil, nil)
+                    self.completionHandler?(false, nil, nil)
                 }
             }
         }

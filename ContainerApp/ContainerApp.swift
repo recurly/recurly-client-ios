@@ -2,8 +2,6 @@
 //  ContainerApp.swift
 //  ContainerApp
 //
-//  Created by David Figueroa on 22/11/21.
-//
 
 import SwiftUI
 import RecurlySDK_iOS

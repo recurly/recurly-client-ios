@@ -2,8 +2,6 @@
 //  REApplePayInfo.swift
 //  RecurlySDK-iOS
 //
-//  Created by Carlos Landaverde on 12/1/22.
-//
 
 import Foundation
 import PassKit

@@ -2,8 +2,6 @@
 //  RecurlySDK_iOS.h
 //  RecurlySDK-iOS
 //
-//  Created by David Figueroa on 22/11/21.
-//
 
 #import <Foundation/Foundation.h>
 

@@ -2,8 +2,6 @@
 //  REApplePayItem.swift
 //  RecurlySDK-iOS
 //
-//  Created by Carlos Landaverde on 14/1/22.
-//
 
 import Foundation
 

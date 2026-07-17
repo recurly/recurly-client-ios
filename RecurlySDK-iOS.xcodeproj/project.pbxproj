@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		277F56AD274E7DFE0067E4E1 /* Inter-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 277F56AC274E7DFE0067E4E1 /* Inter-Regular.ttf */; };
+		C8DC9E6FEDEC678D1D549F95 /* RecurlySDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6F0538D3D68FF1261E1C9D3 /* RecurlySDK.swift */; };
+		01BF388A07C25AF8FEA66FEA /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 53FBF2EDA93684FCB3B82D4A /* PrivacyInfo.xcprivacy */; };
 		277F56B0274E7ECE0067E4E1 /* FontLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 277F56AF274E7ECE0067E4E1 /* FontLoader.swift */; };
 		277F56B3274E85FC0067E4E1 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 277F56B2274E85FC0067E4E1 /* View+Extension.swift */; };
 		277F56B5274E87260067E4E1 /* Inter-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 277F56B4274E87240067E4E1 /* Inter-Bold.ttf */; };
@@ -20,7 +22,6 @@
 		27830A51275569AD00B2620C /* TextFieldClearButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27830A50275569AD00B2620C /* TextFieldClearButton.swift */; };
 		27AFBB29275F8C00005274B3 /* REConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27AFBB28275F8C00005274B3 /* REConfiguration.swift */; };
 		27AFBB50275FC022005274B3 /* RECardStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27AFBB4F275FC021005274B3 /* RECardStatus.swift */; };
-		27AFBB542766DD84005274B3 /* UIApplication+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27AFBB532766DD84005274B3 /* UIApplication+Extension.swift */; };
 		27BC1486276B90D4004FD5E0 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27BC1485276B90D4004FD5E0 /* String+Extension.swift */; };
 		27C8CCF9274BD52E00B4D601 /* ContainerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C8CCF8274BD52E00B4D601 /* ContainerApp.swift */; };
 		27C8CCFB274BD52E00B4D601 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C8CCFA274BD52E00B4D601 /* ContentView.swift */; };
@@ -93,6 +94,8 @@
 /* Begin PBXFileReference section */
 		277F56AC274E7DFE0067E4E1 /* Inter-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-Regular.ttf"; sourceTree = "<group>"; };
 		277F56AF274E7ECE0067E4E1 /* FontLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontLoader.swift; sourceTree = "<group>"; };
+		E6F0538D3D68FF1261E1C9D3 /* RecurlySDK.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecurlySDK.swift; sourceTree = "<group>"; };
+		53FBF2EDA93684FCB3B82D4A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		277F56B2274E85FC0067E4E1 /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
 		277F56B4274E87240067E4E1 /* Inter-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-Bold.ttf"; sourceTree = "<group>"; };
 		27830A402754FE4700B2620C /* CreditCardValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditCardValidator.swift; sourceTree = "<group>"; };
@@ -104,7 +107,6 @@
 		27830A50275569AD00B2620C /* TextFieldClearButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldClearButton.swift; sourceTree = "<group>"; };
 		27AFBB28275F8C00005274B3 /* REConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = REConfiguration.swift; sourceTree = "<group>"; };
 		27AFBB4F275FC021005274B3 /* RECardStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RECardStatus.swift; sourceTree = "<group>"; };
-		27AFBB532766DD84005274B3 /* UIApplication+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extension.swift"; sourceTree = "<group>"; };
 		27BC1485276B90D4004FD5E0 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		27C8CCF6274BD52E00B4D601 /* SDK ContainerApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SDK ContainerApp.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		27C8CCF8274BD52E00B4D601 /* ContainerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerApp.swift; sourceTree = "<group>"; };
@@ -142,6 +144,7 @@
 		86EEFFB02862EC2D00F8059E /* REApplePaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = REApplePaymentMethod.swift; sourceTree = "<group>"; };
 		E92577692AB4E76F00820B2C /* Image+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+Extension.swift"; sourceTree = "<group>"; };
 		E925776B2AB4F32200820B2C /* Resource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resource.swift; sourceTree = "<group>"; };
+		C887308BCAF04AB18F4DE792 /* Version.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Version.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -194,6 +197,7 @@
 			children = (
 				27AFBB28275F8C00005274B3 /* REConfiguration.swift */,
 				277F56AF274E7ECE0067E4E1 /* FontLoader.swift */,
+				E6F0538D3D68FF1261E1C9D3 /* RecurlySDK.swift */,
 				27830A402754FE4700B2620C /* CreditCardValidator.swift */,
 				27F548DD27724D4B001014C8 /* REApplePaymentHandler.swift */,
 				E925776B2AB4F32200820B2C /* Resource.swift */,
@@ -206,7 +210,6 @@
 			children = (
 				277F56B2274E85FC0067E4E1 /* View+Extension.swift */,
 				27F498EB275A504B009227F5 /* UIDevice+Extension.swift */,
-				27AFBB532766DD84005274B3 /* UIApplication+Extension.swift */,
 				27BC1485276B90D4004FD5E0 /* String+Extension.swift */,
 				E92577692AB4E76F00820B2C /* Image+Extension.swift */,
 			);
@@ -249,6 +252,14 @@
 				27AFBB4F275FC021005274B3 /* RECardStatus.swift */,
 			);
 			path = GlobalEnums;
+			sourceTree = "<group>";
+		};
+		E3B6A81FB23E44DBB61D3302 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				C887308BCAF04AB18F4DE792 /* Version.xcconfig */,
+			);
+			path = Config;
 			sourceTree = "<group>";
 		};
 		27C8CCF7274BD52E00B4D601 /* ContainerApp */ = {
@@ -309,10 +320,12 @@
 				27F498E02759829B009227F5 /* Models */,
 				277F56AE274E7EBE0067E4E1 /* Helpers */,
 				27AFBB4E275FC021005274B3 /* GlobalEnums */,
+				E3B6A81FB23E44DBB61D3302 /* Config */,
 				277F56B1274E85EC0067E4E1 /* Extensions */,
 				277F56AA274E7C6D0067E4E1 /* Resources */,
 				27DF9DAD274BC77D0093E7BA /* RecurlySDK_iOS.h */,
 				27DF9DAE274BC77D0093E7BA /* RecurlySDK_iOS.docc */,
+				53FBF2EDA93684FCB3B82D4A /* PrivacyInfo.xcprivacy */,
 			);
 			path = "RecurlySDK-iOS";
 			sourceTree = "<group>";
@@ -483,6 +496,7 @@
 				277F56B5274E87260067E4E1 /* Inter-Bold.ttf in Resources */,
 				277F56AD274E7DFE0067E4E1 /* Inter-Regular.ttf in Resources */,
 				27C8CD0B274BE56300B4D601 /* Assets.xcassets in Resources */,
+				01BF388A07C25AF8FEA66FEA /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -526,7 +540,6 @@
 				277F56B3274E85FC0067E4E1 /* View+Extension.swift in Sources */,
 				27830A4D27554FCF00B2620C /* IndividualViewModel.swift in Sources */,
 				27AFBB50275FC022005274B3 /* RECardStatus.swift in Sources */,
-				27AFBB542766DD84005274B3 /* UIApplication+Extension.swift in Sources */,
 				27DF9DAF274BC77D0093E7BA /* RecurlySDK_iOS.docc in Sources */,
 				27830A4727553F7100B2620C /* REExpDateTextField.swift in Sources */,
 				27F498EE275D118F009227F5 /* RECardData.swift in Sources */,
@@ -545,6 +558,7 @@
 				27F498DF2759820D009227F5 /* NetworkEngine.swift in Sources */,
 				27F498E2275984CC009227F5 /* REBillingInfo.swift in Sources */,
 				27F498E42759974F009227F5 /* TokenizationAPI.swift in Sources */,
+				C8DC9E6FEDEC678D1D549F95 /* RecurlySDK.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -765,9 +779,9 @@
 		};
 		27DF9DBF274BC77D0093E7BA /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C887308BCAF04AB18F4DE792 /* Version.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -781,7 +795,6 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "recurly.RecurlySDK-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -793,10 +806,10 @@
 		};
 		27DF9DC0274BC77D0093E7BA /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C887308BCAF04AB18F4DE792 /* Version.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -810,7 +823,6 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "recurly.RecurlySDK-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;

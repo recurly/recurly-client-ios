@@ -2,8 +2,6 @@
 //  Image+Extension.swift
 //  RecurlySDK-iOS
 //
-//  Created by Andy Kelso on 09/15/2023.
-//
 
 import SwiftUI
 
