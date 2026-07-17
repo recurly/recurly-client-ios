@@ -2,7 +2,7 @@
 //  MockURLProtocol.swift
 //  RecurlySDK-iOSTests
 //
-//  URLProtocol stub used to exercise NetworkEngine/REAPIClient/RETokenizationManager
+//  URLProtocol stub used to exercise NetworkEngine/RecurlyAPIClient/RecurlyTokenizationManager
 //  end-to-end offline, without requiring a network connection or PUBLIC_KEY.
 //
 

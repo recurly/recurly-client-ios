@@ -4,7 +4,7 @@
 //
 
 import SwiftUI
-import RecurlySDK_iOS
+import RecurlySDK
 
 @main
 struct ContainerApp: App {
@@ -13,7 +13,7 @@ struct ContainerApp: App {
     
     init() {
         // Initialization of Recurly SDK
-        REConfiguration.shared.initialize(publicKey: "YOUR-PUBLIC-KEY")
+        RecurlyConfiguration.shared.initialize(publicKey: "YOUR-PUBLIC-KEY")
     }
     
     var body: some Scene {
