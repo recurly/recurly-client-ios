@@ -193,12 +193,99 @@ class RecurlySDK_iOSTests: XCTestCase {
     func testNetworkEngine_sendRequest_success() {
         let url = URL(string: "https://api.recurly.com/js/v1/tokens")!
         let responseJSON = "{\"id\":\"tok-123\",\"type\":\"credit_card\"}".data(using: .utf8)!
+        let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: nil)
+
+        let engine = NetworkEngine()
+        let result = engine.mapResponse(responseJSON, response, nil, responseModel: RecurlyTokenResponse.self)
+        switch result {
+        case .success(let response):
+            XCTAssertEqual(response.id, "tok-123")
+        case .failure(let error):
+            XCTFail("unexpected failure: \(String(describing: error.error.message))")
+        }
+    }
+
+    func testNetworkEngine_sendRequest_recurlyErrorBody() {
+        let url = URL(string: "https://api.recurly.com/js/v1/tokens")!
+        let errorJSON = "{\"error\":{\"code\":\"invalid-parameter\",\"message\":\"boom\",\"details\":[]}}".data(using: .utf8)!
+        let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: nil)
+
+        let engine = NetworkEngine()
+        let result = engine.mapResponse(errorJSON, response, nil, responseModel: RecurlyTokenResponse.self)
+        switch result {
+        case .success:
+            XCTFail("expected failure")
+        case .failure(let error):
+            XCTAssertEqual(error.error.code, "invalid-parameter")
+        }
+    }
+
+    func testNetworkEngine_sendRequest_transportError() {
+        let engine = NetworkEngine()
+        let result = engine.mapResponse(nil, nil, URLError(.notConnectedToInternet), responseModel: RecurlyTokenResponse.self)
+        switch result {
+        case .success:
+            XCTFail("expected failure")
+        case .failure(let error):
+            XCTAssertEqual(error.error.code, "network-error")
+        }
+    }
+
+    func testNetworkEngine_sendRequest_nonSuccessStatusCode() {
+        let url = URL(string: "https://api.recurly.com/js/v1/tokens")!
+        let body = "{}".data(using: .utf8)!
+        let response = HTTPURLResponse(url: url, statusCode: 500, httpVersion: nil, headerFields: nil)
+
+        let engine = NetworkEngine()
+        let result = engine.mapResponse(body, response, nil, responseModel: RecurlyTokenResponse.self)
+        switch result {
+        case .success:
+            XCTFail("expected failure")
+        case .failure(let error):
+            XCTAssertEqual(error.error.code, "http-500")
+        }
+    }
+
+    func testNetworkEngine_sendRequest_undecodableSuccessBody_returnsSdkInternal() {
+        let url = URL(string: "https://api.recurly.com/js/v1/tokens")!
+        let garbage = "not json".data(using: .utf8)!
+        let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: nil)
+
+        let engine = NetworkEngine()
+        let result = engine.mapResponse(garbage, response, nil, responseModel: RecurlyTokenResponse.self)
+        switch result {
+        case .success:
+            XCTFail("expected failure")
+        case .failure(let error):
+            XCTAssertEqual(error.error.code, "sdk-internal")
+        }
+    }
+
+
+    func testNetworkEngine_mapResponse_noData_returnsNetworkError() {
+        let url = URL(string: "https://api.recurly.com/js/v1/tokens")!
+        let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: nil)
+
+        let engine = NetworkEngine()
+        let result = engine.mapResponse(nil, response, nil, responseModel: RecurlyTokenResponse.self)
+        switch result {
+        case .success:
+            XCTFail("expected failure")
+        case .failure(let error):
+            XCTAssertEqual(error.error.code, "network-error")
+        }
+    }
+
+
+    func testNetworkEngine_sendRequest_wiredThroughURLSession_success() {
+        let url = URL(string: "https://api.recurly.com/js/v1/tokens")!
+        let responseJSON = "{\"id\":\"tok-123\",\"type\":\"credit_card\"}".data(using: .utf8)!
         MockURLProtocol.requestHandler = { request in
             (HTTPURLResponse(url: request.url ?? url, statusCode: 200, httpVersion: nil, headerFields: nil), responseJSON, nil)
         }
 
         let engine = NetworkEngine(session: MockURLProtocol.makeSession())
-        let expectation = expectation(description: "success")
+        let expectation = expectation(description: "wiredThroughURLSession_success")
         engine.sendRequest(responseModel: RecurlyTokenResponse.self, request: URLRequest(url: url)) { result in
             switch result {
             case .success(let response):
@@ -208,52 +295,12 @@ class RecurlySDK_iOSTests: XCTestCase {
                 XCTFail("unexpected failure: \(String(describing: error.error.message))")
             }
         }
-        wait(for: [expectation], timeout: 1.0)
-    }
-
-    func testNetworkEngine_sendRequest_recurlyErrorBody() {
-        let url = URL(string: "https://api.recurly.com/js/v1/tokens")!
-        let errorJSON = "{\"error\":{\"code\":\"invalid-parameter\",\"message\":\"boom\",\"details\":[]}}".data(using: .utf8)!
-        MockURLProtocol.requestHandler = { request in
-            (HTTPURLResponse(url: request.url ?? url, statusCode: 200, httpVersion: nil, headerFields: nil), errorJSON, nil)
-        }
-
-        let engine = NetworkEngine(session: MockURLProtocol.makeSession())
-        let expectation = expectation(description: "recurlyErrorBody")
-        engine.sendRequest(responseModel: RecurlyTokenResponse.self, request: URLRequest(url: url)) { result in
-            switch result {
-            case .success:
-                XCTFail("expected failure")
-            case .failure(let error):
-                XCTAssertEqual(error.error.code, "invalid-parameter")
-                expectation.fulfill()
-            }
-        }
-        wait(for: [expectation], timeout: 1.0)
-    }
-
-    func testNetworkEngine_sendRequest_transportError() {
-        let url = URL(string: "https://api.recurly.com/js/v1/tokens")!
-        MockURLProtocol.requestHandler = { _ in
-            (nil, nil, URLError(.notConnectedToInternet))
-        }
-
-        let engine = NetworkEngine(session: MockURLProtocol.makeSession())
-        let expectation = expectation(description: "transportError")
-        engine.sendRequest(responseModel: RecurlyTokenResponse.self, request: URLRequest(url: url)) { result in
-            switch result {
-            case .success:
-                XCTFail("expected failure")
-            case .failure(let error):
-                XCTAssertEqual(error.error.code, "network-error")
-                expectation.fulfill()
-            }
-        }
-        // Longer timeout: URLProtocol error delivery can be slow in CI.
+        // Generous timeout: exercises the real dataTask(...).resume() wiring end-to-end.
         wait(for: [expectation], timeout: 10.0)
     }
 
-    func testNetworkEngine_sendRequest_nonSuccessStatusCode() {
+
+    func testNetworkEngine_sendRequest_wiredThroughURLSession_httpErrorStatus() {
         let url = URL(string: "https://api.recurly.com/js/v1/tokens")!
         let body = "{}".data(using: .utf8)!
         MockURLProtocol.requestHandler = { request in
@@ -261,7 +308,7 @@ class RecurlySDK_iOSTests: XCTestCase {
         }
 
         let engine = NetworkEngine(session: MockURLProtocol.makeSession())
-        let expectation = expectation(description: "nonSuccessStatusCode")
+        let expectation = expectation(description: "wiredThroughURLSession_httpErrorStatus")
         engine.sendRequest(responseModel: RecurlyTokenResponse.self, request: URLRequest(url: url)) { result in
             switch result {
             case .success:
@@ -271,28 +318,8 @@ class RecurlySDK_iOSTests: XCTestCase {
                 expectation.fulfill()
             }
         }
-        wait(for: [expectation], timeout: 1.0)
-    }
-
-    func testNetworkEngine_sendRequest_undecodableSuccessBody_returnsSdkInternal() {
-        let url = URL(string: "https://api.recurly.com/js/v1/tokens")!
-        let garbage = "not json".data(using: .utf8)!
-        MockURLProtocol.requestHandler = { request in
-            (HTTPURLResponse(url: request.url ?? url, statusCode: 200, httpVersion: nil, headerFields: nil), garbage, nil)
-        }
-
-        let engine = NetworkEngine(session: MockURLProtocol.makeSession())
-        let expectation = expectation(description: "undecodableSuccessBody")
-        engine.sendRequest(responseModel: RecurlyTokenResponse.self, request: URLRequest(url: url)) { result in
-            switch result {
-            case .success:
-                XCTFail("expected failure")
-            case .failure(let error):
-                XCTAssertEqual(error.error.code, "sdk-internal")
-                expectation.fulfill()
-            }
-        }
-        wait(for: [expectation], timeout: 1.0)
+        // Generous timeout: exercises real dataTask(...).resume() failure delivery.
+        wait(for: [expectation], timeout: 10.0)
     }
 
     func testNetworkEngine_createPOSTRequest_setsTimeoutIntervalTo30() {
