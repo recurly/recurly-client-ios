@@ -5,7 +5,7 @@
 
 import XCTest
 import Combine
-@testable import RecurlySDK_iOS
+@testable import RecurlySDK
 
 class RecurlySDK_iOSTests: XCTestCase {
     
@@ -14,24 +14,24 @@ class RecurlySDK_iOSTests: XCTestCase {
     // Otherwise PUBLIC_KEY should be set from the command line
     let publicKey = getEnviornmentVar("PUBLIC_KEY") ?? ""
     
-    let paymentHandler = REApplePaymentHandler()
+    let paymentHandler = RecurlyApplePaymentHandler()
 
     override func tearDown() {
         // Prevent state from a stubbed MockURLProtocol.requestHandler leaking into
         // the next test (XCTest execution order is not guaranteed).
         MockURLProtocol.requestHandler = nil
-        // Prevent REConfiguration.shared.apiPublicKey (global static) from leaking
+        // Prevent RecurlyConfiguration.shared.apiPublicKey (global static) from leaking
         // between tests — e.g. EU-routing tests set a "fra-" key that must not
         // bleed into other TokenizationAPI assertions (XCTest order is not guaranteed).
-        REConfiguration.shared.apiPublicKey = ""
+        RecurlyConfiguration.shared.apiPublicKey = ""
         super.tearDown()
     }
     
     // This utility function will setup the TokenizationManager
     // with valid billingInfo and cardData
     private func setupTokenizationManager() {
-        RETokenizationManager.shared.setBillingInfo(
-            billingInfo: REBillingInfo(
+        RecurlyTokenizationManager.shared.setBillingInfo(
+            billingInfo: RecurlyBillingInfo(
                 firstName: "Jane",
                 lastName: "Doe",
                 address1: "123 Main St",
@@ -45,21 +45,21 @@ class RecurlySDK_iOSTests: XCTestCase {
                 vatNumber: ""
             )
         )
-        RETokenizationManager.shared.cardData.number = "4111111111111111"
-        RETokenizationManager.shared.cardData.month = "12"
-        RETokenizationManager.shared.cardData.year = "2030"
-        RETokenizationManager.shared.cardData.cvv = "123"
+        RecurlyTokenizationManager.shared.cardData.number = "4111111111111111"
+        RecurlyTokenizationManager.shared.cardData.month = "12"
+        RecurlyTokenizationManager.shared.cardData.year = "2030"
+        RecurlyTokenizationManager.shared.cardData.cvv = "123"
     }
     
     func testPublicKeyIsValid() throws {
         
         try XCTSkipIf(publicKey.isEmpty, "PUBLIC_KEY not set")
         
-        REConfiguration.shared.initialize(publicKey: publicKey)
+        RecurlyConfiguration.shared.initialize(publicKey: publicKey)
         setupTokenizationManager()
 
         let tokenResponseExpectation = expectation(description: "TokenResponse")
-        RETokenizationManager.shared.getTokenId { tokenId, errorResponse in
+        RecurlyTokenizationManager.shared.getTokenId { tokenId, errorResponse in
             if
                 let errorMessage = errorResponse?.error.message,
                 errorMessage == "Public key not found"
@@ -83,11 +83,11 @@ class RecurlySDK_iOSTests: XCTestCase {
         try XCTSkipIf(publicKey.isEmpty, "PUBLIC_KEY not set")
         
         //Initialize the SDK
-        REConfiguration.shared.initialize(publicKey: publicKey)
+        RecurlyConfiguration.shared.initialize(publicKey: publicKey)
         setupTokenizationManager()
 
         let tokenResponseExpectation = expectation(description: "TokenResponse")
-        RETokenizationManager.shared.getTokenId { tokenId, error in
+        RecurlyTokenizationManager.shared.getTokenId { tokenId, error in
             if let errorResponse = error {
                 XCTFail(errorResponse.error.message ?? "")
                 return
@@ -109,11 +109,11 @@ class RecurlySDK_iOSTests: XCTestCase {
         paymentHandler.isTesting = true
 
         let items = [
-            REApplePayItem(amountLabel: "Foo", amount: 3.80),
-            REApplePayItem(amountLabel: "Bar", amount: 0.99),
-            REApplePayItem(amountLabel: "Tax", amount: 1.53)
+            RecurlyApplePayItem(amountLabel: "Foo", amount: 3.80),
+            RecurlyApplePayItem(amountLabel: "Bar", amount: 0.99),
+            RecurlyApplePayItem(amountLabel: "Tax", amount: 1.53)
         ]
-        var applePayInfo = REApplePayInfo(purchaseItems: items)
+        var applePayInfo = RecurlyApplePayInfo(purchaseItems: items)
         applePayInfo.requiredContactFields = []
         applePayInfo.merchantIdentifier = "merchant.com.recurly.recurlySDK-iOS"
         applePayInfo.countryCode = "US"
@@ -160,14 +160,14 @@ class RecurlySDK_iOSTests: XCTestCase {
         try XCTSkipIf(publicKey.isEmpty, "PUBLIC_KEY not set")
         
         //Initialize the SDK
-        REConfiguration.shared.initialize(publicKey: publicKey)
+        RecurlyConfiguration.shared.initialize(publicKey: publicKey)
         setupTokenizationManager()
 
         // Purposefully set this to empty as if it were missing
-        RETokenizationManager.shared.cardData.month = ""
+        RecurlyTokenizationManager.shared.cardData.month = ""
 
         let tokenResponseExpectation = expectation(description: "TokenErrorResponse")
-        RETokenizationManager.shared.getTokenId { tokenId, error in
+        RecurlyTokenizationManager.shared.getTokenId { tokenId, error in
             if let errorResponse = error {
                 XCTAssertTrue(errorResponse.error.code == "invalid-parameter")
                 tokenResponseExpectation.fulfill()
@@ -180,7 +180,7 @@ class RecurlySDK_iOSTests: XCTestCase {
     // MARK: - Offline coverage
     //
     // These tests run without PUBLIC_KEY / network access, exercising the real
-    // NetworkEngine -> REAPIClient -> RETokenizationManager chain against a
+    // NetworkEngine -> RecurlyAPIClient -> RecurlyTokenizationManager chain against a
     // MockURLProtocol-stubbed URLSession. They run on every PR, including forks.
     //
     // NOTE: two branches are intentionally not covered — NetworkEngine.sendRequest's
@@ -199,7 +199,7 @@ class RecurlySDK_iOSTests: XCTestCase {
 
         let engine = NetworkEngine(session: MockURLProtocol.makeSession())
         let expectation = expectation(description: "success")
-        engine.sendRequest(responseModel: RETokenResponse.self, request: URLRequest(url: url)) { result in
+        engine.sendRequest(responseModel: RecurlyTokenResponse.self, request: URLRequest(url: url)) { result in
             switch result {
             case .success(let response):
                 XCTAssertEqual(response.id, "tok-123")
@@ -220,7 +220,7 @@ class RecurlySDK_iOSTests: XCTestCase {
 
         let engine = NetworkEngine(session: MockURLProtocol.makeSession())
         let expectation = expectation(description: "recurlyErrorBody")
-        engine.sendRequest(responseModel: RETokenResponse.self, request: URLRequest(url: url)) { result in
+        engine.sendRequest(responseModel: RecurlyTokenResponse.self, request: URLRequest(url: url)) { result in
             switch result {
             case .success:
                 XCTFail("expected failure")
@@ -240,7 +240,7 @@ class RecurlySDK_iOSTests: XCTestCase {
 
         let engine = NetworkEngine(session: MockURLProtocol.makeSession())
         let expectation = expectation(description: "transportError")
-        engine.sendRequest(responseModel: RETokenResponse.self, request: URLRequest(url: url)) { result in
+        engine.sendRequest(responseModel: RecurlyTokenResponse.self, request: URLRequest(url: url)) { result in
             switch result {
             case .success:
                 XCTFail("expected failure")
@@ -262,7 +262,7 @@ class RecurlySDK_iOSTests: XCTestCase {
 
         let engine = NetworkEngine(session: MockURLProtocol.makeSession())
         let expectation = expectation(description: "nonSuccessStatusCode")
-        engine.sendRequest(responseModel: RETokenResponse.self, request: URLRequest(url: url)) { result in
+        engine.sendRequest(responseModel: RecurlyTokenResponse.self, request: URLRequest(url: url)) { result in
             switch result {
             case .success:
                 XCTFail("expected failure")
@@ -283,7 +283,7 @@ class RecurlySDK_iOSTests: XCTestCase {
 
         let engine = NetworkEngine(session: MockURLProtocol.makeSession())
         let expectation = expectation(description: "undecodableSuccessBody")
-        engine.sendRequest(responseModel: RETokenResponse.self, request: URLRequest(url: url)) { result in
+        engine.sendRequest(responseModel: RecurlyTokenResponse.self, request: URLRequest(url: url)) { result in
             switch result {
             case .success:
                 XCTFail("expected failure")
@@ -301,20 +301,20 @@ class RecurlySDK_iOSTests: XCTestCase {
         XCTAssertEqual(request?.timeoutInterval, 30)
     }
 
-    // MARK: REAPIClient
+    // MARK: RecurlyAPIClient
 
     func testREAPIClient_getTokenID_buildFailure_returnsFailPublisher() {
         struct UnencodableFixture: Codable {
             let value: Double
         }
 
-        let apiClient = REAPIClient(networkEngine: NetworkEngine(session: MockURLProtocol.makeSession()))
+        let apiClient = RecurlyAPIClient(networkEngine: NetworkEngine(session: MockURLProtocol.makeSession()))
         var cancellables = Set<AnyCancellable>()
         let expectation = expectation(description: "buildFailure")
 
         apiClient.getTokenID(with: UnencodableFixture(value: .infinity), requestType: .getTokenID)
             .sink(receiveCompletion: { completion in
-                if case .failure(let error as REBaseErrorResponse) = completion {
+                if case .failure(let error as RecurlyBaseErrorResponse) = completion {
                     XCTAssertEqual(error.error.code, "sdk-internal")
                     expectation.fulfill()
                 } else {
@@ -335,10 +335,10 @@ class RecurlySDK_iOSTests: XCTestCase {
             (HTTPURLResponse(url: request.url ?? url, statusCode: 200, httpVersion: nil, headerFields: nil), responseJSON, nil)
         }
 
-        let apiClient = REAPIClient(networkEngine: NetworkEngine(session: MockURLProtocol.makeSession()))
-        let request = RETokenRequest(
-            cardData: RECardData(),
-            billingInfo: REBillingInfo(),
+        let apiClient = RecurlyAPIClient(networkEngine: NetworkEngine(session: MockURLProtocol.makeSession()))
+        let request = RecurlyTokenRequest(
+            cardData: RecurlyCardData(),
+            billingInfo: RecurlyBillingInfo(),
             version: "1.0",
             key: "key",
             deviceId: "device",
@@ -350,7 +350,7 @@ class RecurlySDK_iOSTests: XCTestCase {
 
         apiClient.getTokenID(with: request, requestType: .getTokenID)
             .sink(receiveCompletion: { completion in
-                if case .failure(let error as REBaseErrorResponse) = completion {
+                if case .failure(let error as RecurlyBaseErrorResponse) = completion {
                     XCTAssertEqual(error.error.code, "sdk-internal")
                     expectation.fulfill()
                 } else {
@@ -364,7 +364,7 @@ class RecurlySDK_iOSTests: XCTestCase {
         wait(for: [expectation], timeout: 1.0)
     }
 
-    // MARK: RETokenizationManager
+    // MARK: RecurlyTokenizationManager
 
     func testRETokenizationManager_emptyCVV_doesNotHitNetwork() {
         MockURLProtocol.requestHandler = { _ in
@@ -372,7 +372,7 @@ class RecurlySDK_iOSTests: XCTestCase {
             return (nil, nil, nil)
         }
 
-        var manager = RETokenizationManager(apiClient: REAPIClient(networkEngine: NetworkEngine(session: MockURLProtocol.makeSession())))
+        var manager = RecurlyTokenizationManager(apiClient: RecurlyAPIClient(networkEngine: NetworkEngine(session: MockURLProtocol.makeSession())))
         manager.cardData.cvv = ""
 
         let expectation = expectation(description: "emptyCvv")
@@ -391,7 +391,7 @@ class RecurlySDK_iOSTests: XCTestCase {
             (HTTPURLResponse(url: request.url ?? url, statusCode: 200, httpVersion: nil, headerFields: nil), responseJSON, nil)
         }
 
-        var manager = RETokenizationManager(apiClient: REAPIClient(networkEngine: NetworkEngine(session: MockURLProtocol.makeSession())))
+        var manager = RecurlyTokenizationManager(apiClient: RecurlyAPIClient(networkEngine: NetworkEngine(session: MockURLProtocol.makeSession())))
         manager.cardData.number = "4111111111111111"
         manager.cardData.month = "12"
         manager.cardData.year = "2030"
@@ -413,7 +413,7 @@ class RecurlySDK_iOSTests: XCTestCase {
             (HTTPURLResponse(url: request.url ?? url, statusCode: 200, httpVersion: nil, headerFields: nil), errorJSON, nil)
         }
 
-        var manager = RETokenizationManager(apiClient: REAPIClient(networkEngine: NetworkEngine(session: MockURLProtocol.makeSession())))
+        var manager = RecurlyTokenizationManager(apiClient: RecurlyAPIClient(networkEngine: NetworkEngine(session: MockURLProtocol.makeSession())))
         manager.cardData.cvv = "123"
 
         let expectation = expectation(description: "tokenFailure")
@@ -433,7 +433,7 @@ class RecurlySDK_iOSTests: XCTestCase {
             (HTTPURLResponse(url: request.url ?? url, statusCode: 200, httpVersion: nil, headerFields: nil), responseJSON, nil)
         }
 
-        var manager = RETokenizationManager(apiClient: REAPIClient(networkEngine: NetworkEngine(session: MockURLProtocol.makeSession())))
+        var manager = RecurlyTokenizationManager(apiClient: RecurlyAPIClient(networkEngine: NetworkEngine(session: MockURLProtocol.makeSession())))
 
         let expectation = expectation(description: "applePayTokenSuccess")
         manager.getApplePayTokenId { tokenId, error in
@@ -451,7 +451,7 @@ class RecurlySDK_iOSTests: XCTestCase {
             (HTTPURLResponse(url: request.url ?? url, statusCode: 200, httpVersion: nil, headerFields: nil), errorJSON, nil)
         }
 
-        var manager = RETokenizationManager(apiClient: REAPIClient(networkEngine: NetworkEngine(session: MockURLProtocol.makeSession())))
+        var manager = RecurlyTokenizationManager(apiClient: RecurlyAPIClient(networkEngine: NetworkEngine(session: MockURLProtocol.makeSession())))
 
         let expectation = expectation(description: "applePayTokenFailure")
         manager.getApplePayTokenId { tokenId, error in
@@ -462,33 +462,33 @@ class RecurlySDK_iOSTests: XCTestCase {
         wait(for: [expectation], timeout: 1.0)
     }
 
-    // Note: getApplePayTokenId's `case .failure(let error):` non-REBaseErrorResponse
+    // Note: getApplePayTokenId's `case .failure(let error):` non-RecurlyBaseErrorResponse
     // fallback (mirrors getTokenId's) is unreachable through the public API —
-    // REAPIClient.getTokenID only ever fails its publisher with REBaseErrorResponse.
+    // RecurlyAPIClient.getTokenID only ever fails its publisher with RecurlyBaseErrorResponse.
 
     // MARK: Model coding
 
     func testRETokenResponse_decoding() throws {
         let json = "{\"id\":\"tok-1\",\"type\":\"credit_card\"}".data(using: .utf8)!
-        let response = try JSONDecoder().decode(RETokenResponse.self, from: json)
+        let response = try JSONDecoder().decode(RecurlyTokenResponse.self, from: json)
         XCTAssertEqual(response.id, "tok-1")
         XCTAssertEqual(response.type, "credit_card")
     }
 
     func testREBaseErrorResponse_decoding() throws {
         let json = "{\"error\":{\"code\":\"invalid-parameter\",\"message\":\"bad input\",\"details\":[]}}".data(using: .utf8)!
-        let response = try JSONDecoder().decode(REBaseErrorResponse.self, from: json)
+        let response = try JSONDecoder().decode(RecurlyBaseErrorResponse.self, from: json)
         XCTAssertEqual(response.error.code, "invalid-parameter")
         XCTAssertEqual(response.error.message, "bad input")
     }
 
     func testRETokenRequest_encoding_flattensFieldsAndSnakeCasesBillingInfo() throws {
-        var billingInfo = REBillingInfo()
+        var billingInfo = RecurlyBillingInfo()
         billingInfo.firstName = "Jane"
         billingInfo.lastName = "Doe"
 
-        let request = RETokenRequest(
-            cardData: RECardData(),
+        let request = RecurlyTokenRequest(
+            cardData: RecurlyCardData(),
             billingInfo: billingInfo,
             version: "1.0.0",
             key: "test-key",
@@ -555,24 +555,24 @@ class RecurlySDK_iOSTests: XCTestCase {
     }
 
     func testTokenizationAPI_euKeyPrefix_routesToEUHost() {
-        REConfiguration.shared.apiPublicKey = "fra-test123"
+        RecurlyConfiguration.shared.apiPublicKey = "fra-test123"
         XCTAssertEqual(TokenizationAPI.getTokenID.baseURL, "api.eu.recurly.com/js/v1")
         XCTAssertEqual(TokenizationAPI.getTokenID.absoluteString, "https://api.eu.recurly.com/js/v1/tokens")
     }
 
     func testTokenizationAPI_euKeyPrefix_routesApplePayToEUHost() {
-        REConfiguration.shared.apiPublicKey = "fra-test123"
+        RecurlyConfiguration.shared.apiPublicKey = "fra-test123"
         XCTAssertEqual(TokenizationAPI.getApplePayTokenID.absoluteString, "https://api.eu.recurly.com/js/v1/apple_pay/token")
     }
 
     func testTokenizationAPI_usKey_routesToUSHost() {
-        REConfiguration.shared.apiPublicKey = "pub-test123"
+        RecurlyConfiguration.shared.apiPublicKey = "pub-test123"
         XCTAssertEqual(TokenizationAPI.getTokenID.baseURL, "api.recurly.com/js/v1")
         XCTAssertEqual(TokenizationAPI.getTokenID.absoluteString, "https://api.recurly.com/js/v1/tokens")
     }
 
     func testTokenizationAPI_emptyKey_defaultsToUSHost() {
-        REConfiguration.shared.apiPublicKey = ""
+        RecurlyConfiguration.shared.apiPublicKey = ""
         XCTAssertEqual(TokenizationAPI.getTokenID.baseURL, "api.recurly.com/js/v1")
     }
 
@@ -610,7 +610,7 @@ class RecurlySDK_iOSTests: XCTestCase {
             return (HTTPURLResponse(url: request.url ?? url, statusCode: 200, httpVersion: nil, headerFields: nil), responseJSON, nil)
         }
 
-        let manager = RETokenizationManager(apiClient: REAPIClient(networkEngine: NetworkEngine(session: MockURLProtocol.makeSession())))
+        let manager = RecurlyTokenizationManager(apiClient: RecurlyAPIClient(networkEngine: NetworkEngine(session: MockURLProtocol.makeSession())))
         manager.cardData.number = "4111111111111111"
         manager.cardData.month = "12"
         manager.cardData.year = "2030"
@@ -630,7 +630,7 @@ class RecurlySDK_iOSTests: XCTestCase {
     /// Regression guard: two threads writing to different fields of the lock-guarded
     /// `cardData` struct concurrently must not clobber each other's updates.
     func testCardData_concurrentFieldMutation_noLostUpdates() {
-        let manager = RETokenizationManager(apiClient: REAPIClient(networkEngine: NetworkEngine(session: MockURLProtocol.makeSession())))
+        let manager = RecurlyTokenizationManager(apiClient: RecurlyAPIClient(networkEngine: NetworkEngine(session: MockURLProtocol.makeSession())))
         let iterations = 200
 
         for i in 0..<iterations {

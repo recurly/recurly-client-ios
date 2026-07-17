@@ -22,7 +22,7 @@ extension TokenizationAPI: BaseRequest {
     var baseURL: String {
         switch self {
         default:
-            return REConfiguration.shared.apiPublicKey.hasPrefix("fra-")
+            return RecurlyConfiguration.shared.apiPublicKey.hasPrefix("fra-")
                 ? "api.eu.recurly.com/js/v1"
                 : "api.recurly.com/js/v1"
         }

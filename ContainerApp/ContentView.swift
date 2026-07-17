@@ -4,13 +4,13 @@
 //
 
 import SwiftUI
-import RecurlySDK_iOS
+import RecurlySDK
 
 struct ContentView: View {
     @State private var currentStatusLabel = "Logs here"
     
     // Apple Payment handler instance
-    let paymentHandler = REApplePaymentHandler()
+    let paymentHandler = RecurlyApplePaymentHandler()
 
     var body: some View {
         
@@ -19,12 +19,12 @@ struct ContentView: View {
             /// Components UI
             VStack(alignment: .center, spacing: 20) {
                 VStack(alignment: .leading) {
-                    RECardNumberTextField(placeholder: " Card number")
+                    RecurlyCardNumberTextField(placeholder: " Card number")
                         .padding(.bottom, 30)
                     
                     HStack(spacing: 15) {
-                        REExpDateTextField(placeholder: "MM/YY")
-                        RECVVTextField(placeholder: "CVV")
+                        RecurlyExpDateTextField(placeholder: "MM/YY")
+                        RecurlyCVVTextField(placeholder: "CVV")
                     }.padding(.bottom, 3)
         
                 }.padding(.horizontal, 51)
@@ -43,7 +43,7 @@ struct ContentView: View {
             
             /// Inline payment UI
             VStack(alignment: .center) {
-                RECreditCardInputUI(cardNumberPlaceholder: "Card number",
+                RecurlyCreditCardInputUI(cardNumberPlaceholder: "Card number",
                                     expDatePlaceholder: "MM/YY",
                                     cvvPlaceholder: "CVV")
                     .padding(10)
@@ -63,7 +63,7 @@ struct ContentView: View {
             /// Apple Pay
             VStack(alignment: .center) {
                 Group {
-                    REApplePayButton(action: {
+                    RecurlyApplePayButton(action: {
                         getTokenApplePayment { myToken in
                             print("Apple Pay Token: \(myToken)")
                         }
@@ -88,7 +88,7 @@ struct ContentView: View {
     // Get token from UI components
     private func getToken(completion: @escaping (String) ->()) {
         
-        let billingInfo = REBillingInfo(firstName: "John",
+        let billingInfo = RecurlyBillingInfo(firstName: "John",
                                         lastName: "Doe",
                                         address1: "123 Main St",
                                         address2: "",
@@ -102,9 +102,9 @@ struct ContentView: View {
                                         taxIdentifier: "",
                                         taxIdentifierType: "")
         
-        RETokenizationManager.shared.setBillingInfo(billingInfo: billingInfo)
+        RecurlyTokenizationManager.shared.setBillingInfo(billingInfo: billingInfo)
         
-        RETokenizationManager.shared.getTokenId { tokenId, error in
+        RecurlyTokenizationManager.shared.getTokenId { tokenId, error in
             
             if let errorResponse = error {
                 print(errorResponse.error.message ?? "")
@@ -120,17 +120,17 @@ struct ContentView: View {
     private func getTokenApplePayment(completion: @escaping (String) -> ()) {
         
         // Test items
-        var items = [REApplePayItem]()
+        var items = [RecurlyApplePayItem]()
         
-        items.append(REApplePayItem(amountLabel: "Foo",
+        items.append(RecurlyApplePayItem(amountLabel: "Foo",
                                     amount: NSDecimalNumber(string: "3.80")))
-        items.append(REApplePayItem(amountLabel: "Bar",
+        items.append(RecurlyApplePayItem(amountLabel: "Bar",
                                     amount: NSDecimalNumber(string: "0.99")))
-        items.append(REApplePayItem(amountLabel: "Tax",
+        items.append(RecurlyApplePayItem(amountLabel: "Tax",
                                     amount: NSDecimalNumber(string: "1.53")))
          
         // Using 'var' instance to change some default properties values
-        var applePayInfo = REApplePayInfo(purchaseItems: items)
+        var applePayInfo = RecurlyApplePayInfo(purchaseItems: items)
         // Set your verified Apple merchant id here
         applePayInfo.merchantIdentifier = "merchant.YOUR.ID"
         applePayInfo.countryCode = "US"
@@ -148,18 +148,18 @@ struct ContentView: View {
                 
                 /// Decode ApplePaymentData from Token
                 let decoder = JSONDecoder()
-                var applePaymentData = REApplePaymentData()
+                var applePaymentData = RecurlyApplePaymentData()
                 
                 do {
                     // This only works with a Sandbox Apple Pay enviroment in real device
-                    let applePaymentDataBody = try decoder.decode(REApplePaymentDataBody.self, from: token.paymentData)
-                    applePaymentData = REApplePaymentData(paymentData: applePaymentDataBody)
+                    let applePaymentDataBody = try decoder.decode(RecurlyApplePaymentDataBody.self, from: token.paymentData)
+                    applePaymentData = RecurlyApplePaymentData(paymentData: applePaymentDataBody)
                 } catch {
                     print("Apple Payment Data Error")
                     
                     // Creating a Simulated Data for Apple Pay
-                    let paymentDataBody = REApplePaymentDataBody(version: "EC_v1", data: "test", signature: "test", header: REApplePaymentDataHeader(ephemeralPublicKey: "test_public_key", publicKeyHash: "test_public_hash", transactionId: "abc123"))
-                    applePaymentData = REApplePaymentData(paymentData: paymentDataBody)
+                    let paymentDataBody = RecurlyApplePaymentDataBody(version: "EC_v1", data: "test", signature: "test", header: RecurlyApplePaymentDataHeader(ephemeralPublicKey: "test_public_key", publicKeyHash: "test_public_hash", transactionId: "abc123"))
+                    applePaymentData = RecurlyApplePaymentData(paymentData: paymentDataBody)
                 }
                 
                 let displayName = token.paymentMethod.displayName ?? "unknown"
@@ -167,10 +167,10 @@ struct ContentView: View {
                 let type = token.paymentMethod.type.rawValue
                 
                 // Creating Apple Payment Method
-                let applePaymentMethod = REApplePaymentMethod(paymentMethod: REApplePaymentMethodBody(displayName: displayName, network: network, type: "\(type)"))
+                let applePaymentMethod = RecurlyApplePaymentMethod(paymentMethod: RecurlyApplePaymentMethodBody(displayName: displayName, network: network, type: "\(type)"))
                 
                 // Creating Billing Info
-                let billingData = REBillingInfo(firstName: billingInfo.name?.givenName ?? String(),
+                let billingData = RecurlyBillingInfo(firstName: billingInfo.name?.givenName ?? String(),
                                                 lastName: billingInfo.name?.familyName ?? String(),
                                                 address1: billingInfo.postalAddress?.street ?? String(),
                                                 address2: "",
@@ -181,12 +181,12 @@ struct ContentView: View {
                                                 taxIdentifier: "",
                                                 taxIdentifierType: "")
                 
-                RETokenizationManager.shared.setBillingInfo(billingInfo: billingData)
-                RETokenizationManager.shared.setApplePaymentData(applePaymentData: applePaymentData)
-                RETokenizationManager.shared.setApplePaymentMethod(applePaymentMethod: applePaymentMethod)
+                RecurlyTokenizationManager.shared.setBillingInfo(billingInfo: billingData)
+                RecurlyTokenizationManager.shared.setApplePaymentData(applePaymentData: applePaymentData)
+                RecurlyTokenizationManager.shared.setApplePaymentMethod(applePaymentMethod: applePaymentMethod)
                 
                 // This method is used to send ApplePay data for Tokenization
-                RETokenizationManager.shared.getApplePayTokenId { tokenId, error in
+                RecurlyTokenizationManager.shared.getApplePayTokenId { tokenId, error in
                     
                     if let errorResponse = error {
                         print(errorResponse.error.message ?? "")

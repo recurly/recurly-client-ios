@@ -14,8 +14,8 @@ class IndividualViewModel: UnifiedViewModel {
         let expMonth = Int(date[0]) ?? 0
         let expYear = Int("20"+date[1]) ?? 0
         
-        RETokenizationManager.shared.cardData.month = String(expMonth)
-        RETokenizationManager.shared.cardData.year = String(expYear)
+        RecurlyTokenizationManager.shared.cardData.month = String(expMonth)
+        RecurlyTokenizationManager.shared.cardData.year = String(expYear)
         
         let isValidYear = (currentDate.year ?? 0) < expYear
         let isSameYear = (currentDate.year ?? 0) == expYear

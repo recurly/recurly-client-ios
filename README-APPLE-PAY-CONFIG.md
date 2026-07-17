@@ -17,9 +17,9 @@ These are the basic steps your iOS code should accomplish:
 
 1. Submit a payment request via the in your app.
 2. Receive a object that represents the Apple Pay transaction.
-3. Decode the to create an REApplePayment object.
-4. Conﬁgure the `RETokenizationManager` singleton and submit the Apple Pay transaction to Recurly with
-`RETokenizationManager.shared.getApplePayTokenId()`.
+3. Decode the to create a RecurlyApplePayment object.
+4. Conﬁgure the `RecurlyTokenizationManager` singleton and submit the Apple Pay transaction to Recurly with
+`RecurlyTokenizationManager.shared.getApplePayTokenId()`.
 5. If all goes well, you'll receive a token from Recurly as a string. ✅
 
 Steps 1 & 2 are purey Apple Pay behavior. The remaining steps can be accomplished with help from and classes in the SDK.
@@ -66,9 +66,9 @@ You will then use Recurly's CSRs to create & upload a respective Merchant Identy
 [ContentView.swift](https://github.com/recurly/recurly-client-ios/blob/master/ContainerApp/ContentView.swift) has an example of
 
 - Decoding PKPayment.token
-- Initializing a `REApplePaymentMethod`
-- Conﬁguring the `RETokenizationManager` singleton
-- And ﬁnally submitting the transaction data to recurly with `RETokenizationManager.getApplePayTokenId()`
+- Initializing a `RecurlyApplePaymentMethod`
+- Conﬁguring the `RecurlyTokenizationManager` singleton
+- And ﬁnally submitting the transaction data to recurly with `RecurlyTokenizationManager.getApplePayTokenId()`
 
 ⚠️ If you are using the `ContainerApp` in the repo, make sure you set your merchant ID in the `applePayInfo` instance of [ContentView.swift](https://github.com/recurly/recurly-client-ios/blob/master/ContainerApp/ContentView.swift).
 

@@ -9,7 +9,7 @@ class UnifiedViewModel: ObservableObject {
     
     @Published var lastTfBorderColor = Color.gray
     
-    @Published var lastCardStatus = RECardStatus.entering {
+    @Published var lastCardStatus = RecurlyCardStatus.entering {
         didSet {
             switch lastCardStatus {
             case .error:
@@ -27,7 +27,7 @@ class UnifiedViewModel: ObservableObject {
     
     @Published var cardNumber: String = "" {
         didSet {
-            let ccValidator = CreditCardValidator(RETokenizationManager.shared.cardData.number)
+            let ccValidator = CreditCardValidator(RecurlyTokenizationManager.shared.cardData.number)
             let cardLenght = ccValidator.type == .amex ? 17 : 19
             
             if cardNumber.range(of: "[^0-9 ]+", options: .regularExpression) != nil { return }
@@ -41,7 +41,7 @@ class UnifiedViewModel: ObservableObject {
             }
             
             self.validateCreditCard()
-            RETokenizationManager.shared.cardData.number = cardNumber.trimmingCharacters(in: .whitespaces)
+            RecurlyTokenizationManager.shared.cardData.number = cardNumber.trimmingCharacters(in: .whitespaces)
         }
     }
     
@@ -80,7 +80,7 @@ class UnifiedViewModel: ObservableObject {
         didSet {
             if cvv.range(of: "[^0-9 ]+", options: .regularExpression) != nil { return }
             
-            let ccValidator = CreditCardValidator(RETokenizationManager.shared.cardData.number)
+            let ccValidator = CreditCardValidator(RecurlyTokenizationManager.shared.cardData.number)
             let cvvLenght = ccValidator.type == .amex ? 4 : 3
             
             if cvv.isEmpty {
@@ -103,7 +103,7 @@ class UnifiedViewModel: ObservableObject {
                 if cvv.count > cvvLenght {
                     cvv = String(cvv.prefix(cvvLenght))
                 }
-                RETokenizationManager.shared.cardData.cvv = cvv
+                RecurlyTokenizationManager.shared.cardData.cvv = cvv
             }
         }
     }
@@ -124,7 +124,7 @@ class UnifiedViewModel: ObservableObject {
         }
     }
     
-    @Published var cardStatus = RECardStatus.entering {
+    @Published var cardStatus = RecurlyCardStatus.entering {
         didSet {
             switch cardStatus {
             case .error:
@@ -183,8 +183,8 @@ class UnifiedViewModel: ObservableObject {
         let expMonth = Int(date[0]) ?? 0
         let expYear = Int("20"+date[1]) ?? 0
         
-        RETokenizationManager.shared.cardData.month = String(expMonth)
-        RETokenizationManager.shared.cardData.year = String(expYear)
+        RecurlyTokenizationManager.shared.cardData.month = String(expMonth)
+        RecurlyTokenizationManager.shared.cardData.year = String(expYear)
         
         let isValidYear = (currentDate.year ?? 0) < expYear
         let isSameYear = (currentDate.year ?? 0) == expYear

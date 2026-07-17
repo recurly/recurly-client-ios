@@ -55,12 +55,6 @@ For more information on CocoaPods and the `Podfile`, visit: <https://guides.coco
 Once the package is added to your project (via either of the methods above) you only need to import the SDK.
 
 ```Swift
-// Swift Package Manager
-import RecurlySDK_iOS
-```
-
-```Swift
-// CocoaPods
 import RecurlySDK
 ```
 
@@ -68,7 +62,7 @@ import RecurlySDK
 In order to connect to the Recurly API, you must initialize the SDK with the API public key. This is found on the API credentials page of your Recurly site: <https://app.recurly.com/go/developer/api_access>
 
 ```Swift
-REConfiguration.shared.initialize(publicKey: "Your Public Key")
+RecurlyConfiguration.shared.initialize(publicKey: "Your Public Key")
 // after configuring, you can perform any operation with the SDK!
 ```
 
@@ -78,7 +72,7 @@ We strongly recommend that you configure the SDK when your application is launch
 @main
 struct ContainerApp: App {
     init() {
-        REConfiguration.shared.initialize(publicKey: "Your Public Key")
+        RecurlyConfiguration.shared.initialize(publicKey: "Your Public Key")
     }
     var body: some Scene {
 
@@ -90,7 +84,7 @@ struct ContainerApp: App {
 ```
 
 #### EU Data Residency
-If your Recurly site is hosted in Recurly's EU data center, your public key is prefixed with `fra-`. The SDK automatically detects this prefix and routes tokenization requests to the EU endpoint (`api.eu.recurly.com`) instead of the default US endpoint (`api.recurly.com`) — no additional configuration is required. Make sure `REConfiguration.shared.initialize(publicKey:)` is called before performing any tokenization so the correct endpoint is used.
+If your Recurly site is hosted in Recurly's EU data center, your public key is prefixed with `fra-`. The SDK automatically detects this prefix and routes tokenization requests to the EU endpoint (`api.eu.recurly.com`) instead of the default US endpoint (`api.recurly.com`) — no additional configuration is required. Make sure `RecurlyConfiguration.shared.initialize(publicKey:)` is called before performing any tokenization so the correct endpoint is used.
 
 #### App Transport Security (ATS)
 The SDK only communicates with Recurly's tokenization endpoints (`api.recurly.com` / `api.eu.recurly.com`) over HTTPS. No ATS exceptions (e.g. `NSAllowsArbitraryLoads`) are required in your app's `Info.plist` to use the SDK.
@@ -103,11 +97,11 @@ If you'd like to run the tests in Xcode, be sure to set the `publicKey` variable
 ## 4. Examples
 Once the SDK is imported and configured, we can start building stuff with it!
 
-### Display our RECreditCardInputUI TextField
+### Display our RecurlyCreditCardInputUI TextField
 
 ```Swift
        VStack(alignment: .center) {
-            RECreditCardInputUI(cardNumberPlaceholder: "Card number",
+            RecurlyCreditCardInputUI(cardNumberPlaceholder: "Card number",
                                 expDatePlaceholder: "MM/YY",
                                 cvvPlaceholder: "CVV")
                 .padding(10)
@@ -127,12 +121,12 @@ Once the SDK is imported and configured, we can start building stuff with it!
 ```Swift
         VStack(alignment: .center, spacing: 20) {
             VStack(alignment: .leading) {
-                RECardNumberTextField(placeholder: " Card number")
+                RecurlyCardNumberTextField(placeholder: " Card number")
                     .padding(.bottom, 30)
 
                 HStack(spacing: 15) {
-                    REExpDateTextField(placeholder: "MM/YY")
-                    RECVVTextField(placeholder: "CVV")
+                    RecurlyExpDateTextField(placeholder: "MM/YY")
+                    RecurlyCVVTextField(placeholder: "CVV")
                 }.padding(.bottom, 3)
 
             }.padding(.horizontal, 51)
@@ -153,7 +147,7 @@ Once the SDK is imported and configured, we can start building stuff with it!
 
 ```Swift
 
-    RECreditCardInputUI(cardNumberPlaceholder: "Card number",
+    RecurlyCreditCardInputUI(cardNumberPlaceholder: "Card number",
                                 expDatePlaceholder: "MM/YY",
                                 cvvPlaceholder: "CVV",
                                 textFieldFont: Font.system(size: 15, weight: .bold, design: .default),
@@ -163,7 +157,7 @@ Once the SDK is imported and configured, we can start building stuff with it!
 ### Get a payment token
 
 ```Swift
-let billingInfo = REBillingInfo(firstName: "Jane",
+let billingInfo = RecurlyBillingInfo(firstName: "Jane",
                                 lastName: "Doe",
                                 address1: "123 Main St",
                                 address2: "",
@@ -177,10 +171,10 @@ let billingInfo = REBillingInfo(firstName: "Jane",
                                 taxIdentifier: "",
                                 taxIdentifierType: "")
 //Inject the BillingInfo
-RETokenizationManager.shared.setBillingInfo(billingInfo: billingInfo)
+RecurlyTokenizationManager.shared.setBillingInfo(billingInfo: billingInfo)
 
 //Get the TokenId for your Billing Info
-RETokenizationManager.shared.getTokenId { tokenId, error in
+RecurlyTokenizationManager.shared.getTokenId { tokenId, error in
         if let errorResponse = error {
             print(errorResponse.error.message ?? "")
             return
@@ -193,10 +187,10 @@ or (exactly the same for requesting a tokenId just with your CardData):
 
 **The Card Data its passed to our Framework as the user types it so you don't need it nor have access to sensitive user info**
 ```Swift
-// Display The RECreditCardInputUI or The Individual Components and as the User types in, the info will be ready to submitt inside our Framework
+// Display The RecurlyCreditCardInputUI or The Individual Components and as the User types in, the info will be ready to submitt inside our Framework
 
 //Get the TokenId for your Card Data
-RETokenizationManager.shared.getTokenId { tokenId, error in
+RecurlyTokenizationManager.shared.getTokenId { tokenId, error in
         if let errorResponse = error {
             print(errorResponse.error.message ?? "")
             return
@@ -211,18 +205,18 @@ The following assumes your company is setup as an Apple Pay merchant. For more i
 
 To include the Apple Pay support using our SDK you need to following the next steps:
 
-### Instantiate REApplePaymentHandler class
+### Instantiate RecurlyApplePaymentHandler class
 ```Swift
 // Apple Payment handler instance
-    let paymentHandler = REApplePaymentHandler()
+    let paymentHandler = RecurlyApplePaymentHandler()
 ```
 
-### Use our REApplePayButton
+### Use our RecurlyApplePayButton
 ```Swift
 /// Apple Pay
             VStack(alignment: .center) {
                 Group {
-                    REApplePayButton(action: {
+                    RecurlyApplePayButton(action: {
                         getTokenApplePayment { completed in
                             // Do something
                         }
@@ -241,17 +235,17 @@ To include the Apple Pay support using our SDK you need to following the next st
     private func getTokenApplePayment(completion: @escaping (Bool) -> ()) {
 
         // Test items
-        var items = [REApplePayItem]()
+        var items = [RecurlyApplePayItem]()
 
-        items.append(REApplePayItem(amountLabel: "Foo",
+        items.append(RecurlyApplePayItem(amountLabel: "Foo",
                                     amount: NSDecimalNumber(string: "3.80")))
-        items.append(REApplePayItem(amountLabel: "Bar",
+        items.append(RecurlyApplePayItem(amountLabel: "Bar",
                                     amount: NSDecimalNumber(string: "0.99")))
-        items.append(REApplePayItem(amountLabel: "Tax",
+        items.append(RecurlyApplePayItem(amountLabel: "Tax",
                                     amount: NSDecimalNumber(string: "1.53")))
 
         // Using 'var' instance to change some default properties values
-        var applePayInfo = REApplePayInfo(purchaseItems: items)
+        var applePayInfo = RecurlyApplePayInfo(purchaseItems: items)
         // By default only require .phoneNumber and emailAddress
         applePayInfo.requiredContactFields = [.name, .phoneNumber, .emailAddress]
         // This MerchantID is required by Apple, you can learn more about:

@@ -22,4 +22,7 @@ DerivedData
 Pods
 output
 
+# Generated DocC archives
+*.doccarchive
+
 .serena/
