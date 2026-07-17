@@ -55,41 +55,44 @@ class NetworkEngine {
     func sendRequest<T:Codable>(responseModel: T.Type, request: URLRequest, completionHandler: @escaping (Result<T, RecurlyBaseErrorResponse>) -> ()) {
         
         session.dataTask(with: request as URLRequest, completionHandler: { data, response, error in
-            if let error = error {
-                completionHandler(.failure(RecurlyBaseErrorResponse(error: RecurlyTokenError(code: "network-error",
-                                                                                    message: error.localizedDescription,
-                                                                                    details: []))))
-                return
-            }
-            
-            guard let data = data else {
-                completionHandler(.failure(RecurlyBaseErrorResponse(error: RecurlyTokenError(code: "network-error",
-                                                                                    message: "No data received",
-                                                                                    details: []))))
-                return
-            }
-            
-            let decoder = JSONDecoder()
-            if let errorResponse = try? decoder.decode(RecurlyBaseErrorResponse.self, from: data) {
-                completionHandler(.failure(errorResponse))
-                return
-            }
-            
-            if let httpResponse = response as? HTTPURLResponse, !(200...299).contains(httpResponse.statusCode) {
-                completionHandler(.failure(RecurlyBaseErrorResponse(error: RecurlyTokenError(code: "http-\(httpResponse.statusCode)",
-                                                                                    message: "Unexpected HTTP status code \(httpResponse.statusCode)",
-                                                                                    details: []))))
-                return
-            }
-                
-            do {
-                let response = try decoder.decode(responseModel.self, from: data)
-                completionHandler(.success(response))
-            } catch {
-                completionHandler(.failure(RecurlyBaseErrorResponse(error: RecurlyTokenError(code: "sdk-internal",
-                                                                                   message: "Internal Mapping Error",
-                                                                                   details: []))))
-            }
+            completionHandler(self.mapResponse(data, response, error, responseModel: responseModel))
         }).resume()
+    }
+    
+    func mapResponse<T: Codable>(_ data: Data?,
+                                  _ response: URLResponse?,
+                                  _ error: Error?,
+                                  responseModel: T.Type) -> Result<T, RecurlyBaseErrorResponse> {
+        if let error = error {
+            return .failure(RecurlyBaseErrorResponse(error: RecurlyTokenError(code: "network-error",
+                                                                                message: error.localizedDescription,
+                                                                                details: [])))
+        }
+        
+        guard let data = data else {
+            return .failure(RecurlyBaseErrorResponse(error: RecurlyTokenError(code: "network-error",
+                                                                                message: "No data received",
+                                                                                details: [])))
+        }
+        
+        let decoder = JSONDecoder()
+        if let errorResponse = try? decoder.decode(RecurlyBaseErrorResponse.self, from: data) {
+            return .failure(errorResponse)
+        }
+        
+        if let httpResponse = response as? HTTPURLResponse, !(200...299).contains(httpResponse.statusCode) {
+            return .failure(RecurlyBaseErrorResponse(error: RecurlyTokenError(code: "http-\(httpResponse.statusCode)",
+                                                                                message: "Unexpected HTTP status code \(httpResponse.statusCode)",
+                                                                                details: [])))
+        }
+        
+        do {
+            let response = try decoder.decode(responseModel.self, from: data)
+            return .success(response)
+        } catch {
+            return .failure(RecurlyBaseErrorResponse(error: RecurlyTokenError(code: "sdk-internal",
+                                                                               message: "Internal Mapping Error",
+                                                                               details: [])))
+        }
     }
 }

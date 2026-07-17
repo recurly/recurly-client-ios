@@ -24,10 +24,21 @@ After reviewing our SDK via GitHub, use one of these two options to begin using 
 	```
 3. Select the version rule you want (e.g. "Up to Next Major") and add the package to your app target.
 
-Alternatively, add it directly to your `Package.swift`:
+Alternatively, add it directly to your `Package.swift` — declare the package
+dependency and add the `RecurlySDK` product to your target:
 
 	```swift
-	.package(url: "https://github.com/recurly/recurly-client-ios.git", from: "3.0.0")
+	dependencies: [
+	    .package(url: "https://github.com/recurly/recurly-client-ios.git", from: "3.0.0")
+	],
+	targets: [
+	    .target(
+	        name: "YourApp",
+	        dependencies: [
+	            .product(name: "RecurlySDK", package: "recurly-client-ios")
+	        ]
+	    )
+	]
 	```
 
 ### 1.2 Using CocoaPods
