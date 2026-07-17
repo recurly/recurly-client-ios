@@ -2,8 +2,6 @@
 //  IndividualViewModel.swift
 //  RecurlySDK-iOS
 //
-//  Created by David Figueroa on 29/11/21.
-//
 
 import SwiftUI
 

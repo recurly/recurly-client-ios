@@ -2,13 +2,11 @@
 //  REApplePayTokenRequest.swift
 //  RecurlySDK-iOS
 //
-//  Created by Carlos Landaverde on 21/6/22.
-//
 
 import Foundation
 
 /// Model That Encapsulates Apple Pay and/or BillingInfo request
-public struct REApplePayTokenRequest: Codable {
+public struct REApplePayTokenRequest: Codable, Sendable {
     var paymentData: REApplePaymentData
     var paymentMethod: REApplePaymentMethod
     var billingInfo: REBillingInfo

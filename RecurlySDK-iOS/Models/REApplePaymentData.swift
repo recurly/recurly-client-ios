@@ -2,12 +2,10 @@
 //  REApplePaymentData.swift
 //  RecurlySDK-iOS
 //
-//  Created by Carlos Landaverde on 21/6/22.
-//
 
 import Foundation
 
-public struct REApplePaymentData: Codable {
+public struct REApplePaymentData: Codable, Sendable {
     let paymentData: REApplePaymentDataBody
     
     public init(paymentData: REApplePaymentDataBody = REApplePaymentDataBody()) {
@@ -15,7 +13,7 @@ public struct REApplePaymentData: Codable {
     }
 }
 
-public struct REApplePaymentDataBody: Codable {
+public struct REApplePaymentDataBody: Codable, Sendable {
     let version: String
     let data: String
     let signature: String
@@ -32,7 +30,7 @@ public struct REApplePaymentDataBody: Codable {
     }
 }
 
-public struct REApplePaymentDataHeader: Codable {
+public struct REApplePaymentDataHeader: Codable, Sendable {
     let ephemeralPublicKey: String
     let publicKeyHash: String
     let transactionId: String

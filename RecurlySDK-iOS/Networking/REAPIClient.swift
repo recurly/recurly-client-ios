@@ -2,8 +2,6 @@
 //  APIClient.swift
 //  RecurlySDK-iOS
 //
-//  Created by David Figueroa on 2/12/21.
-//
 
 import Foundation
 import Combine

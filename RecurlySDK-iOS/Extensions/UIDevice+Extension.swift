@@ -2,8 +2,6 @@
 //  UIDevice+Extension.swift
 //  RecurlySDK-iOS
 //
-//  Created by David Figueroa on 3/12/21.
-//
 
 import SwiftUI
 

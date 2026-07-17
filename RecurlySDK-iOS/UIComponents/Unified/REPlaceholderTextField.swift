@@ -2,8 +2,6 @@
 //  REPlaceholderTextView.swift
 //  RecurlySDK-iOS
 //
-//  Created by David Figueroa on 22/11/21.
-//
 
 import SwiftUI
 

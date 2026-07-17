@@ -2,8 +2,6 @@
 //  FontLoader.swift
 //  RecurlySDK-iOS
 //
-//  Created by David Figueroa on 24/11/21.
-//
 
 import SwiftUI
 
@@ -13,11 +11,11 @@ class FontLoader {
            let dataProvider = CGDataProvider(url: fontUrl as CFURL),
            let newFont = CGFont(dataProvider) {
             var error: Unmanaged<CFError>?
-            if CTFontManagerRegisterGraphicsFont(newFont, &error){
-                print("Loaded font")
+            if !CTFontManagerRegisterGraphicsFont(newFont, &error) {
+                NSLog("RecurlySDK: Error registering font \(name).\(fileExtension)")
             }
         } else {
-            assertionFailure("Error loading font")
+            NSLog("RecurlySDK: Error loading font \(name).\(fileExtension)")
         }
     }
 }

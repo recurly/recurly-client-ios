@@ -24,7 +24,10 @@ let package = Package(
         .target(
             name: "RecurlySDK-iOS",
             dependencies: [],
-            path: "RecurlySDK-iOS"),
+            path: "RecurlySDK-iOS",
+            resources: [
+                .copy("PrivacyInfo.xcprivacy")
+            ]),
         .testTarget(
             name: "RecurlySDK-iOSTests",
             dependencies: ["RecurlySDK-iOS"],

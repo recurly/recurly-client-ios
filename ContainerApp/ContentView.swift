@@ -2,8 +2,6 @@
 //  ContentView.swift
 //  ContainerApp
 //
-//  Created by Carlos Landaverde on 14/01/22.
-//
 
 import SwiftUI
 import RecurlySDK_iOS

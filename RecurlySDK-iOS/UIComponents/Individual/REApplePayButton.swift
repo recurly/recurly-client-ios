@@ -2,8 +2,6 @@
 //  REApplePayButton.swift
 //  RecurlySDK-iOS
 //
-//  Created by Carlos Landaverde on 14/1/22.
-//
 
 import SwiftUI
 import PassKit

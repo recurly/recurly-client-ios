@@ -2,13 +2,11 @@
 //  RETokenizationRequest.swift
 //  RecurlySDK-iOS
 //
-//  Created by David Figueroa on 5/12/21.
-//
 
 import Foundation
 
 /// Model That Encapsulates Card Data and/or BillingInfo request
-public struct RETokenRequest: Codable {
+public struct RETokenRequest: Codable, Sendable {
     var cardData: RECardData
     var billingInfo: REBillingInfo
     var version: String

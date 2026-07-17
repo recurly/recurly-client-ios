@@ -2,8 +2,6 @@
 //  Resource.swift
 //  RecurlySDK-iOS
 //
-//  Created by Andy Kelso on 9/15/23.
-//
 
 import SwiftUI
 
