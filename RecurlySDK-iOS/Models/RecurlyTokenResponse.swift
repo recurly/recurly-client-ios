@@ -8,4 +8,5 @@ import Foundation
 struct RecurlyTokenResponse: Codable, Sendable {
     var type: String?
     var id: String?
+    var card: RecurlyTokenCard?
 }

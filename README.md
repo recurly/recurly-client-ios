@@ -210,6 +210,41 @@ RecurlyTokenizationManager.shared.getTokenId { tokenId, error in
         }
 ```
 
+### Get a token with card metadata
+
+If you need the card details associated with the token (for example, to display a
+saved-card summary), use `getToken` instead of `getTokenId`. It returns a
+`RecurlyToken` containing the token `id`, the `type`, and a `card` with the
+brand, first six / last four digits, expiration, issuing country, and funding
+source when Recurly returns them.
+
+```Swift
+RecurlyTokenizationManager.shared.getToken { token, error in
+        if let errorResponse = error {
+            print(errorResponse.error.message ?? "")
+            return
+        }
+        guard let token = token else { return }
+        // Send token.id to your server to create the subscription / purchase.
+        // Use the card metadata to render a saved-card summary in your UI, e.g.:
+        //   "\(card.brand ?? "") •••• \(card.lastFour ?? "")"
+        if let card = token.card {
+            self.updateSavedCardLabel(brand: card.brand,
+                                      lastFour: card.lastFour,
+                                      expMonth: card.expMonth,
+                                      expYear: card.expYear)
+        }
+    }
+```
+
+> Card metadata (`brand`, `lastFour`, `expMonth`/`expYear`, etc.) is cardholder
+> data. It is safe to display for a card-on-file UI, but avoid writing it to logs
+> or third-party analytics/crash reporters in production.
+
+The same is available for Apple Pay via `getApplePayToken`. The existing
+`getTokenId` / `getApplePayTokenId` methods are unchanged and still return just
+the token id.
+
 ## 5. Apple Pay support
 
 The following assumes your company is setup as an Apple Pay merchant. For more info on configuration and setup, look at the `README-APPLE-PAY-CONFIG.md` documentation in the repo.
