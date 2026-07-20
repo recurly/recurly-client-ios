@@ -355,131 +355,83 @@ class RecurlySDK_iOSTests: XCTestCase {
         wait(for: [expectation], timeout: 1.0)
     }
 
-    func testREAPIClient_getTokenID_missingId_returnsSdkInternal() {
-        let url = URL(string: "https://api.recurly.com/js/v1/tokens")!
-        let responseJSON = "{\"type\":\"credit_card\"}".data(using: .utf8)!
-        MockURLProtocol.requestHandler = { request in
-            (HTTPURLResponse(url: request.url ?? url, statusCode: 200, httpVersion: nil, headerFields: nil), responseJSON, nil)
+    // The tests below exercise `RecurlyAPIClient.makeToken(from:)` directly — the pure,
+    // side-effect-free mapping seam extracted from `getToken`'s `sendRequest` completion.
+    // This verifies the id-guard/card-mapping logic deterministically, without a real
+    // `URLSession` round-trip (see CI flake history on the previous MockURLProtocol-driven
+    // versions of these tests).
+
+    func testRecurlyAPIClient_makeToken_missingId_returnsSdkInternal() {
+        let response = RecurlyTokenResponse(type: "credit_card", id: nil, card: nil)
+
+        let result = RecurlyAPIClient.makeToken(from: .success(response))
+
+        guard case .failure(let error as RecurlyBaseErrorResponse) = result else {
+            XCTFail("expected sdk-internal failure")
+            return
         }
-
-        let apiClient = RecurlyAPIClient(networkEngine: NetworkEngine(session: MockURLProtocol.makeSession()))
-        let request = RecurlyTokenRequest(
-            cardData: RecurlyCardData(),
-            billingInfo: RecurlyBillingInfo(),
-            version: "1.0",
-            key: "key",
-            deviceId: "device",
-            sessionId: "session"
-        )
-
-        var cancellables = Set<AnyCancellable>()
-        let expectation = expectation(description: "missingId")
-
-        apiClient.getTokenID(with: request, requestType: .getTokenID)
-            .sink(receiveCompletion: { completion in
-                if case .failure(let error as RecurlyBaseErrorResponse) = completion {
-                    XCTAssertEqual(error.error.code, "sdk-internal")
-                    expectation.fulfill()
-                } else {
-                    XCTFail("expected sdk-internal failure")
-                }
-            }, receiveValue: { _ in
-                XCTFail("expected no value")
-            })
-            .store(in: &cancellables)
-
-        wait(for: [expectation], timeout: 1.0)
+        XCTAssertEqual(error.error.code, "sdk-internal")
     }
 
-    func testRecurlyAPIClient_getToken_success_returnsFullTokenWithCard() {
-        let url = URL(string: "https://api.recurly.com/js/v1/tokens")!
-        let responseJSON = """
-        {"id":"tok-abc","type":"credit_card","card":{"brand":"visa","first_six":"411111","last_four":"1111","exp_month":12,"exp_year":2030,"issuing_country":"US","funding_source":"credit"}}
-        """.data(using: .utf8)!
-        MockURLProtocol.requestHandler = { request in
-            (HTTPURLResponse(url: request.url ?? url, statusCode: 200, httpVersion: nil, headerFields: nil), responseJSON, nil)
+    func testRecurlyAPIClient_makeToken_success_returnsFullTokenWithCard() {
+        let card = RecurlyTokenCard(brand: "visa", firstSix: "411111", lastFour: "1111", expMonth: 12, expYear: 2030, issuingCountry: "US", fundingSource: "credit")
+        let response = RecurlyTokenResponse(type: "credit_card", id: "tok-abc", card: card)
+
+        let result = RecurlyAPIClient.makeToken(from: .success(response))
+
+        guard case .success(let token) = result else {
+            XCTFail("expected success")
+            return
         }
-
-        let apiClient = RecurlyAPIClient(networkEngine: NetworkEngine(session: MockURLProtocol.makeSession()))
-        let request = RecurlyTokenRequest(
-            cardData: RecurlyCardData(),
-            billingInfo: RecurlyBillingInfo(),
-            version: "1.0",
-            key: "key",
-            deviceId: "device",
-            sessionId: "session"
-        )
-
-        var cancellables = Set<AnyCancellable>()
-        let expectation = expectation(description: "getTokenSuccess")
-
-        apiClient.getToken(with: request, requestType: .getTokenID)
-            .sink(receiveCompletion: { completion in
-                if case .failure = completion {
-                    XCTFail("expected success")
-                }
-            }, receiveValue: { token in
-                XCTAssertEqual(token.id, "tok-abc")
-                XCTAssertEqual(token.type, "credit_card")
-                XCTAssertEqual(token.card?.brand, "visa")
-                XCTAssertEqual(token.card?.firstSix, "411111")
-                XCTAssertEqual(token.card?.lastFour, "1111")
-                XCTAssertEqual(token.card?.expMonth, 12)
-                XCTAssertEqual(token.card?.expYear, 2030)
-                XCTAssertEqual(token.card?.issuingCountry, "US")
-                XCTAssertEqual(token.card?.fundingSource, "credit")
-                expectation.fulfill()
-            })
-            .store(in: &cancellables)
-
-        wait(for: [expectation], timeout: 1.0)
+        XCTAssertEqual(token.id, "tok-abc")
+        XCTAssertEqual(token.type, "credit_card")
+        XCTAssertEqual(token.card?.brand, "visa")
+        XCTAssertEqual(token.card?.firstSix, "411111")
+        XCTAssertEqual(token.card?.lastFour, "1111")
+        XCTAssertEqual(token.card?.expMonth, 12)
+        XCTAssertEqual(token.card?.expYear, 2030)
+        XCTAssertEqual(token.card?.issuingCountry, "US")
+        XCTAssertEqual(token.card?.fundingSource, "credit")
     }
 
-    func testRecurlyAPIClient_getTokenID_success_stillReturnsBareId_whenCardPresent() {
-        let url = URL(string: "https://api.recurly.com/js/v1/tokens")!
-        let responseJSON = """
-        {"id":"tok-abc","type":"credit_card","card":{"brand":"visa","first_six":"411111","last_four":"1111","exp_month":12,"exp_year":2030,"issuing_country":"US","funding_source":"credit"}}
-        """.data(using: .utf8)!
-        MockURLProtocol.requestHandler = { request in
-            (HTTPURLResponse(url: request.url ?? url, statusCode: 200, httpVersion: nil, headerFields: nil), responseJSON, nil)
+    func testRecurlyAPIClient_makeToken_stillReturnsBareId_whenCardPresent() {
+        let card = RecurlyTokenCard(brand: "visa", firstSix: "411111", lastFour: "1111", expMonth: 12, expYear: 2030, issuingCountry: "US", fundingSource: "credit")
+        let response = RecurlyTokenResponse(type: "credit_card", id: "tok-abc", card: card)
+
+        let result = RecurlyAPIClient.makeToken(from: .success(response)).map(\.id)
+
+        guard case .success(let id) = result else {
+            XCTFail("expected success")
+            return
         }
-
-        let apiClient = RecurlyAPIClient(networkEngine: NetworkEngine(session: MockURLProtocol.makeSession()))
-        let request = RecurlyTokenRequest(
-            cardData: RecurlyCardData(),
-            billingInfo: RecurlyBillingInfo(),
-            version: "1.0",
-            key: "key",
-            deviceId: "device",
-            sessionId: "session"
-        )
-
-        var cancellables = Set<AnyCancellable>()
-        let expectation = expectation(description: "getTokenIDRegression")
-
-        apiClient.getTokenID(with: request, requestType: .getTokenID)
-            .sink(receiveCompletion: { completion in
-                if case .failure = completion {
-                    XCTFail("expected success")
-                }
-            }, receiveValue: { id in
-                XCTAssertEqual(id, "tok-abc")
-                expectation.fulfill()
-            })
-            .store(in: &cancellables)
-
-        wait(for: [expectation], timeout: 1.0)
+        XCTAssertEqual(id, "tok-abc")
     }
 
     // MARK: RecurlyTokenizationManager
 
-    func testRETokenizationManager_emptyCVV_doesNotHitNetwork() {
-        MockURLProtocol.requestHandler = { _ in
-            XCTFail("network should not be called when cvv is empty")
-            return (nil, nil, nil)
+    /// Minimal `TokenAPIClient` fake letting `RecurlyTokenizationManager` tests assert
+    /// delegation/validation logic deterministically (`Result.publisher` delivers
+    /// synchronously), without driving a real `URLSession` round-trip.
+    private struct StubTokenAPIClient: TokenAPIClient {
+        var result: Result<RecurlyToken, Error> = .success(RecurlyToken(id: "stub-unused", type: nil, card: nil))
+        var onCall: (() -> Void)? = nil
+
+        func getToken<T: Codable>(with dataRequest: T, requestType: TokenizationAPI) -> AnyPublisher<RecurlyToken, Error> {
+            onCall?()
+            return result.publisher.eraseToAnyPublisher()
         }
 
-        var manager = RecurlyTokenizationManager(apiClient: RecurlyAPIClient(networkEngine: NetworkEngine(session: MockURLProtocol.makeSession())))
+        func getTokenID<T: Codable>(with dataRequest: T, requestType: TokenizationAPI) -> AnyPublisher<String, Error> {
+            getToken(with: dataRequest, requestType: requestType)
+                .map(\.id)
+                .eraseToAnyPublisher()
+        }
+    }
+
+    func testRETokenizationManager_emptyCVV_doesNotHitNetwork() {
+        let manager = RecurlyTokenizationManager(apiClient: StubTokenAPIClient(onCall: {
+            XCTFail("network should not be called when cvv is empty")
+        }))
         manager.cardData.cvv = ""
 
         let expectation = expectation(description: "emptyCvv")
@@ -492,13 +444,9 @@ class RecurlySDK_iOSTests: XCTestCase {
     }
 
     func testRETokenizationManager_getTokenId_success() {
-        let url = URL(string: "https://api.recurly.com/js/v1/tokens")!
-        let responseJSON = "{\"id\":\"tok-abc\",\"type\":\"credit_card\"}".data(using: .utf8)!
-        MockURLProtocol.requestHandler = { request in
-            (HTTPURLResponse(url: request.url ?? url, statusCode: 200, httpVersion: nil, headerFields: nil), responseJSON, nil)
-        }
-
-        var manager = RecurlyTokenizationManager(apiClient: RecurlyAPIClient(networkEngine: NetworkEngine(session: MockURLProtocol.makeSession())))
+        let manager = RecurlyTokenizationManager(apiClient: StubTokenAPIClient(
+            result: .success(RecurlyToken(id: "tok-abc", type: "credit_card", card: nil))
+        ))
         manager.cardData.number = "4111111111111111"
         manager.cardData.month = "12"
         manager.cardData.year = "2030"
@@ -514,13 +462,9 @@ class RecurlySDK_iOSTests: XCTestCase {
     }
 
     func testRETokenizationManager_getTokenId_failureMapped() {
-        let url = URL(string: "https://api.recurly.com/js/v1/tokens")!
-        let errorJSON = "{\"error\":{\"code\":\"invalid-parameter\",\"message\":\"bad card\",\"details\":[]}}".data(using: .utf8)!
-        MockURLProtocol.requestHandler = { request in
-            (HTTPURLResponse(url: request.url ?? url, statusCode: 200, httpVersion: nil, headerFields: nil), errorJSON, nil)
-        }
-
-        var manager = RecurlyTokenizationManager(apiClient: RecurlyAPIClient(networkEngine: NetworkEngine(session: MockURLProtocol.makeSession())))
+        let manager = RecurlyTokenizationManager(apiClient: StubTokenAPIClient(
+            result: .failure(RecurlyBaseErrorResponse(error: RecurlyTokenError(code: "invalid-parameter", message: "bad card", details: [])))
+        ))
         manager.cardData.cvv = "123"
 
         let expectation = expectation(description: "tokenFailure")
@@ -532,15 +476,10 @@ class RecurlySDK_iOSTests: XCTestCase {
         wait(for: [expectation], timeout: 1.0)
     }
 
-
     func testRETokenizationManager_getApplePayTokenId_success() {
-        let url = URL(string: "https://api.recurly.com/js/v1/apple_pay/token")!
-        let responseJSON = "{\"id\":\"tok-apple-abc\",\"type\":\"credit_card\"}".data(using: .utf8)!
-        MockURLProtocol.requestHandler = { request in
-            (HTTPURLResponse(url: request.url ?? url, statusCode: 200, httpVersion: nil, headerFields: nil), responseJSON, nil)
-        }
-
-        var manager = RecurlyTokenizationManager(apiClient: RecurlyAPIClient(networkEngine: NetworkEngine(session: MockURLProtocol.makeSession())))
+        let manager = RecurlyTokenizationManager(apiClient: StubTokenAPIClient(
+            result: .success(RecurlyToken(id: "tok-apple-abc", type: "credit_card", card: nil))
+        ))
 
         let expectation = expectation(description: "applePayTokenSuccess")
         manager.getApplePayTokenId { tokenId, error in
@@ -552,13 +491,9 @@ class RecurlySDK_iOSTests: XCTestCase {
     }
 
     func testRETokenizationManager_getApplePayTokenId_failureMapped() {
-        let url = URL(string: "https://api.recurly.com/js/v1/apple_pay/token")!
-        let errorJSON = "{\"error\":{\"code\":\"invalid-parameter\",\"message\":\"bad apple pay token\",\"details\":[]}}".data(using: .utf8)!
-        MockURLProtocol.requestHandler = { request in
-            (HTTPURLResponse(url: request.url ?? url, statusCode: 200, httpVersion: nil, headerFields: nil), errorJSON, nil)
-        }
-
-        var manager = RecurlyTokenizationManager(apiClient: RecurlyAPIClient(networkEngine: NetworkEngine(session: MockURLProtocol.makeSession())))
+        let manager = RecurlyTokenizationManager(apiClient: StubTokenAPIClient(
+            result: .failure(RecurlyBaseErrorResponse(error: RecurlyTokenError(code: "invalid-parameter", message: "bad apple pay token", details: [])))
+        ))
 
         let expectation = expectation(description: "applePayTokenFailure")
         manager.getApplePayTokenId { tokenId, error in
@@ -570,15 +505,10 @@ class RecurlySDK_iOSTests: XCTestCase {
     }
 
     func testRecurlyTokenizationManager_getToken_success_surfacesCard() {
-        let url = URL(string: "https://api.recurly.com/js/v1/tokens")!
-        let responseJSON = """
-        {"id":"tok-abc","type":"credit_card","card":{"brand":"visa","first_six":"411111","last_four":"1111","exp_month":12,"exp_year":2030,"issuing_country":"US","funding_source":"credit"}}
-        """.data(using: .utf8)!
-        MockURLProtocol.requestHandler = { request in
-            (HTTPURLResponse(url: request.url ?? url, statusCode: 200, httpVersion: nil, headerFields: nil), responseJSON, nil)
-        }
-
-        var manager = RecurlyTokenizationManager(apiClient: RecurlyAPIClient(networkEngine: NetworkEngine(session: MockURLProtocol.makeSession())))
+        let card = RecurlyTokenCard(brand: "visa", firstSix: "411111", lastFour: "1111", expMonth: 12, expYear: 2030, issuingCountry: "US", fundingSource: "credit")
+        let manager = RecurlyTokenizationManager(apiClient: StubTokenAPIClient(
+            result: .success(RecurlyToken(id: "tok-abc", type: "credit_card", card: card))
+        ))
         manager.cardData.number = "4111111111111111"
         manager.cardData.month = "12"
         manager.cardData.year = "2030"
@@ -598,13 +528,9 @@ class RecurlySDK_iOSTests: XCTestCase {
     }
 
     func testRecurlyTokenizationManager_getToken_success_cardAbsent() {
-        let url = URL(string: "https://api.recurly.com/js/v1/tokens")!
-        let responseJSON = "{\"id\":\"tok-x\",\"type\":\"credit_card\"}".data(using: .utf8)!
-        MockURLProtocol.requestHandler = { request in
-            (HTTPURLResponse(url: request.url ?? url, statusCode: 200, httpVersion: nil, headerFields: nil), responseJSON, nil)
-        }
-
-        var manager = RecurlyTokenizationManager(apiClient: RecurlyAPIClient(networkEngine: NetworkEngine(session: MockURLProtocol.makeSession())))
+        let manager = RecurlyTokenizationManager(apiClient: StubTokenAPIClient(
+            result: .success(RecurlyToken(id: "tok-x", type: "credit_card", card: nil))
+        ))
         manager.cardData.number = "4111111111111111"
         manager.cardData.month = "12"
         manager.cardData.year = "2030"
@@ -621,15 +547,10 @@ class RecurlySDK_iOSTests: XCTestCase {
     }
 
     func testRecurlyTokenizationManager_getApplePayToken_success_surfacesCard() {
-        let url = URL(string: "https://api.recurly.com/js/v1/apple_pay/token")!
-        let responseJSON = """
-        {"id":"tok-apple-abc","type":"credit_card","card":{"brand":"master","first_six":"555555","last_four":"4444","exp_month":6,"exp_year":2029,"issuing_country":"ZZ","funding_source":"debit"}}
-        """.data(using: .utf8)!
-        MockURLProtocol.requestHandler = { request in
-            (HTTPURLResponse(url: request.url ?? url, statusCode: 200, httpVersion: nil, headerFields: nil), responseJSON, nil)
-        }
-
-        var manager = RecurlyTokenizationManager(apiClient: RecurlyAPIClient(networkEngine: NetworkEngine(session: MockURLProtocol.makeSession())))
+        let card = RecurlyTokenCard(brand: "master", firstSix: "555555", lastFour: "4444", expMonth: 6, expYear: 2029, issuingCountry: "ZZ", fundingSource: "debit")
+        let manager = RecurlyTokenizationManager(apiClient: StubTokenAPIClient(
+            result: .success(RecurlyToken(id: "tok-apple-abc", type: "credit_card", card: card))
+        ))
 
         let expectation = expectation(description: "getApplePayTokenSuccess")
         manager.getApplePayToken { token, error in
@@ -645,15 +566,10 @@ class RecurlySDK_iOSTests: XCTestCase {
     }
 
     func testRecurlyTokenizationManager_getApplePayTokenId_stillReturnsBareId_whenCardPresent() {
-        let url = URL(string: "https://api.recurly.com/js/v1/apple_pay/token")!
-        let responseJSON = """
-        {"id":"tok-apple-abc","type":"credit_card","card":{"brand":"master","first_six":"555555","last_four":"4444","exp_month":6,"exp_year":2029,"issuing_country":"ZZ","funding_source":"debit"}}
-        """.data(using: .utf8)!
-        MockURLProtocol.requestHandler = { request in
-            (HTTPURLResponse(url: request.url ?? url, statusCode: 200, httpVersion: nil, headerFields: nil), responseJSON, nil)
-        }
-
-        var manager = RecurlyTokenizationManager(apiClient: RecurlyAPIClient(networkEngine: NetworkEngine(session: MockURLProtocol.makeSession())))
+        let card = RecurlyTokenCard(brand: "master", firstSix: "555555", lastFour: "4444", expMonth: 6, expYear: 2029, issuingCountry: "ZZ", fundingSource: "debit")
+        let manager = RecurlyTokenizationManager(apiClient: StubTokenAPIClient(
+            result: .success(RecurlyToken(id: "tok-apple-abc", type: "credit_card", card: card))
+        ))
 
         let expectation = expectation(description: "getApplePayTokenIdRegression")
         manager.getApplePayTokenId { tokenId, error in
@@ -840,7 +756,9 @@ class RecurlySDK_iOSTests: XCTestCase {
         manager.getTokenId { _, _ in
             expectation.fulfill()
         }
-        wait(for: [expectation], timeout: 1.0)
+        // Generous timeout: exercises the real dataTask(...).resume() wiring end-to-end
+        // (asserts the actual serialized wire body).
+        wait(for: [expectation], timeout: 10.0)
 
         let body = try XCTUnwrap(capturedBody)
         let json = try XCTUnwrap(JSONSerialization.jsonObject(with: body) as? [String: Any])

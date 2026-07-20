@@ -69,9 +69,9 @@ public final class RecurlyTokenizationManager {
         }
     }
 
-    private let apiClient: RecurlyAPIClient
+    private let apiClient: TokenAPIClient
 
-    internal init(apiClient: RecurlyAPIClient = RecurlyAPIClient()) {
+    internal init(apiClient: TokenAPIClient = RecurlyAPIClient()) {
         self.apiClient = apiClient
     }
 
