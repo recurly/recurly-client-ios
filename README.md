@@ -245,6 +245,36 @@ The same is available for Apple Pay via `getApplePayToken`. The existing
 `getTokenId` / `getApplePayTokenId` methods are unchanged and still return just
 the token id.
 
+### Async/await
+
+`getTokenId`, `getToken`, `getApplePayTokenId`, and `getApplePayToken` are also
+available as `async throws` overloads, alongside the completion-handler
+versions above (both are supported; use whichever fits your codebase):
+
+```Swift
+do {
+    let tokenId = try await RecurlyTokenizationManager.shared.getTokenId()
+    print(tokenId)
+} catch let errorResponse as RecurlyBaseErrorResponse {
+    print(errorResponse.error.message ?? "")
+}
+```
+
+```Swift
+do {
+    let token = try await RecurlyTokenizationManager.shared.getToken()
+    // Send token.id to your server to create the subscription / purchase.
+    if let card = token.card {
+        self.updateSavedCardLabel(brand: card.brand,
+                                  lastFour: card.lastFour,
+                                  expMonth: card.expMonth,
+                                  expYear: card.expYear)
+    }
+} catch let errorResponse as RecurlyBaseErrorResponse {
+    print(errorResponse.error.message ?? "")
+}
+```
+
 ## 5. Apple Pay support
 
 The following assumes your company is setup as an Apple Pay merchant. For more info on configuration and setup, look at the `README-APPLE-PAY-CONFIG.md` documentation in the repo.

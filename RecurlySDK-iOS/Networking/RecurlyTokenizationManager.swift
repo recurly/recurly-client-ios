@@ -222,3 +222,78 @@ public final class RecurlyTokenizationManager {
         return RecurlyConfiguration.shared.sessionId.uuidString
     }
 }
+
+// MARK: - Async/Await
+
+extension RecurlyTokenizationManager {
+
+    /// Returns the tokenized `RecurlyToken` (id, type, and card metadata when present) from a BillingInfo or/with CardData tokenization request.
+    ///
+    /// Sends the CardData (CardNumber, ExpDate, CVV) and/or the BillingInfo that you want to tokenize
+    ///
+    /// - Throws: `RecurlyBaseErrorResponse` if tokenization fails.
+    /// - Returns: The tokenized `RecurlyToken`.
+    public func getToken() async throws -> RecurlyToken {
+        try await withCheckedThrowingContinuation { continuation in
+            getToken { token, error in
+                if let error {
+                    continuation.resume(throwing: error)
+                } else if let token {
+                    continuation.resume(returning: token)
+                } else {
+                    continuation.resume(throwing: RecurlyBaseErrorResponse(
+                        error: RecurlyTokenError(code: "sdk-internal",
+                                                  message: "Tokenization completed without a token or an error.",
+                                                  details: [])
+                    ))
+                }
+            }
+        }
+    }
+
+    /// Returns the tokenId as String from a BillingInfo or/with CardData tokenization request.
+    ///
+    /// Sends the CardData (CardNumber, ExpDate, CVV) and/or the BillingInfo that you want to tokenize
+    ///
+    /// - Throws: `RecurlyBaseErrorResponse` if tokenization fails.
+    /// - Returns: The tokenized token id.
+    public func getTokenId() async throws -> String {
+        try await getToken().id
+    }
+
+    /// Returns the tokenized `RecurlyToken` (id, type, and card metadata when present) from a BillingInfo or/with ApplePaymentData, ApplePaymentMethod tokenization request.
+    ///
+    /// Sends the ApplePaymentData (version, data, signature, header), ApplePaymentMethod (displayName, network, type)
+    /// and/or the BillingInfo that you want to tokenize
+    ///
+    /// - Throws: `RecurlyBaseErrorResponse` if tokenization fails.
+    /// - Returns: The tokenized `RecurlyToken`.
+    public func getApplePayToken() async throws -> RecurlyToken {
+        try await withCheckedThrowingContinuation { continuation in
+            getApplePayToken { token, error in
+                if let error {
+                    continuation.resume(throwing: error)
+                } else if let token {
+                    continuation.resume(returning: token)
+                } else {
+                    continuation.resume(throwing: RecurlyBaseErrorResponse(
+                        error: RecurlyTokenError(code: "sdk-internal",
+                                                  message: "Tokenization completed without a token or an error.",
+                                                  details: [])
+                    ))
+                }
+            }
+        }
+    }
+
+    /// Returns the tokenId as String from a BillingInfo or/with ApplePaymentData, ApplePaymentMethod tokenization request.
+    ///
+    /// Sends the ApplePaymentData (version, data, signature, header), ApplePaymentMethod (displayName, network, type)
+    /// and/or the BillingInfo that you want to tokenize
+    ///
+    /// - Throws: `RecurlyBaseErrorResponse` if tokenization fails.
+    /// - Returns: The tokenized token id.
+    public func getApplePayTokenId() async throws -> String {
+        try await getApplePayToken().id
+    }
+}
