@@ -69,9 +69,9 @@ public final class RecurlyTokenizationManager {
         }
     }
 
-    private let apiClient: RecurlyAPIClient
+    private let apiClient: TokenAPIClient
 
-    internal init(apiClient: RecurlyAPIClient = RecurlyAPIClient()) {
+    internal init(apiClient: TokenAPIClient = RecurlyAPIClient()) {
         self.apiClient = apiClient
     }
 
@@ -99,6 +99,17 @@ public final class RecurlyTokenizationManager {
     ///
     /// - Parameter completion: (TokenId, Error)
     public func getTokenId(completion: @escaping (String?, RecurlyBaseErrorResponse?) -> ()) {
+        getToken { token, error in
+            completion(token?.id, error)
+        }
+    }
+    
+    /// Returns the tokenized `RecurlyToken` (id, type, and card metadata when present) from a BillingInfo or/with CardData tokenization request.
+    ///
+    /// Sends the CardData (CardNumber, ExpDate, CVV) and/or the BillingInfo that you want to tokenize
+    ///
+    /// - Parameter completion: (RecurlyToken, Error)
+    public func getToken(completion: @escaping (RecurlyToken?, RecurlyBaseErrorResponse?) -> ()) {
         
         let tokenizationRequest = RecurlyTokenRequest(
             cardData: cardData,
@@ -123,27 +134,7 @@ public final class RecurlyTokenizationManager {
             return
         }
         
-        var cancellable: AnyCancellable?
-        cancellable = apiClient.getTokenID(with: tokenizationRequest, requestType: .getTokenID).sink(receiveCompletion: { [weak self] result in
-            switch result {
-            case .failure(let error as RecurlyBaseErrorResponse):
-                completion(nil, error)
-            case .failure(let error):
-                completion(nil, RecurlyBaseErrorResponse(error: RecurlyTokenError(code: "sdk-internal",
-                                                                         message: error.localizedDescription,
-                                                                         details: [])))
-            case .finished:
-                break
-            }
-            if let cancellable = cancellable {
-                self?.remove(cancellable)
-            }
-        }, receiveValue: { token in
-            completion(token, nil)
-        })
-        if let cancellable = cancellable {
-            store(cancellable)
-        }
+        subscribe(apiClient.getToken(with: tokenizationRequest, requestType: .getTokenID), completion: completion)
     }
     
     /// Returns the tokenId as String from a BillingInfo or/with ApplePaymentData, ApplePaymentMethod tokenization request.
@@ -153,6 +144,18 @@ public final class RecurlyTokenizationManager {
     ///
     /// - Parameter completion: (TokenId, Error)
     public func getApplePayTokenId(completion: @escaping (String?, RecurlyBaseErrorResponse?) -> ()) {
+        getApplePayToken { token, error in
+            completion(token?.id, error)
+        }
+    }
+    
+    /// Returns the tokenized `RecurlyToken` (id, type, and card metadata when present) from a BillingInfo or/with ApplePaymentData, ApplePaymentMethod tokenization request.
+    ///
+    /// Sends the ApplePaymentData (version, data, signature, header), ApplePaymentMethod (displayName, network, type)
+    /// and/or the BillingInfo that you want to tokenize
+    ///
+    /// - Parameter completion: (RecurlyToken, Error)
+    public func getApplePayToken(completion: @escaping (RecurlyToken?, RecurlyBaseErrorResponse?) -> ()) {
         
         let applePayTokenizationRequest = RecurlyApplePayTokenRequest(paymentData: applePaymentData,
                                                                  paymentMethod: applePaymentMethod,
@@ -162,8 +165,22 @@ public final class RecurlyTokenizationManager {
                                                                  deviceId: getDeviceID(),
                                                                  sessionId: getSessionID())
         
+        subscribe(apiClient.getToken(with: applePayTokenizationRequest, requestType: .getApplePayTokenID), completion: completion)
+    }
+    
+    // MARK: - Helpers
+    
+    /// Subscribes to a tokenization publisher, bridging its result to `completion` and
+    /// handling the error-wrap/store/remove plumbing shared by every tokenization call.
+    private func subscribe<T>(_ publisher: AnyPublisher<T, Error>, completion: @escaping (T?, RecurlyBaseErrorResponse?) -> ()) {
+        // `didComplete` guards against a synchronously-completing publisher (e.g. the `Fail`
+        // publisher returned when request-building fails): `receiveCompletion` can run
+        // *inside* `sink(...)` while `cancellable` is still nil, so `remove` below is a no-op.
+        // Without this guard, `store` would then insert an already-completed cancellable that
+        // never gets removed, leaking it in `_subscriptions` for the life of the manager.
+        var didComplete = false
         var cancellable: AnyCancellable?
-        cancellable = apiClient.getTokenID(with: applePayTokenizationRequest, requestType: .getApplePayTokenID).sink(receiveCompletion: { [weak self] result in
+        cancellable = publisher.sink(receiveCompletion: { [weak self] result in
             switch result {
             case .failure(let error as RecurlyBaseErrorResponse):
                 completion(nil, error)
@@ -174,19 +191,18 @@ public final class RecurlyTokenizationManager {
             case .finished:
                 break
             }
+            didComplete = true
             if let cancellable = cancellable {
                 self?.remove(cancellable)
             }
-        }, receiveValue: { token in
-            completion(token, nil)
+        }, receiveValue: { value in
+            completion(value, nil)
         })
-        if let cancellable = cancellable {
+        if !didComplete, let cancellable = cancellable {
             store(cancellable)
         }
     }
-    
-    // MARK: - Helpers
-    
+
     /// Inserts `cancellable` into the subscription set atomically (single locked operation).
     private func store(_ cancellable: AnyCancellable) {
         withLock { _subscriptions.insert(cancellable) }

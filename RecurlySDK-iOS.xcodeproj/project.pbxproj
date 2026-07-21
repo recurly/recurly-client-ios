@@ -40,6 +40,7 @@
 		27F498E2275984CC009227F5 /* RecurlyBillingInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F498E1275984CC009227F5 /* RecurlyBillingInfo.swift */; };
 		27F498E42759974F009227F5 /* TokenizationAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F498E32759974F009227F5 /* TokenizationAPI.swift */; };
 		27F498E62759B99F009227F5 /* RecurlyTokenResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F498E52759B99F009227F5 /* RecurlyTokenResponse.swift */; };
+		1ACEE40D00000000000000B2 /* RecurlyToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ACEE40D00000000000000A1 /* RecurlyToken.swift */; };
 		27F498E82759BBA1009227F5 /* RecurlyBaseErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F498E72759BBA1009227F5 /* RecurlyBaseErrorResponse.swift */; };
 		27F498EC275A504B009227F5 /* UIDevice+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F498EB275A504B009227F5 /* UIDevice+Extension.swift */; };
 		27F498EE275D118F009227F5 /* RecurlyCardData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F498ED275D118F009227F5 /* RecurlyCardData.swift */; };
@@ -125,6 +126,7 @@
 		27F498E1275984CC009227F5 /* RecurlyBillingInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecurlyBillingInfo.swift; sourceTree = "<group>"; };
 		27F498E32759974F009227F5 /* TokenizationAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenizationAPI.swift; sourceTree = "<group>"; };
 		27F498E52759B99F009227F5 /* RecurlyTokenResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecurlyTokenResponse.swift; sourceTree = "<group>"; };
+		1ACEE40D00000000000000A1 /* RecurlyToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecurlyToken.swift; sourceTree = "<group>"; };
 		27F498E72759BBA1009227F5 /* RecurlyBaseErrorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecurlyBaseErrorResponse.swift; sourceTree = "<group>"; };
 		27F498EB275A504B009227F5 /* UIDevice+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+Extension.swift"; sourceTree = "<group>"; };
 		27F498ED275D118F009227F5 /* RecurlyCardData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecurlyCardData.swift; sourceTree = "<group>"; };
@@ -349,6 +351,7 @@
 				27F498ED275D118F009227F5 /* RecurlyCardData.swift */,
 				27F498E1275984CC009227F5 /* RecurlyBillingInfo.swift */,
 				27F498E52759B99F009227F5 /* RecurlyTokenResponse.swift */,
+				1ACEE40D00000000000000A1 /* RecurlyToken.swift */,
 				27F498E72759BBA1009227F5 /* RecurlyBaseErrorResponse.swift */,
 				866B9B93278F4E6A009035C2 /* RecurlyApplePayInfo.swift */,
 				868986882791EC8E00485118 /* RecurlyApplePayItem.swift */,
@@ -535,6 +538,7 @@
 				E925776C2AB4F32200820B2C /* Resource.swift in Sources */,
 				27830A4527553F5F00B2620C /* RecurlyCardNumberTextField.swift in Sources */,
 				27F498E62759B99F009227F5 /* RecurlyTokenResponse.swift in Sources */,
+				1ACEE40D00000000000000B2 /* RecurlyToken.swift in Sources */,
 				27830A4F27554FDC00B2620C /* UnifiedViewModel.swift in Sources */,
 				277F56B0274E7ECE0067E4E1 /* FontLoader.swift in Sources */,
 				277F56B3274E85FC0067E4E1 /* View+Extension.swift in Sources */,
