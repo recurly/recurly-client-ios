@@ -179,6 +179,7 @@ public final class RecurlyTokenizationManager {
         // Without this guard, `store` would then insert an already-completed cancellable that
         // never gets removed, leaking it in `_subscriptions` for the life of the manager.
         var didComplete = false
+        var didEmitValue = false
         var cancellable: AnyCancellable?
         cancellable = publisher.sink(receiveCompletion: { [weak self] result in
             switch result {
@@ -189,13 +190,19 @@ public final class RecurlyTokenizationManager {
                                                                          message: error.localizedDescription,
                                                                          details: [])))
             case .finished:
-                break
+                if !didEmitValue {
+                    completion(nil, RecurlyBaseErrorResponse(error: RecurlyTokenError(code: "sdk-internal",
+                                                                             message: "Tokenization finished without returning a token.",
+                                                                             details: [])))
+                }
             }
             didComplete = true
             if let cancellable = cancellable {
                 self?.remove(cancellable)
             }
         }, receiveValue: { value in
+            guard !didEmitValue else { return }
+            didEmitValue = true
             completion(value, nil)
         })
         if !didComplete, let cancellable = cancellable {
@@ -220,5 +227,53 @@ public final class RecurlyTokenizationManager {
     
     private func getSessionID() -> String {
         return RecurlyConfiguration.shared.sessionId.uuidString
+    }
+}
+
+// MARK: - Async/Await
+
+extension RecurlyTokenizationManager {
+
+    /// Async overload of `getToken(completion:)`. Returns the tokenized `RecurlyToken`; throws `RecurlyBaseErrorResponse` on failure.
+    public func getToken() async throws -> RecurlyToken {
+        try await bridgedToken(getToken)
+    }
+
+    /// Async overload of `getTokenId(completion:)`. Returns the token id; throws `RecurlyBaseErrorResponse` on failure.
+    public func getTokenId() async throws -> String {
+        try await getToken().id
+    }
+
+    /// Async overload of `getApplePayToken(completion:)`. Returns the tokenized `RecurlyToken`; throws `RecurlyBaseErrorResponse` on failure.
+    public func getApplePayToken() async throws -> RecurlyToken {
+        try await bridgedToken(getApplePayToken)
+    }
+
+    /// Async overload of `getApplePayTokenId(completion:)`. Returns the token id; throws `RecurlyBaseErrorResponse` on failure.
+    public func getApplePayTokenId() async throws -> String {
+        try await getApplePayToken().id
+    }
+
+    /// Bridges a completion-handler tokenization call to async. The single-`completion`-call
+    /// contract of `subscribe(_:completion:)` is load-bearing here: a checked continuation
+    /// crashes if resumed twice.
+    private func bridgedToken(
+        _ call: (@escaping (RecurlyToken?, RecurlyBaseErrorResponse?) -> ()) -> Void
+    ) async throws -> RecurlyToken {
+        try await withCheckedThrowingContinuation { continuation in
+            call { token, error in
+                if let error {
+                    continuation.resume(throwing: error)
+                } else if let token {
+                    continuation.resume(returning: token)
+                } else {
+                    continuation.resume(throwing: RecurlyBaseErrorResponse(
+                        error: RecurlyTokenError(code: "sdk-internal",
+                                                  message: "Tokenization completed without a token or an error.",
+                                                  details: [])
+                    ))
+                }
+            }
+        }
     }
 }

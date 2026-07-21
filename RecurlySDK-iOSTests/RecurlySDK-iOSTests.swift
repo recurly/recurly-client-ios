@@ -415,9 +415,13 @@ class RecurlySDK_iOSTests: XCTestCase {
     private struct StubTokenAPIClient: TokenAPIClient {
         var result: Result<RecurlyToken, Error> = .success(RecurlyToken(id: "stub-unused", type: nil, card: nil))
         var onCall: (() -> Void)? = nil
+        var finishesWithoutValue = false
 
         func getToken<T: Codable>(with dataRequest: T, requestType: TokenizationAPI) -> AnyPublisher<RecurlyToken, Error> {
             onCall?()
+            if finishesWithoutValue {
+                return Empty(completeImmediately: true).eraseToAnyPublisher()
+            }
             return result.publisher.eraseToAnyPublisher()
         }
 
@@ -578,6 +582,116 @@ class RecurlySDK_iOSTests: XCTestCase {
             expectation.fulfill()
         }
         wait(for: [expectation], timeout: 1.0)
+    }
+
+    // MARK: - Async/Await
+
+    func testRecurlyTokenizationManager_async_emptyCVV_doesNotHitNetwork() async {
+        let manager = RecurlyTokenizationManager(apiClient: StubTokenAPIClient(onCall: {
+            XCTFail("network should not be called when cvv is empty")
+        }))
+        manager.cardData.cvv = ""
+
+        do {
+            _ = try await manager.getTokenId()
+            XCTFail("expected getTokenId to throw")
+        } catch {
+            XCTAssertEqual((error as? RecurlyBaseErrorResponse)?.error.code, "validation")
+        }
+    }
+
+    func testRecurlyTokenizationManager_async_getTokenId_success() async throws {
+        let manager = RecurlyTokenizationManager(apiClient: StubTokenAPIClient(
+            result: .success(RecurlyToken(id: "tok-abc", type: "credit_card", card: nil))
+        ))
+        manager.cardData.number = "4111111111111111"
+        manager.cardData.month = "12"
+        manager.cardData.year = "2030"
+        manager.cardData.cvv = "123"
+
+        let tokenId = try await manager.getTokenId()
+        XCTAssertEqual(tokenId, "tok-abc")
+    }
+
+    func testRecurlyTokenizationManager_async_getTokenId_failureMapped() async {
+        let manager = RecurlyTokenizationManager(apiClient: StubTokenAPIClient(
+            result: .failure(RecurlyBaseErrorResponse(error: RecurlyTokenError(code: "invalid-parameter", message: "bad card", details: [])))
+        ))
+        manager.cardData.cvv = "123"
+
+        do {
+            _ = try await manager.getTokenId()
+            XCTFail("expected getTokenId to throw")
+        } catch {
+            XCTAssertEqual((error as? RecurlyBaseErrorResponse)?.error.code, "invalid-parameter")
+        }
+    }
+
+    func testRecurlyTokenizationManager_async_getToken_success_surfacesCard() async throws {
+        let card = RecurlyTokenCard(brand: "visa", firstSix: "411111", lastFour: "1111", expMonth: 12, expYear: 2030, issuingCountry: "US", fundingSource: "credit")
+        let manager = RecurlyTokenizationManager(apiClient: StubTokenAPIClient(
+            result: .success(RecurlyToken(id: "tok-abc", type: "credit_card", card: card))
+        ))
+        manager.cardData.number = "4111111111111111"
+        manager.cardData.month = "12"
+        manager.cardData.year = "2030"
+        manager.cardData.cvv = "123"
+
+        let token = try await manager.getToken()
+        XCTAssertEqual(token.id, "tok-abc")
+        XCTAssertEqual(token.card?.brand, "visa")
+        XCTAssertEqual(token.card?.lastFour, "1111")
+        XCTAssertEqual(token.card?.expMonth, 12)
+        XCTAssertEqual(token.card?.expYear, 2030)
+    }
+
+    func testRecurlyTokenizationManager_async_getApplePayToken_success_surfacesCard() async throws {
+        let card = RecurlyTokenCard(brand: "master", firstSix: "555555", lastFour: "4444", expMonth: 6, expYear: 2029, issuingCountry: "ZZ", fundingSource: "debit")
+        let manager = RecurlyTokenizationManager(apiClient: StubTokenAPIClient(
+            result: .success(RecurlyToken(id: "tok-apple-abc", type: "credit_card", card: card))
+        ))
+
+        let token = try await manager.getApplePayToken()
+        XCTAssertEqual(token.id, "tok-apple-abc")
+        XCTAssertEqual(token.card?.brand, "master")
+        XCTAssertEqual(token.card?.lastFour, "4444")
+    }
+
+    func testRecurlyTokenizationManager_async_getApplePayToken_failureMapped() async {
+        let manager = RecurlyTokenizationManager(apiClient: StubTokenAPIClient(
+            result: .failure(RecurlyBaseErrorResponse(error: RecurlyTokenError(code: "invalid-parameter", message: "bad apple pay token", details: [])))
+        ))
+
+        do {
+            _ = try await manager.getApplePayToken()
+            XCTFail("expected getApplePayToken to throw")
+        } catch {
+            XCTAssertEqual((error as? RecurlyBaseErrorResponse)?.error.code, "invalid-parameter")
+        }
+    }
+
+    func testRecurlyTokenizationManager_async_finishesWithoutValue_throwsInternal() async {
+        var stub = StubTokenAPIClient()
+        stub.finishesWithoutValue = true
+        let manager = RecurlyTokenizationManager(apiClient: stub)
+        manager.cardData.cvv = "123"
+
+        do {
+            _ = try await manager.getToken()
+            XCTFail("expected getToken to throw when the publisher finishes without a value")
+        } catch {
+            XCTAssertEqual((error as? RecurlyBaseErrorResponse)?.error.code, "sdk-internal")
+        }
+    }
+
+    func testRecurlyTokenizationManager_async_getApplePayTokenId_stillReturnsBareId_whenCardPresent() async throws {
+        let card = RecurlyTokenCard(brand: "master", firstSix: "555555", lastFour: "4444", expMonth: 6, expYear: 2029, issuingCountry: "ZZ", fundingSource: "debit")
+        let manager = RecurlyTokenizationManager(apiClient: StubTokenAPIClient(
+            result: .success(RecurlyToken(id: "tok-apple-abc", type: "credit_card", card: card))
+        ))
+
+        let tokenId = try await manager.getApplePayTokenId()
+        XCTAssertEqual(tokenId, "tok-apple-abc")
     }
 
     // Note: getApplePayTokenId's `case .failure(let error):` non-RecurlyBaseErrorResponse
