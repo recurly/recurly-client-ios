@@ -24,6 +24,9 @@ class RecurlySDK_iOSTests: XCTestCase {
         // between tests — e.g. EU-routing tests set a "fra-" key that must not
         // bleed into other TokenizationAPI assertions (XCTest order is not guaranteed).
         RecurlyConfiguration.shared.apiPublicKey = ""
+        // Prevent card data written into the shared singleton (e.g. by
+        // setupTokenizationManager or a UnifiedViewModel) from leaking between tests.
+        RecurlyTokenizationManager.shared.clearCardData()
         super.tearDown()
     }
     
@@ -531,6 +534,112 @@ class RecurlySDK_iOSTests: XCTestCase {
         wait(for: [expectation], timeout: 1.0)
     }
 
+    func testRecurlyTokenizationManager_getToken_success_clearsCardData() {
+        let manager = RecurlyTokenizationManager(apiClient: StubTokenAPIClient(
+            result: .success(RecurlyToken(id: "tok-abc", type: "credit_card", card: nil))
+        ))
+        manager.cardData.number = "4111111111111111"
+        manager.cardData.month = "12"
+        manager.cardData.year = "2030"
+        manager.cardData.cvv = "123"
+
+        let expectation = expectation(description: "getTokenSuccessClears")
+        manager.getToken { _, _ in
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 1.0)
+
+        XCTAssertEqual(manager.cardData.number, "")
+        XCTAssertEqual(manager.cardData.month, "")
+        XCTAssertEqual(manager.cardData.year, "")
+        XCTAssertEqual(manager.cardData.cvv, "")
+    }
+
+    func testRecurlyTokenizationManager_getToken_failure_retainsCardData() {
+        let manager = RecurlyTokenizationManager(apiClient: StubTokenAPIClient(
+            result: .failure(RecurlyBaseErrorResponse(error: RecurlyTokenError(code: "invalid-parameter", message: "bad card", details: [])))
+        ))
+        manager.cardData.number = "4111111111111111"
+        manager.cardData.month = "12"
+        manager.cardData.year = "2030"
+        manager.cardData.cvv = "123"
+
+        let expectation = expectation(description: "getTokenFailureRetains")
+        manager.getToken { _, _ in
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 1.0)
+
+        XCTAssertEqual(manager.cardData.number, "4111111111111111")
+        XCTAssertEqual(manager.cardData.month, "12")
+        XCTAssertEqual(manager.cardData.year, "2030")
+        XCTAssertEqual(manager.cardData.cvv, "123")
+    }
+
+    func testUnifiedViewModel_clearingFields_clearsStoredCardData() {
+        let viewModel = UnifiedViewModel()
+        viewModel.cvv = "123"
+        viewModel.expDate = "12/30"
+        XCTAssertEqual(RecurlyTokenizationManager.shared.cardData.cvv, "123")
+        XCTAssertEqual(RecurlyTokenizationManager.shared.cardData.month, "12")
+        XCTAssertEqual(RecurlyTokenizationManager.shared.cardData.year, "2030")
+
+        viewModel.cvv = ""
+        viewModel.expDate = ""
+
+        XCTAssertEqual(RecurlyTokenizationManager.shared.cardData.cvv, "")
+        XCTAssertEqual(RecurlyTokenizationManager.shared.cardData.month, "")
+        XCTAssertEqual(RecurlyTokenizationManager.shared.cardData.year, "")
+    }
+
+    func testUnifiedViewModel_partialCVV_clearsStoredCVV() {
+        let viewModel = UnifiedViewModel()
+        viewModel.cvv = "12"
+
+        XCTAssertEqual(RecurlyTokenizationManager.shared.cardData.cvv, "")
+        XCTAssertEqual(viewModel.cardStatus, .error)
+    }
+
+    func testUnifiedViewModel_partialExpDate_clearsStoredMonthAndYear() {
+        let viewModel = UnifiedViewModel()
+        viewModel.expDate = "12/30"
+        XCTAssertEqual(RecurlyTokenizationManager.shared.cardData.month, "12")
+        XCTAssertEqual(RecurlyTokenizationManager.shared.cardData.year, "2030")
+
+        viewModel.expDate = "12/3"
+
+        XCTAssertEqual(RecurlyTokenizationManager.shared.cardData.month, "")
+        XCTAssertEqual(RecurlyTokenizationManager.shared.cardData.year, "")
+        XCTAssertTrue(viewModel.expDateError)
+    }
+
+    func testRecurlyTokenizationManager_clearCardData_resetsInputViewModel() {
+        let viewModel = UnifiedViewModel()
+        viewModel.cardNumber = "4111111111111112"
+        viewModel.expDate = "12/30"
+        viewModel.cvv = "123"
+        viewModel.lastCardStatus = .error
+
+        XCTAssertTrue(viewModel.cardNumberError)
+        XCTAssertNotEqual(viewModel.mainImageName, "placeholderCCIcon")
+
+        let expectation = expectation(description: "clearCardDataResetsViewModel")
+        RecurlyTokenizationManager.shared.clearCardData()
+        DispatchQueue.main.async {
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 2.0)
+
+        XCTAssertEqual(viewModel.cardNumber, "")
+        XCTAssertEqual(viewModel.expDate, "")
+        XCTAssertEqual(viewModel.cvv, "")
+        XCTAssertEqual(viewModel.cardStatus, .entering)
+        XCTAssertEqual(viewModel.lastCardStatus, .entering)
+        XCTAssertFalse(viewModel.cardNumberError)
+        XCTAssertFalse(viewModel.expDateError)
+        XCTAssertEqual(viewModel.mainImageName, "placeholderCCIcon")
+    }
+
     func testRecurlyTokenizationManager_getToken_success_cardAbsent() {
         let manager = RecurlyTokenizationManager(apiClient: StubTokenAPIClient(
             result: .success(RecurlyToken(id: "tok-x", type: "credit_card", card: nil))
@@ -567,6 +676,44 @@ class RecurlySDK_iOSTests: XCTestCase {
             expectation.fulfill()
         }
         wait(for: [expectation], timeout: 1.0)
+    }
+
+    func testRecurlyTokenizationManager_getApplePayToken_success_clearsCardData() {
+        let manager = RecurlyTokenizationManager(apiClient: StubTokenAPIClient(
+            result: .success(RecurlyToken(id: "tok-apple-abc", type: "credit_card", card: nil))
+        ))
+        manager.cardData.number = "4111111111111111"
+        manager.cardData.month = "12"
+        manager.cardData.year = "2030"
+        manager.cardData.cvv = "123"
+
+        let expectation = expectation(description: "getApplePayTokenSuccessClears")
+        manager.getApplePayToken { _, _ in
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 1.0)
+
+        XCTAssertEqual(manager.cardData.number, "")
+        XCTAssertEqual(manager.cardData.month, "")
+        XCTAssertEqual(manager.cardData.year, "")
+        XCTAssertEqual(manager.cardData.cvv, "")
+    }
+
+    func testRecurlyTokenizationManager_getApplePayToken_failure_retainsCardData() {
+        let manager = RecurlyTokenizationManager(apiClient: StubTokenAPIClient(
+            result: .failure(RecurlyBaseErrorResponse(error: RecurlyTokenError(code: "invalid-parameter", message: "bad payment data", details: [])))
+        ))
+        manager.cardData.number = "4111111111111111"
+        manager.cardData.cvv = "123"
+
+        let expectation = expectation(description: "getApplePayTokenFailureRetains")
+        manager.getApplePayToken { _, _ in
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 1.0)
+
+        XCTAssertEqual(manager.cardData.number, "4111111111111111")
+        XCTAssertEqual(manager.cardData.cvv, "123")
     }
 
     func testRecurlyTokenizationManager_getApplePayTokenId_stillReturnsBareId_whenCardPresent() {

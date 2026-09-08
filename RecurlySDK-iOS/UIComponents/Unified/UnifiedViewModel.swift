@@ -4,6 +4,7 @@
 //
 
 import SwiftUI
+import Combine
 
 class UnifiedViewModel: ObservableObject {
     
@@ -27,6 +28,7 @@ class UnifiedViewModel: ObservableObject {
     
     @Published var cardNumber: String = "" {
         didSet {
+            if isClearing { return }
             let ccValidator = CreditCardValidator(RecurlyTokenizationManager.shared.cardData.number)
             let cardLenght = ccValidator.type == .amex ? 17 : 19
             
@@ -47,6 +49,7 @@ class UnifiedViewModel: ObservableObject {
     
     @Published var expDate: String = "" {
         didSet {
+            if isClearing { return }
             if expDate.count > 5 { return }
             if expDate.range(of: "[^0-9 /]+", options: .regularExpression) != nil { return }
             if expDate.count == 1 && expDate != "1" && expDate != "0" {
@@ -58,6 +61,11 @@ class UnifiedViewModel: ObservableObject {
                 if expDate.count > 5 {
                     expDate = String(expDate.prefix(5))
                 }
+            }
+            
+            if expDate.count < 5 {
+                RecurlyTokenizationManager.shared.cardData.month = ""
+                RecurlyTokenizationManager.shared.cardData.year = ""
             }
             
             if expDate.isEmpty {
@@ -78,6 +86,7 @@ class UnifiedViewModel: ObservableObject {
     
     @Published var cvv: String = "" {
         didSet {
+            if isClearing { return }
             if cvv.range(of: "[^0-9 ]+", options: .regularExpression) != nil { return }
             
             let ccValidator = CreditCardValidator(RecurlyTokenizationManager.shared.cardData.number)
@@ -85,6 +94,7 @@ class UnifiedViewModel: ObservableObject {
             
             if cvv.isEmpty {
                 cardStatus = .entering
+                RecurlyTokenizationManager.shared.cardData.cvv = ""
                 return
             }
             
@@ -92,6 +102,7 @@ class UnifiedViewModel: ObservableObject {
             
             if cvv.count < cvvLenght {
                 cardStatus = .error
+                RecurlyTokenizationManager.shared.cardData.cvv = ""
                 return
             }
             
@@ -147,13 +158,33 @@ class UnifiedViewModel: ObservableObject {
     @Published var cardNumberError = false
     @Published var expDateError = false
 
+    private var isClearing = false
+    private var cancellables = Set<AnyCancellable>()
+
     // MARK: - Initializers
     
     init() {
         FontLoader.loadFont(name: "Inter-Regular", fileExtension: "ttf")
+        RecurlyTokenizationManager.shared.cardDataDidClear
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] in self?.clearInputs() }
+            .store(in: &cancellables)
     }
     
     // MARK: - Helpers
+
+    private func clearInputs() {
+        isClearing = true
+        cardNumber = ""
+        expDate = ""
+        cvv = ""
+        isClearing = false
+        cardStatus = .entering
+        lastCardStatus = .entering
+        cardNumberError = false
+        expDateError = false
+        mainImageName = "placeholderCCIcon"
+    }
     
     func validateCreditCard() {
         let ccValidator = CreditCardValidator(cardNumber)

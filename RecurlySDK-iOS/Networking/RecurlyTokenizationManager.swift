@@ -25,6 +25,7 @@ public final class RecurlyTokenizationManager {
     private var _applePaymentData = RecurlyApplePaymentData()
     private var _applePaymentMethod = RecurlyApplePaymentMethod()
     private var _subscriptions = Set<AnyCancellable>()
+    internal let cardDataDidClear = PassthroughSubject<Void, Never>()
 
     /// CardData (CardNumber, ExpDate, CVV)
     ///
@@ -92,6 +93,13 @@ public final class RecurlyTokenizationManager {
     public func setApplePaymentMethod(applePaymentMethod: RecurlyApplePaymentMethod) {
         self.applePaymentMethod = applePaymentMethod
     }
+
+    /// Clears the stored card data and resets any Recurly card input views on screen.
+    public func clearCardData() {
+        withLock { _cardData = RecurlyCardData() }
+        // Notify outside the lock: `lock` is non-reentrant.
+        cardDataDidClear.send()
+    }
     
     /// Returns the tokenId as String from a BillingInfo or/with CardData tokenization request.
     ///
@@ -134,7 +142,7 @@ public final class RecurlyTokenizationManager {
             return
         }
         
-        subscribe(apiClient.getToken(with: tokenizationRequest, requestType: .getTokenID), completion: completion)
+        subscribe(apiClient.getToken(with: tokenizationRequest, requestType: .getTokenID), completion: clearingCardDataOnSuccess(completion))
     }
     
     /// Returns the tokenId as String from a BillingInfo or/with ApplePaymentData, ApplePaymentMethod tokenization request.
@@ -165,10 +173,20 @@ public final class RecurlyTokenizationManager {
                                                                  deviceId: getDeviceID(),
                                                                  sessionId: getSessionID())
         
-        subscribe(apiClient.getToken(with: applePayTokenizationRequest, requestType: .getApplePayTokenID), completion: completion)
+        subscribe(apiClient.getToken(with: applePayTokenizationRequest, requestType: .getApplePayTokenID), completion: clearingCardDataOnSuccess(completion))
     }
     
     // MARK: - Helpers
+
+    /// Wraps `completion` so stored card data is cleared after a successful tokenization.
+    private func clearingCardDataOnSuccess(
+        _ completion: @escaping (RecurlyToken?, RecurlyBaseErrorResponse?) -> ()
+    ) -> (RecurlyToken?, RecurlyBaseErrorResponse?) -> () {
+        { [weak self] token, error in
+            if token != nil { self?.clearCardData() }
+            completion(token, error)
+        }
+    }
     
     /// Subscribes to a tokenization publisher, bridging its result to `completion` and
     /// handling the error-wrap/store/remove plumbing shared by every tokenization call.

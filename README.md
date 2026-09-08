@@ -279,6 +279,19 @@ do {
 }
 ```
 
+### Clearing card data
+
+Card number, expiration date, and CVV are cleared automatically after a
+successful tokenization. To clear them manually — for example, if the user
+cancels checkout — call:
+
+```Swift
+RecurlyTokenizationManager.shared.clearCardData()
+```
+
+This resets the stored card data and any Recurly card input views currently
+on screen.
+
 ## 5. Apple Pay support
 
 The following assumes your company is setup as an Apple Pay merchant. For more info on configuration and setup, look at the `README-APPLE-PAY-CONFIG.md` documentation in the repo.
