@@ -615,8 +615,8 @@ class RecurlySDK_iOSTests: XCTestCase {
 
     func testRecurlyTokenizationManager_clearCardData_resetsInputViewModel() {
         let viewModel = UnifiedViewModel()
-        viewModel.cardNumber = "4111111111111112"
-        viewModel.expDate = "12/30"
+        viewModel.cardNumber = "411111111111111"
+        viewModel.expDate = "12/20"
         viewModel.cvv = "123"
         viewModel.lastCardStatus = .error
 
