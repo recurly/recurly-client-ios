@@ -790,6 +790,14 @@ class RecurlySDK_iOSTests: XCTestCase {
         XCTAssertEqual(CreditCardValidator.getExpDateFrom(string: "1230"), "12/30")
     }
 
+    func testCreditCardValidator_getExpDateFrom_ignoresWhitespace() {
+        XCTAssertEqual(CreditCardValidator.getExpDateFrom(string: "12 30"), "12/30")
+    }
+
+    func testCreditCardValidator_getExpDateFrom_ignoresSurroundingWhitespace() {
+        XCTAssertEqual(CreditCardValidator.getExpDateFrom(string: "  12/30  "), "12/30")
+    }
+
     func testCreditCardValidator_formatCCfrom_groupsFullVisaPattern() {
         XCTAssertEqual(CreditCardValidator.formatCCfrom(string: "4111111111111111"), "4111 1111 1111 1111")
     }
@@ -930,8 +938,35 @@ class RecurlySDK_iOSTests: XCTestCase {
         XCTAssertEqual("12/30".removeNonNumericChars(exceptions: "/"), "12/30")
     }
 
-    func testStringRemoveNonNumericChars_stripsExceptionCharacter_whenOtherNonDigitsPresent() {
-        XCTAssertEqual("12/3a".removeNonNumericChars(exceptions: "/"), "123")
+    func testStringRemoveNonNumericChars_keepsExceptionCharacter_whenOtherNonDigitsPresent() {
+        XCTAssertEqual("12/3a".removeNonNumericChars(exceptions: "/"), "12/3")
+    }
+
+    func testStringRemoveNonNumericChars_keepsExceptionCharacter_whenLeadingJunkPresent() {
+        XCTAssertEqual("1a2/30".removeNonNumericChars(exceptions: "/"), "12/30")
+    }
+
+    // Regex metacharacters in `exceptions` are matched literally. These cases would
+    // change meaning if the filter were built from a character class.
+    func testStringRemoveNonNumericChars_treatsHyphenExceptionLiterally_notAsRange() {
+        XCTAssertEqual("1-2a".removeNonNumericChars(exceptions: "-/"), "1-2")
+        XCTAssertEqual("1(2*3a".removeNonNumericChars(exceptions: "-/"), "123")
+    }
+
+    func testStringRemoveNonNumericChars_keepsClosingBracketException_whenOtherNonDigitsPresent() {
+        XCTAssertEqual("12]3a".removeNonNumericChars(exceptions: "]"), "12]3")
+    }
+
+    func testStringRemoveNonNumericChars_keepsOpeningBracketException_whenOtherNonDigitsPresent() {
+        XCTAssertEqual("1[2a".removeNonNumericChars(exceptions: "["), "1[2")
+    }
+
+    func testStringRemoveNonNumericChars_stripsNonAsciiDigits() {
+        XCTAssertEqual("\u{0661}\u{0662}3a".removeNonNumericChars(), "3")
+    }
+
+    func testStringRemoveNonNumericChars_emptyString_returnsEmpty() {
+        XCTAssertEqual("".removeNonNumericChars(), "")
     }
 
     func testStringDigitsOnly_stripsSpacesAndSymbols() {
@@ -1065,6 +1100,14 @@ class RecurlySDK_iOSTests: XCTestCase {
         XCTAssertFalse(vm.expDateError)
         XCTAssertEqual(RecurlyTokenizationManager.shared.cardData.month, "12")
         XCTAssertEqual(RecurlyTokenizationManager.shared.cardData.year, "20\(futureYear)")
+    }
+
+    func testUnifiedViewModel_expDate_pasteWithSpaceSeparator_isAccepted() {
+        let vm = UnifiedViewModel()
+        let futureYear = futureTwoDigitYear
+        vm.expDate = "12 \(futureYear)"
+        XCTAssertEqual(vm.expDate, "12/\(futureYear)")
+        XCTAssertFalse(vm.expDateError)
     }
 
     func testUnifiedViewModel_expDate_shortenAfterComplete_doesNotClearStoredMonthAndYear() {

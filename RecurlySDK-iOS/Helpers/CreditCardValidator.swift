@@ -172,7 +172,9 @@ class CreditCardValidator {
     
     
     static func getExpDateFrom(string : String) -> String {
-        let trimmedString = string.components(separatedBy: "/").joined()
+        let trimmedString = string
+            .components(separatedBy: .whitespaces).joined()
+            .components(separatedBy: "/").joined()
         
         let arrOfCharacters = Array(trimmedString)
         var modifiedCreditCardString = ""
