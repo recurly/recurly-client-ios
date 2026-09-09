@@ -45,14 +45,19 @@ jobs:
     - name: Zip XCFramework
       run: cd build && zip -ry RecurlySDK.xcframework.zip RecurlySDK.xcframework
 
+    - name: Generate checksum
+      run: cd build && shasum -a 256 RecurlySDK.xcframework.zip > RecurlySDK.xcframework.zip.sha256
+
     - name: Upload build artifact
       uses: actions/upload-artifact@v4
       with:
         name: RecurlySDK-xcframework
-        path: build/RecurlySDK.xcframework.zip
+        path: |
+          build/RecurlySDK.xcframework.zip
+          build/RecurlySDK.xcframework.zip.sha256
 
     - name: Attach to release
       if: github.event_name == 'release'
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: gh release upload "${{ github.event.release.tag_name }}" build/RecurlySDK.xcframework.zip --clobber
+      run: gh release upload "${{ github.event.release.tag_name }}" build/RecurlySDK.xcframework.zip build/RecurlySDK.xcframework.zip.sha256 --clobber
