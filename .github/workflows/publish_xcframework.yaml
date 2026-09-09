@@ -1,0 +1,58 @@
+name: publish_xcframework
+on:
+  release:
+    types: [released]
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: macos-14
+    permissions:
+      contents: write
+    steps:
+    - uses: actions/checkout@v6.0.2
+    - name: Select Xcode
+      run: sudo xcode-select -switch /Applications/Xcode_16.2.app && /usr/bin/xcodebuild -version
+
+    - name: Archive device slice
+      run: |
+        xcodebuild archive \
+          -project RecurlySDK-iOS.xcodeproj \
+          -scheme RecurlySDK-iOS \
+          -destination 'generic/platform=iOS' \
+          -archivePath build/ios.xcarchive \
+          SKIP_INSTALL=NO \
+          BUILD_LIBRARY_FOR_DISTRIBUTION=YES
+
+    - name: Archive simulator slice
+      run: |
+        xcodebuild archive \
+          -project RecurlySDK-iOS.xcodeproj \
+          -scheme RecurlySDK-iOS \
+          -destination 'generic/platform=iOS Simulator' \
+          -archivePath build/sim.xcarchive \
+          SKIP_INSTALL=NO \
+          BUILD_LIBRARY_FOR_DISTRIBUTION=YES
+
+    - name: Create XCFramework
+      run: |
+        xcodebuild -create-xcframework \
+          -framework build/ios.xcarchive/Products/Library/Frameworks/RecurlySDK.framework \
+          -debug-symbols "$PWD/build/ios.xcarchive/dSYMs/RecurlySDK.framework.dSYM" \
+          -framework build/sim.xcarchive/Products/Library/Frameworks/RecurlySDK.framework \
+          -debug-symbols "$PWD/build/sim.xcarchive/dSYMs/RecurlySDK.framework.dSYM" \
+          -output build/RecurlySDK.xcframework
+
+    - name: Zip XCFramework
+      run: cd build && zip -ry RecurlySDK.xcframework.zip RecurlySDK.xcframework
+
+    - name: Upload build artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: RecurlySDK-xcframework
+        path: build/RecurlySDK.xcframework.zip
+
+    - name: Attach to release
+      if: github.event_name == 'release'
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: gh release upload "${{ github.event.release.tag_name }}" build/RecurlySDK.xcframework.zip --clobber

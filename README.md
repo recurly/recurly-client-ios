@@ -13,7 +13,7 @@ With this billing token, you can do anything with our API that requires payment 
 
 Access our SDK via GitHub: [iOS Client Repository](https://github.com/recurly/recurly-client-ios)
 
-After reviewing our SDK via GitHub, use one of these two options to begin using the Recurly iOS SDK.
+After reviewing our SDK via GitHub, use one of these options to begin using the Recurly iOS SDK.
 
 ### 1.1 Using Swift Package Manager (recommended)
 1. In Xcode, go to **File → Add Package Dependencies…**
@@ -61,6 +61,14 @@ If you already have and use Cocoapods, skip to step 3.
 
 For more information on CocoaPods and the `Podfile`, visit: <https://guides.cocoapods.org/using/the-podfile.html>
 
+### 1.3 Using a prebuilt XCFramework
+
+Use this method if you do not use Swift Package Manager or CocoaPods.
+
+1. Go to the [latest release](https://github.com/recurly/recurly-client-ios/releases/latest).
+2. Download `RecurlySDK.xcframework.zip` and unzip it.
+3. Drag `RecurlySDK.xcframework` into your target's **Frameworks, Libraries, and Embedded Content** section.
+4. Set the framework to **Embed & Sign**.
 
 ## 2. Import
 Once the package is added to your project (via either of the methods above) you only need to import the SDK.
