@@ -24,6 +24,12 @@ class RecurlySDK_iOSTests: XCTestCase {
         // between tests — e.g. EU-routing tests set a "fra-" key that must not
         // bleed into other TokenizationAPI assertions (XCTest order is not guaranteed).
         RecurlyConfiguration.shared.apiPublicKey = ""
+        // Prevent RecurlyTokenizationManager.shared.cardData/billingInfo (shared singleton
+        // state) from leaking between tests — UnifiedViewModel/IndividualViewModel
+        // characterization tests write into it via their didSets (XCTest execution order
+        // is not guaranteed).
+        RecurlyTokenizationManager.shared.cardData = RecurlyCardData()
+        RecurlyTokenizationManager.shared.billingInfo = RecurlyBillingInfo()
         super.tearDown()
     }
     
@@ -920,5 +926,175 @@ class RecurlySDK_iOSTests: XCTestCase {
         XCTAssertEqual("12 30".removeNonNumericChars(), "12 30")
     }
 
+    func testStringRemoveNonNumericChars_keepsExceptionCharacter_whenNoOtherNonDigits() {
+        XCTAssertEqual("12/30".removeNonNumericChars(exceptions: "/"), "12/30")
+    }
+
+    func testStringRemoveNonNumericChars_stripsExceptionCharacter_whenOtherNonDigitsPresent() {
+        XCTAssertEqual("12/3a".removeNonNumericChars(exceptions: "/"), "123")
+    }
+
+    func testStringDigitsOnly_stripsSpacesAndSymbols() {
+        XCTAssertEqual("4111 1111-1111 1111".digitsOnly, "4111111111111111")
+    }
+
+    // MARK: - UnifiedViewModel / IndividualViewModel input behavior
+    //
+    // These tests pin down the current input behavior of the card input view models.
+    // `RecurlyTokenizationManager.shared` is a global
+    // singleton. Each keystroke writes to it via `didSet`. `tearDown` (above) resets it
+    // after every test, since XCTest does not guarantee test order.
+
+    /// Two-digit year five years out. Keeps the expiry-date tests valid for the
+    /// foreseeable future.
+    private var futureTwoDigitYear: Int {
+        Calendar.current.component(.year, from: Date()) + 5 - 2000
+    }
+
+    func testUnifiedViewModel_cardNumber_visaPaste_formatsIntoFourDigitGroups() {
+        let vm = UnifiedViewModel()
+        vm.cardNumber = "4111111111111111"
+        XCTAssertEqual(vm.cardNumber, "4111 1111 1111 1111")
+    }
+
+    func testUnifiedViewModel_cardNumber_visaPaste_storesDigitsOnlyInCardData() {
+        let vm = UnifiedViewModel()
+        vm.cardNumber = "4111111111111111"
+        // Regression test: `cardData.number` must hold digits only. It must never hold
+        // the space-formatted display string. Kept separate from the formatting test
+        // above so this specific regression fails on its own.
+        XCTAssertEqual(RecurlyTokenizationManager.shared.cardData.number, "4111111111111111")
+    }
+
+    func testUnifiedViewModel_cardNumber_amexPaste_formatsIntoAmexGrouping() {
+        let vm = UnifiedViewModel()
+        vm.cardNumber = "378282246310005"
+        XCTAssertEqual(vm.cardNumber, "3782 822463 10005")
+        XCTAssertEqual(RecurlyTokenizationManager.shared.cardData.number, "378282246310005")
+    }
+
+    func testUnifiedViewModel_cardNumber_overLengthPaste_leavesFieldUnformattedAndCardDataUnchanged() {
+        // The length guard checks the brand of the number already stored in
+        // `cardData`, not the new value being typed. A paste that exceeds this length
+        // exits `didSet` early. `cardNumber` keeps the raw, unformatted paste.
+        // `cardData` keeps its previous value. This test locks down that behavior for
+        // the next refactor.
+        let vm = UnifiedViewModel()
+        vm.cardNumber = "4111111111111111"
+        vm.cardNumber = "41111111111111119999"
+        XCTAssertEqual(vm.cardNumber, "41111111111111119999")
+        XCTAssertEqual(RecurlyTokenizationManager.shared.cardData.number, "4111111111111111")
+    }
+
+    func testUnifiedViewModel_cardNumber_backspacingFormattedNumber_ungroupsCleanly() {
+        let vm = UnifiedViewModel()
+        vm.cardNumber = "4111111111111111"
+        XCTAssertEqual(vm.cardNumber, "4111 1111 1111 1111")
+        vm.cardNumber = String(vm.cardNumber.dropLast())
+        XCTAssertEqual(vm.cardNumber, "4111 1111 1111 111")
+        vm.cardNumber = String(vm.cardNumber.dropLast(4))
+        XCTAssertEqual(vm.cardNumber, "4111 1111 1111")
+    }
+
+    func testUnifiedViewModel_cvv_amexRequiresFourDigits() {
+        let vm = UnifiedViewModel()
+        vm.cardNumber = "378282246310005"
+        vm.cvv = "123"
+        XCTAssertEqual(vm.cardStatus, .error)
+        vm.cvv = "1234"
+        XCTAssertEqual(vm.cardStatus, .success)
+        XCTAssertEqual(RecurlyTokenizationManager.shared.cardData.cvv, "1234")
+    }
+
+    func testUnifiedViewModel_cvv_nonAmexRequiresThreeDigits() {
+        let vm = UnifiedViewModel()
+        vm.cardNumber = "4111111111111111"
+        vm.cvv = "123"
+        XCTAssertEqual(vm.cardStatus, .success)
+        XCTAssertEqual(RecurlyTokenizationManager.shared.cardData.cvv, "123")
+    }
+
+    func testUnifiedViewModel_cvv_clearingFieldDoesNotClearStoredCvv() {
+        // Emptying the CVV field only resets `cardStatus`. `cardData.cvv` keeps its
+        // last value. This test locks down that behavior for the next refactor.
+        let vm = UnifiedViewModel()
+        vm.cardNumber = "4111111111111111"
+        vm.cvv = "123"
+        XCTAssertEqual(RecurlyTokenizationManager.shared.cardData.cvv, "123")
+        vm.cvv = ""
+        XCTAssertEqual(vm.cardStatus, .entering)
+        XCTAssertEqual(RecurlyTokenizationManager.shared.cardData.cvv, "123", "cardData.cvv keeps its previous value")
+    }
+
+    func testUnifiedViewModel_cvv_doesNotRevalidateWhenBrandChangesAfterEntry() {
+        // Switching the card brand after a CVV is entered does not re-validate or
+        // clear that CVV. Only a later edit to the CVV field itself re-checks the
+        // brand-dependent length.
+        let vm = UnifiedViewModel()
+        vm.cardNumber = "4111111111111111"
+        vm.cvv = "123"
+        XCTAssertEqual(vm.cardStatus, .success)
+        vm.cardNumber = "378282246310005"
+        XCTAssertEqual(vm.cardStatus, .success, "amex now needs 4 digits, but the stale 3-digit CVV is not re-flagged")
+        XCTAssertEqual(RecurlyTokenizationManager.shared.cardData.cvv, "123")
+    }
+
+    func testUnifiedViewModel_expDate_singleDigitFive_isZeroPrefixed() {
+        let vm = UnifiedViewModel()
+        vm.expDate = "5"
+        XCTAssertEqual(vm.expDate, "05")
+    }
+
+    func testUnifiedViewModel_expDate_singleDigitZeroOrOne_isNotPrefixed() {
+        // "0" and "1" are valid first digits of a two-digit month (01-12), so they are
+        // left as-is instead of being zero-prefixed.
+        let zero = UnifiedViewModel()
+        zero.expDate = "0"
+        XCTAssertEqual(zero.expDate, "0")
+
+        let one = UnifiedViewModel()
+        one.expDate = "1"
+        XCTAssertEqual(one.expDate, "1")
+    }
+
+    func testUnifiedViewModel_expDate_fourDigitPaste_insertsSlashAndValidates() {
+        let vm = UnifiedViewModel()
+        let futureYear = futureTwoDigitYear
+        vm.expDate = "12\(futureYear)"
+        XCTAssertEqual(vm.expDate, "12/\(futureYear)")
+        XCTAssertFalse(vm.expDateError)
+        XCTAssertEqual(RecurlyTokenizationManager.shared.cardData.month, "12")
+        XCTAssertEqual(RecurlyTokenizationManager.shared.cardData.year, "20\(futureYear)")
+    }
+
+    func testUnifiedViewModel_expDate_shortenAfterComplete_doesNotClearStoredMonthAndYear() {
+        // Shortening a complete expDate only sets `cardStatus`/`expDateError`.
+        // `cardData.month`/`year` keep their last values. This test locks down that
+        // behavior for the next refactor.
+        let vm = UnifiedViewModel()
+        let futureYear = futureTwoDigitYear
+        vm.expDate = "12\(futureYear)"
+        XCTAssertEqual(RecurlyTokenizationManager.shared.cardData.month, "12")
+        vm.expDate = "12"
+        XCTAssertTrue(vm.expDateError)
+        XCTAssertEqual(RecurlyTokenizationManager.shared.cardData.month, "12", "cardData.month keeps its previous value")
+        XCTAssertEqual(RecurlyTokenizationManager.shared.cardData.year, "20\(futureYear)", "cardData.year keeps its previous value")
+    }
+
+    func testIndividualViewModel_validateExpDate_divergesFromUnifiedViewModel_onEnteringState() {
+        // `IndividualViewModel.validateExpDate` overrides the base method. It forces
+        // `cardStatus = .entering` up front and skips the base method's call to
+        // `validateCreditCard()`. This test pins down that divergence.
+        let futureYear = futureTwoDigitYear
+        let unified = UnifiedViewModel()
+        unified.cardNumber = "4111111111111111"
+        unified.expDate = "12\(futureYear)"
+        XCTAssertEqual(unified.cardStatus, .success, "base method re-runs validateCreditCard, which reflects the valid card number")
+
+        let individual = IndividualViewModel()
+        individual.cardNumber = "4111111111111111"
+        individual.expDate = "12\(futureYear)"
+        XCTAssertEqual(individual.cardStatus, .entering, "override forces .entering and never re-validates the card number")
+    }
     
 }

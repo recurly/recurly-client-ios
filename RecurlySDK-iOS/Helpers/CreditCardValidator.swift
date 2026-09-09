@@ -63,7 +63,7 @@ class CreditCardValidator {
     /// Create validation value
     /// - Parameter string: credit card number
     init(_ string: String) {
-        self.string = string.numbers
+        self.string = string.digitsOnly
     }
     
     /// Get card type
@@ -72,7 +72,7 @@ class CreditCardValidator {
         types.first { type in
             NSPredicate(format: "SELF MATCHES %@", type.rawValue)
                 .evaluate(
-                    with: string.numbers
+                    with: string.digitsOnly
                 )
         }
     }
@@ -146,7 +146,7 @@ class CreditCardValidator {
     }
     
     static func formatCCfrom(string : String)  -> String {
-        let cleanPhoneNumber = string.components(separatedBy: CharacterSet.decimalDigits.inverted).joined()
+        let cleanPhoneNumber = string.digitsOnly
         let cardType = CreditCardValidator(string).type
 
         var mark = "XXXX XXXX XXXX XXXX"
@@ -186,13 +186,5 @@ class CreditCardValidator {
             }
         }
         return modifiedCreditCardString
-    }
-}
-
-fileprivate extension String {
-    var numbers: String {
-        let set = CharacterSet.decimalDigits.inverted
-        let numbers = components(separatedBy: set)
-        return numbers.joined(separator: "")
     }
 }

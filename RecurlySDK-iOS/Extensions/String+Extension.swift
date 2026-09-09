@@ -13,3 +13,12 @@ public extension String {
         return self
     }
 }
+
+extension String {
+    /// The receiver with every non-digit character removed.
+    var digitsOnly: String {
+        let set = CharacterSet.decimalDigits.inverted
+        let numbers = components(separatedBy: set)
+        return numbers.joined(separator: "")
+    }
+}

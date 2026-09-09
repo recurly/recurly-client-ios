@@ -4,7 +4,7 @@ on:
     types: [opened, synchronize]
   workflow_dispatch:
   release:
-    types: [prereleased]
+    types: [published]
   push:
     branches:
       - ci

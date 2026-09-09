@@ -41,7 +41,8 @@ class UnifiedViewModel: ObservableObject {
             }
             
             self.validateCreditCard()
-            RecurlyTokenizationManager.shared.cardData.number = cardNumber.trimmingCharacters(in: .whitespaces)
+            // `cardNumber` is the space-formatted display string at this point.
+            RecurlyTokenizationManager.shared.cardData.number = cardNumber.digitsOnly
         }
     }
     
