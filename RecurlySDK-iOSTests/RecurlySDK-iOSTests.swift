@@ -160,6 +160,9 @@ class RecurlySDK_iOSTests: XCTestCase {
 
         //Test Fake Card
         XCTAssertFalse(CreditCardValidator("3778111111111").isValid)
+
+        //Test length-valid but Luhn-invalid card
+        XCTAssertFalse(CreditCardValidator("4111111111111112").isValid)
     }
 
     func testRecurlyErrorResponse() throws {
