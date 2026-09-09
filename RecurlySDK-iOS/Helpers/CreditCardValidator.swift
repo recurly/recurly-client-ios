@@ -89,7 +89,7 @@ class CreditCardValidator {
     var isValid: Bool {
         guard let type = type else { return false }
         let isValidLength = type.validNumberLength.contains(string.count)
-        return isValidLength // && isValid(for: string)
+        return isValidLength && isValid(for: string)
     }
     
     /// Validate card number string for type
