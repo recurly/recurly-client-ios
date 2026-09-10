@@ -9,9 +9,18 @@ class NetworkEngine {
     
     private let session: URLSession
     
-    init(session: URLSession = .shared) {
+    init(session: URLSession = NetworkEngine.defaultSession) {
         self.session = session
     }
+    
+    /// This SDK handles card data, so the default session keeps no cache or cookies.
+    private static let defaultSession: URLSession = {
+        let configuration = URLSessionConfiguration.ephemeral
+        configuration.httpShouldSetCookies = false
+        configuration.httpCookieAcceptPolicy = .never
+        configuration.urlCache = nil
+        return URLSession(configuration: configuration)
+    }()
     
     private func createRequest(requestType: BaseRequest) -> URLRequest? {
         guard let components = URLComponents(string: requestType.absoluteString),

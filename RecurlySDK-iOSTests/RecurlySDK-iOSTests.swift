@@ -5,6 +5,7 @@
 
 import XCTest
 import Combine
+import PassKit
 @testable import RecurlySDK
 
 class RecurlySDK_iOSTests: XCTestCase {
@@ -131,6 +132,63 @@ class RecurlySDK_iOSTests: XCTestCase {
             tokenResponseExpectation.fulfill()
         }
         wait(for: [tokenResponseExpectation], timeout: 3.0)
+    }
+
+    func testApplePaymentHandler_didFinish_clearsCapturedTokenAndBillingInfo() {
+        let handler = RecurlyApplePaymentHandler()
+        handler.currentBillingInfo = PKContact()
+        handler.paymentStatus = .success
+
+        let clearedExpectation = expectation(description: "state cleared after didFinish")
+        handler.completionHandler = { _, _, _ in
+            // The clear happens on the main queue right after this callback returns, in
+            // the same `didFinish` block. Enqueuing here (rather than sleeping a fixed
+            // duration) guarantees this runs after the clear, since both share the
+            // main queue's FIFO order.
+            DispatchQueue.main.async {
+                XCTAssertNil(handler.currentBillingInfo, "billing info must not outlive the completion callback")
+                XCTAssertNil(handler.currentToken, "token must not outlive the completion callback")
+                XCTAssertEqual(handler.paymentStatus, .failure, "status must reset so a reused handler can't replay a stale success")
+                clearedExpectation.fulfill()
+            }
+        }
+
+        let controller = PKPaymentAuthorizationController(paymentRequest: PKPaymentRequest())
+        handler.paymentAuthorizationControllerDidFinish(controller)
+
+        wait(for: [clearedExpectation], timeout: 2.0)
+    }
+
+    /// Regression guard for a real bug found in review: before `paymentStatus` was reset in
+    /// `didFinish`, a handler reused for a second payment that never reached
+    /// `didAuthorizePayment` still reported the first payment's `.success`, firing the second
+    /// completion handler with `true` and nil token/contact — a false success.
+    func testApplePaymentHandler_reusedAfterSuccess_doesNotReportFalseSuccessOnSecondFinish() {
+        let handler = RecurlyApplePaymentHandler()
+        handler.paymentStatus = .success
+
+        // Wait for the first `didFinish` to fully complete (including its state clear,
+        // guaranteed by the same main-queue FIFO trick as the test above) before firing
+        // the second, so the two calls can't race.
+        let firstCallExpectation = expectation(description: "first didFinish completes")
+        handler.completionHandler = { _, _, _ in
+            DispatchQueue.main.async { firstCallExpectation.fulfill() }
+        }
+        let firstController = PKPaymentAuthorizationController(paymentRequest: PKPaymentRequest())
+        handler.paymentAuthorizationControllerDidFinish(firstController)
+        wait(for: [firstCallExpectation], timeout: 2.0)
+
+        let secondCallExpectation = expectation(description: "second didFinish reports failure, not a stale success")
+        handler.completionHandler = { success, token, billingInfo in
+            XCTAssertFalse(success, "a handler reused without a new didAuthorizePayment must not report success")
+            XCTAssertNil(token)
+            XCTAssertNil(billingInfo)
+            secondCallExpectation.fulfill()
+        }
+        let secondController = PKPaymentAuthorizationController(paymentRequest: PKPaymentRequest())
+        handler.paymentAuthorizationControllerDidFinish(secondController)
+
+        wait(for: [secondCallExpectation], timeout: 2.0)
     }
 
     func testCardBrandValidator() throws {
@@ -335,6 +393,19 @@ class RecurlySDK_iOSTests: XCTestCase {
         let engine = NetworkEngine()
         let request = engine.createPOSTRequest(requestType: .getTokenID, requestBodyObject: ["key": "value"])
         XCTAssertEqual(request?.timeoutInterval, 30)
+    }
+
+    func testNetworkEngine_defaultSession_isPrivateEphemeralConfig() throws {
+        // The default session must not be `URLSession.shared`, so the SDK never shares
+        // the host app's connection pool, cache, or cookie jar.
+        let engine = NetworkEngine()
+        let mirror = Mirror(reflecting: engine)
+        let session = try XCTUnwrap(mirror.children.first(where: { $0.label == "session" })?.value as? URLSession)
+
+        XCTAssertFalse(session === URLSession.shared)
+        XCTAssertNil(session.configuration.urlCache)
+        XCTAssertFalse(session.configuration.httpShouldSetCookies)
+        XCTAssertEqual(session.configuration.httpCookieAcceptPolicy, .never)
     }
 
     // MARK: RecurlyAPIClient
@@ -732,6 +803,17 @@ class RecurlySDK_iOSTests: XCTestCase {
         XCTAssertEqual(card.expYear, 2030)
         XCTAssertEqual(card.issuingCountry, "US")
         XCTAssertEqual(card.fundingSource, "credit")
+    }
+
+    func testRecurlyCardData_debugDescription_neverContainsCardData() {
+        var cardData = RecurlyCardData()
+        cardData.number = "4111111111111111"
+        cardData.month = "12"
+        cardData.year = "2030"
+        cardData.cvv = "123"
+
+        XCTAssertEqual(cardData.debugDescription, "RecurlyCardData(<redacted>)")
+        XCTAssertEqual("\(cardData)", "RecurlyCardData(<redacted>)")
     }
 
     func testREBaseErrorResponse_decoding() throws {
@@ -1141,6 +1223,42 @@ class RecurlySDK_iOSTests: XCTestCase {
         individual.cardNumber = "4111111111111111"
         individual.expDate = "12\(futureYear)"
         XCTAssertEqual(individual.cardStatus, .entering, "override forces .entering and never re-validates the card number")
+    }
+
+    func testUnifiedViewModel_validateExpDate_calledDirectlyOnFreshInstance_doesNotCrash() {
+        // `expDate` defaults to "" and only gets its `didSet`-driven normalization once
+        // set through the public setter. Calling `validateExpDate()` directly on a
+        // freshly constructed instance splits "" into a single-element `[""]`, and the
+        // pre-fix code indexed `date[1]` unguarded there — an out-of-bounds crash.
+        // Empty is not yet an error, matching the setter's own "still entering" convention.
+        let vm = UnifiedViewModel()
+        vm.validateExpDate()
+        XCTAssertFalse(vm.expDateError)
+    }
+
+    func testUnifiedViewModel_validateExpDate_calledDirectlyWithMalformedNonEmptyValue_flagsError() {
+        // A non-empty value that still doesn't split into exactly two components
+        // (no "/" present) is treated as an error, unlike the empty case above.
+        let vm = UnifiedViewModel()
+        vm.expDate = "1"
+        vm.validateExpDate()
+        XCTAssertTrue(vm.expDateError)
+    }
+
+    func testIndividualViewModel_validateExpDate_calledDirectlyOnFreshInstance_doesNotCrash() {
+        // Empty stays `.entering`, matching this class's own default-before-checking convention.
+        let vm = IndividualViewModel()
+        vm.validateExpDate()
+        XCTAssertFalse(vm.expDateError)
+        XCTAssertEqual(vm.cardStatus, .entering)
+    }
+
+    func testIndividualViewModel_validateExpDate_calledDirectlyWithMalformedNonEmptyValue_flagsError() {
+        let vm = IndividualViewModel()
+        vm.expDate = "1"
+        vm.validateExpDate()
+        XCTAssertTrue(vm.expDateError)
+        XCTAssertEqual(vm.cardStatus, .error)
     }
     
 }

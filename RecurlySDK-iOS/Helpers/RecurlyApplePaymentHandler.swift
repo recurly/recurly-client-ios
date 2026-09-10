@@ -141,6 +141,11 @@ extension RecurlyApplePaymentHandler: PKPaymentAuthorizationControllerDelegate {
                 } else {
                     self.completionHandler?(false, nil, nil)
                 }
+                // Payment data must not outlive this callback.
+                self.currentToken = nil
+                self.currentBillingInfo = nil
+                self.paymentStatus = .failure
+                self.completionHandler = nil
             }
         }
     }
