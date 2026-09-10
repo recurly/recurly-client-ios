@@ -179,6 +179,11 @@ class UnifiedViewModel: ObservableObject {
     func validateExpDate() {
         
         let date = expDate.components(separatedBy: "/")
+        // An untouched field is not an error yet.
+        guard date.count == 2 else {
+            expDateError = !expDate.isEmpty
+            return
+        }
         let currentDate = Calendar.current.dateComponents([.year, .month], from: Date())
         
         let expMonth = Int(date[0]) ?? 0

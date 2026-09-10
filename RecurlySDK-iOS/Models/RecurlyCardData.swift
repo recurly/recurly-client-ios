@@ -16,3 +16,9 @@ public struct RecurlyCardData: Codable, Sendable {
     /// Security Code
     var cvv: String = ""
 }
+
+extension RecurlyCardData: CustomDebugStringConvertible, CustomStringConvertible {
+    /// Redacted so card data never appears in cleartext in logs, `po`, or crash reports.
+    public var debugDescription: String { "RecurlyCardData(<redacted>)" }
+    public var description: String { debugDescription }
+}
