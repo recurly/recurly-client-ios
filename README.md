@@ -116,18 +116,40 @@ If you'd like to run the tests in Xcode, be sure to set the `publicKey` variable
 ## 4. Examples
 Once the SDK is imported and configured, we can start building stuff with it!
 
+Every example below shares one `RecurlyCardSession`, held in a `@StateObject` on
+the checkout screen's view:
+
+```Swift
+struct CheckoutView: View {
+    @StateObject private var session = RecurlyCardSession()
+
+    var body: some View {
+        // ...
+    }
+}
+```
+
+Use `@StateObject`, not a plain `let`/`var` property. A plain property is
+recreated every time the parent view re-renders, silently wiping anything the
+user already typed. `@StateObject` ties the session's lifetime to the view
+instance instead of the view's `body` re-evaluations.
+
 ### Display our RecurlyCreditCardInputUI TextField
+
+`RecurlyCardSession` holds the card fields for one checkout screen. Create one
+and pass it to the component; the component reads from and writes to it.
 
 ```Swift
        VStack(alignment: .center) {
-            RecurlyCreditCardInputUI(cardNumberPlaceholder: "Card number",
+            RecurlyCreditCardInputUI(session: session,
+                                cardNumberPlaceholder: "Card number",
                                 expDatePlaceholder: "MM/YY",
                                 cvvPlaceholder: "CVV")
                 .padding(10)
 
             Button {
-                getToken { myToken in
-                    print(myToken)
+                RecurlyTokenizationManager.shared.getTokenId(session: session) { tokenId, error in
+                    print(tokenId ?? "")
                 }
             } label: {
                 Text("Subscribe")
@@ -137,23 +159,26 @@ Once the SDK is imported and configured, we can start building stuff with it!
 ```
 ### Display Individual Components
 
+Share the same `RecurlyCardSession` across every individual field that belongs
+to one card.
+
 ```Swift
         VStack(alignment: .center, spacing: 20) {
             VStack(alignment: .leading) {
-                RecurlyCardNumberTextField(placeholder: " Card number")
+                RecurlyCardNumberTextField(session: session, placeholder: " Card number")
                     .padding(.bottom, 30)
 
                 HStack(spacing: 15) {
-                    RecurlyExpDateTextField(placeholder: "MM/YY")
-                    RecurlyCVVTextField(placeholder: "CVV")
+                    RecurlyExpDateTextField(session: session, placeholder: "MM/YY")
+                    RecurlyCVVTextField(session: session, placeholder: "CVV")
                 }.padding(.bottom, 3)
 
             }.padding(.horizontal, 51)
             .padding(.vertical, 10)
 
             Button {
-                getToken { myToken in
-                    print(myToken)
+                RecurlyTokenizationManager.shared.getTokenId(session: session) { tokenId, error in
+                    print(tokenId ?? "")
                 }
             } label: {
                 Text("Subscribe")
@@ -166,7 +191,8 @@ Once the SDK is imported and configured, we can start building stuff with it!
 
 ```Swift
 
-    RecurlyCreditCardInputUI(cardNumberPlaceholder: "Card number",
+    RecurlyCreditCardInputUI(session: session,
+                                cardNumberPlaceholder: "Card number",
                                 expDatePlaceholder: "MM/YY",
                                 cvvPlaceholder: "CVV",
                                 textFieldFont: Font.system(size: 15, weight: .bold, design: .default),
@@ -174,6 +200,10 @@ Once the SDK is imported and configured, we can start building stuff with it!
 ```
 
 ### Get a payment token
+
+Call `session.validateData()` before requesting a token to confirm every field
+is complete; `getTokenId`/`getToken` read the card data straight from the
+session, so you never need to read or store it yourself.
 
 ```Swift
 let billingInfo = RecurlyBillingInfo(firstName: "Jane",
@@ -189,11 +219,11 @@ let billingInfo = RecurlyBillingInfo(firstName: "Jane",
                                 vatNumber: "",
                                 taxIdentifier: "",
                                 taxIdentifierType: "")
-//Inject the BillingInfo
-RecurlyTokenizationManager.shared.setBillingInfo(billingInfo: billingInfo)
 
-//Get the TokenId for your Billing Info
-RecurlyTokenizationManager.shared.getTokenId { tokenId, error in
+guard session.validateData() else { return }
+
+//Get the TokenId for your Card Data and Billing Info
+RecurlyTokenizationManager.shared.getTokenId(session: session, billingInfo: billingInfo) { tokenId, error in
         if let errorResponse = error {
             print(errorResponse.error.message ?? "")
             return
@@ -202,19 +232,28 @@ RecurlyTokenizationManager.shared.getTokenId { tokenId, error in
         }
 ```
 
-or (exactly the same for requesting a tokenId just with your CardData):
+`billingInfo` is optional; omit it to tokenize the card data alone:
 
-**The Card Data its passed to our Framework as the user types it so you don't need it nor have access to sensitive user info**
 ```Swift
-// Display The RecurlyCreditCardInputUI or The Individual Components and as the User types in, the info will be ready to submitt inside our Framework
-
-//Get the TokenId for your Card Data
-RecurlyTokenizationManager.shared.getTokenId { tokenId, error in
+RecurlyTokenizationManager.shared.getTokenId(session: session) { tokenId, error in
         if let errorResponse = error {
             print(errorResponse.error.message ?? "")
             return
         }    
             print(tokenId ?? "")
+        }
+```
+
+On a successful tokenization, `session` is reset so the fields go blank
+before your completion handler is called — reading `session` inside your
+handler already sees the post-reset state. Pass `resetOnSuccess: false` to
+keep the entered data instead — for example, to retry against a second
+gateway or to redisplay a saved card — and call `session.reset()` yourself
+when you're ready to clear it:
+
+```Swift
+RecurlyTokenizationManager.shared.getTokenId(session: session, resetOnSuccess: false) { tokenId, error in
+        print(tokenId ?? "")
         }
 ```
 
@@ -227,7 +266,7 @@ brand, first six / last four digits, expiration, issuing country, and funding
 source when Recurly returns them.
 
 ```Swift
-RecurlyTokenizationManager.shared.getToken { token, error in
+RecurlyTokenizationManager.shared.getToken(session: session) { token, error in
         if let errorResponse = error {
             print(errorResponse.error.message ?? "")
             return
@@ -261,7 +300,7 @@ versions above (both are supported; use whichever fits your codebase):
 
 ```Swift
 do {
-    let tokenId = try await RecurlyTokenizationManager.shared.getTokenId()
+    let tokenId = try await RecurlyTokenizationManager.shared.getTokenId(session: session)
     print(tokenId)
 } catch let errorResponse as RecurlyBaseErrorResponse {
     print(errorResponse.error.message ?? "")
@@ -272,7 +311,7 @@ do {
 
 ```Swift
 do {
-    let token = try await RecurlyTokenizationManager.shared.getToken()
+    let token = try await RecurlyTokenizationManager.shared.getToken(session: session)
     // Send token.id to your server to create the subscription / purchase.
     if let card = token.card {
         self.updateSavedCardLabel(brand: card.brand,

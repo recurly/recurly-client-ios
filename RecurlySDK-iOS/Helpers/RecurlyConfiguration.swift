@@ -16,8 +16,9 @@ public final class RecurlyConfiguration {
     /// The Recurly public API key.
     ///
     /// Whole-value assignment and compound mutation (e.g. `apiPublicKey += "suffix"`) are both
-    /// atomic via the `_modify` accessor below. See the non-reentrancy caveat on
-    /// `RecurlyTokenizationManager.cardData` — the same `NSLock` rules apply here.
+    /// atomic via the `_modify` accessor below. `lock` is non-reentrant: don't read this
+    /// property from within an assignment to itself or another lock-guarded property on
+    /// this instance.
     public var apiPublicKey: String {
         get { lock.lock(); defer { lock.unlock() }; return _apiPublicKey }
         _modify {
@@ -39,5 +40,6 @@ public final class RecurlyConfiguration {
 
     public func initialize(publicKey: String) {
         self.apiPublicKey = publicKey
+        FontLoader.registerBundledFonts
     }
 }
