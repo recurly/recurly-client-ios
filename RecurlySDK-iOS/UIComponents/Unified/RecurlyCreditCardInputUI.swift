@@ -4,30 +4,49 @@
 //
 
 import SwiftUI
-import Combine
 
 /// Recurly Custom Secure TextField for Card Input.
 public struct RecurlyCreditCardInputUI: View {
-    @StateObject private var viewModel = UnifiedViewModel()
+    @ObservedObject private var session: RecurlyCardSession
+    @State private var numberEditing = false
+    @State private var expDateEditing = false
+    @State private var cvvFocused = false
     private var cardNumberPlaceholder: String
     private var expDatePlaceholder: String
     private var cvvPlaceholder: String
     private var textFieldFont: Font
     private var titleLabelFont: Font
 
+    // Blur-gated: red only once the user leaves the field, unless validateData() ran.
+    // `@MainActor` is explicit here since `hasError` reads these outside `body`, which
+    // would otherwise infer no isolation.
+    @MainActor private var cardNumberIsInvalid: Bool { session.cardNumberError && (!numberEditing || session.didAttemptValidation) }
+    @MainActor private var expDateIsInvalid: Bool { session.expDateError && (!expDateEditing || session.didAttemptValidation) }
+    @MainActor private var cvvIsInvalid: Bool { session.cvvError && (!cvvFocused || session.didAttemptValidation) }
+    @MainActor private var hasError: Bool { cardNumberIsInvalid || expDateIsInvalid || cvvIsInvalid }
+
+    private func setNumberEditing(_ editing: Bool) { numberEditing = editing }
+    private func setExpDateEditing(_ editing: Bool) { expDateEditing = editing }
+    private func setCVVFocused(_ editing: Bool) { cvvFocused = editing }
+
     /// Creates a RecurlyCreditCardInputUI object
     /// - Parameters:
+    ///   - session: The `RecurlyCardSession` this view reads from and writes to. Call
+    ///     `session.validateData()` before requesting a token to confirm the card is complete.
     ///   - cardNumberPlaceholder: The placeholder for the Card Number TextField
     ///   - expDatePlaceholder: The placeholder for the Exp Date TextField
     ///   - cvvPlaceholder: The placeholder for the CVV TextField
     ///   - textFieldFont: Optional Textfield Custom Font
     ///   - titleLabelFont: Optional Textfield Title Custom Font
-    public init(cardNumberPlaceholder: String,
+    public init(session: RecurlyCardSession,
+                cardNumberPlaceholder: String,
                 expDatePlaceholder: String,
                 cvvPlaceholder: String,
                 textFieldFont: Font = Font.custom("Inter-Regular", size: 15),
                 titleLabelFont: Font = Font.custom("Inter-Regular", size: 13)) {
 
+        FontLoader.registerBundledFonts
+        self.session = session
         self.cardNumberPlaceholder = cardNumberPlaceholder
         self.expDatePlaceholder = expDatePlaceholder
         self.cvvPlaceholder = cvvPlaceholder
@@ -35,91 +54,55 @@ public struct RecurlyCreditCardInputUI: View {
         self.titleLabelFont = titleLabelFont
     }
 
-    private func didOnEditingChanged(editingChanged: Bool) -> Void {
-        if editingChanged {
-            viewModel.lastCardStatus = .entering
-        } else {
-            viewModel.validateCreditCard()
-            viewModel.lastCardStatus = viewModel.cardStatus
-        }
-    }
-
     public var body: some View {
         HStack(alignment: .center, spacing: 0){
 
-            Image(viewModel.mainImageName)
+            Image(cvvFocused ? (session.brand == .amex ? "amexCVVcardIcon" : "cvvCardIcon") : session.brandImageName)
                 .resizable()
                 .frame(width: 40, height: 26, alignment: .center)
                 .aspectRatio(contentMode: .fit)
                 .padding(.vertical, 12)
                 .padding(.leading, 12)
-                .rotation3DEffect(.degrees(viewModel.rotation), axis: (x: 1, y: 0, z: 0))
-                .animation(.easeIn, value: viewModel.rotation)
+                // Amex prints its CVV on the card FRONT, so flipping to a back-of-card
+                // graphic would be wrong for that brand — skip the rotation for it.
+                .rotation3DEffect(.degrees(cvvFocused && session.brand != .amex ? 360 : 0), axis: (x: 1, y: 0, z: 0))
+                .animation(.easeIn, value: cvvFocused)
 
 
             RecurlyPlaceholderTextField(placeholder: cardNumberPlaceholder,
-                                   mainText: $viewModel.cardNumber,
-                                   onEditingChanged: didOnEditingChanged(editingChanged:),
+                                   mainText: $session.number,
+                                   onEditingChanged: setNumberEditing,
                                    textFieldFont: textFieldFont,
                                    titleLabelFont: titleLabelFont)
                 .keyboardType(.numberPad)
                 .frame(minWidth: 100, idealWidth: 190, alignment: .trailing)
-                .foregroundColor(viewModel.lastCardStatus == .error ? .red : .black)
-                .onReceive(Just(viewModel.cardNumber)) { out in
-                    let filteredString = viewModel.cardNumber.removeNonNumericChars()
-                    if viewModel.cardNumber != filteredString {
-                        viewModel.cardNumber = filteredString
-                    }
-                    let ccValidator = CreditCardValidator(viewModel.cardNumber)
-                    let cardLenght = ccValidator.type == .amex ? 17 : 19
-                    if viewModel.cardNumber.count > cardLenght {
-                        viewModel.cardNumber = String(viewModel.cardNumber.prefix(cardLenght))
-                    }
-                }
+                .foregroundColor(.cardFieldText(isInvalid: cardNumberIsInvalid))
 
-            RecurlyPlaceholderTextField(placeholder: expDatePlaceholder, mainText: $viewModel.expDate, textFieldFont: textFieldFont, titleLabelFont: titleLabelFont)
+            RecurlyPlaceholderTextField(placeholder: expDatePlaceholder,
+                                   mainText: $session.expDate,
+                                   onEditingChanged: setExpDateEditing,
+                                   textFieldFont: textFieldFont,
+                                   titleLabelFont: titleLabelFont)
                 .keyboardType(.numberPad)
                 .frame(width: 70, alignment: .leading)
-                .foregroundColor(viewModel.expDateError ? .red : .black)
-                .onReceive(Just(viewModel.expDate), perform: { output in
-                    let filteredString = viewModel.expDate.removeNonNumericChars(exceptions: "/")
-                    if viewModel.expDate != filteredString {
-                        viewModel.expDate = filteredString
-                    }
-                    if viewModel.expDate.count > 5 {
-                        viewModel.expDate = String(viewModel.expDate.prefix(5))
-                    }
-                })
+                .foregroundColor(.cardFieldText(isInvalid: expDateIsInvalid))
 
-            RecurlyPlaceholderTextField(placeholder: cvvPlaceholder, mainText: $viewModel.cvv, onEditingChanged: { (editingChanged) in
-                viewModel.cvvFocus = editingChanged
-            }, textFieldFont: textFieldFont, titleLabelFont: titleLabelFont)
+            RecurlyPlaceholderTextField(placeholder: cvvPlaceholder, mainText: $session.cvv, onEditingChanged: setCVVFocused, textFieldFont: textFieldFont, titleLabelFont: titleLabelFont)
                 .keyboardType(.numberPad)
                 .frame(width: 50, alignment: .leading)
+                .foregroundColor(.cardFieldText(isInvalid: cvvIsInvalid))
                 .padding(.trailing, 5)
                 .padding(.leading, -7)
-                .onReceive(Just(viewModel.cvv), perform: { output in
-                    let filteredString = viewModel.cvv.removeNonNumericChars()
-                    if viewModel.cvv != filteredString {
-                        viewModel.cvv = filteredString
-                    }
-                    let ccValidator = CreditCardValidator(viewModel.cardNumber)
-                    let cvvLenght = ccValidator.type == .amex ? 4 : 3
-                    if viewModel.cvv.count > cvvLenght {
-                        viewModel.cvv = String(viewModel.cvv.prefix(cvvLenght))
-                    }
-                })
 
         }.frame(height: 50)
             .background(
                 RoundedRectangle(cornerRadius: 10)
                     .fill(Color.white)
-                    .shadow(color: viewModel.lastCardStatus != .entering ? viewModel.lastTfBorderColor : .clear,
-                            radius: viewModel.lastCardStatus != .entering ? 4 : 0, x: 0, y: 0)
+                    .shadow(color: hasError ? .red : .clear, radius: hasError ? 4 : 0, x: 0, y: 0)
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 10)
-                    .stroke(viewModel.lastTfBorderColor, lineWidth: viewModel.tfBorderWidth)
+                    .stroke(hasError ? Color.red : Color.gray, lineWidth: hasError ? 1 : 0.5)
             )
             .padding(10)
     }
@@ -127,6 +110,18 @@ public struct RecurlyCreditCardInputUI: View {
 
 struct CreditCardInputUI_Previews: PreviewProvider {
     static var previews: some View {
-        RecurlyCreditCardInputUI(cardNumberPlaceholder: "Card Number", expDatePlaceholder: "MM/YY", cvvPlaceholder: "CVV")
+        PreviewWrapper()
+    }
+
+    // `@StateObject` needs a `View`'s storage — a preview's own inline
+    // `RecurlyCardSession()` would be the copy-paste source of the exact bug
+    // this type exists to avoid (see the README's `@StateObject` guidance).
+    private struct PreviewWrapper: View {
+        @StateObject private var session = RecurlyCardSession()
+
+        var body: some View {
+            RecurlyCreditCardInputUI(session: session, cardNumberPlaceholder: "Card Number", expDatePlaceholder: "MM/YY", cvvPlaceholder: "CVV")
+        }
     }
 }
+

@@ -8,7 +8,12 @@ import RecurlySDK
 
 struct ContentView: View {
     @State private var currentStatusLabel = "Logs here"
-    
+
+    // Each form owns its own session — sharing one session across two independent
+    // forms would cross-populate their fields.
+    @StateObject private var componentsSession = RecurlyCardSession()
+    @StateObject private var unifiedSession = RecurlyCardSession()
+
     // Apple Payment handler instance
     let paymentHandler = RecurlyApplePaymentHandler()
 
@@ -19,19 +24,19 @@ struct ContentView: View {
             /// Components UI
             VStack(alignment: .center, spacing: 20) {
                 VStack(alignment: .leading) {
-                    RecurlyCardNumberTextField(placeholder: " Card number")
+                    RecurlyCardNumberTextField(session: componentsSession, placeholder: " Card number")
                         .padding(.bottom, 30)
                     
                     HStack(spacing: 15) {
-                        RecurlyExpDateTextField(placeholder: "MM/YY")
-                        RecurlyCVVTextField(placeholder: "CVV")
+                        RecurlyExpDateTextField(session: componentsSession, placeholder: "MM/YY")
+                        RecurlyCVVTextField(session: componentsSession, placeholder: "CVV")
                     }.padding(.bottom, 3)
         
                 }.padding(.horizontal, 51)
                 .padding(.vertical, 10)
                 
                 Button {
-                    getToken { myToken in
+                    getToken(session: componentsSession) { myToken in
                         print(myToken)
                         currentStatusLabel = myToken
                     }
@@ -43,13 +48,14 @@ struct ContentView: View {
             
             /// Inline payment UI
             VStack(alignment: .center) {
-                RecurlyCreditCardInputUI(cardNumberPlaceholder: "Card number",
+                RecurlyCreditCardInputUI(session: unifiedSession,
+                                    cardNumberPlaceholder: "Card number",
                                     expDatePlaceholder: "MM/YY",
                                     cvvPlaceholder: "CVV")
                     .padding(10)
                 
                 Button {
-                    getToken { myToken in
+                    getToken(session: unifiedSession) { myToken in
                         print("Token: \(myToken)")
                         currentStatusLabel = myToken
                     }
@@ -86,7 +92,12 @@ struct ContentView: View {
     }
     
     // Get token from UI components
-    private func getToken(completion: @escaping (String) ->()) {
+    private func getToken(session: RecurlyCardSession, completion: @escaping (String) ->()) {
+        
+        guard session.validateData() else {
+            currentStatusLabel = "Please enter a valid card"
+            return
+        }
         
         let billingInfo = RecurlyBillingInfo(firstName: "John",
                                         lastName: "Doe",
@@ -102,9 +113,7 @@ struct ContentView: View {
                                         taxIdentifier: "",
                                         taxIdentifierType: "")
         
-        RecurlyTokenizationManager.shared.setBillingInfo(billingInfo: billingInfo)
-        
-        RecurlyTokenizationManager.shared.getTokenId { tokenId, error in
+        RecurlyTokenizationManager.shared.getTokenId(session: session, billingInfo: billingInfo) { tokenId, error in
             
             if let errorResponse = error {
                 print(errorResponse.error.message ?? "")
@@ -141,10 +150,18 @@ struct ContentView: View {
             
             if success {
                 /// Token object 'PKPaymentToken' returned by Apple Pay
-                guard let token = token else { return }
+                guard let token = token else {
+                    currentStatusLabel = "Apple Pay returned no payment token"
+                    completion("")
+                    return
+                }
                 
                 /// Billing info
-                guard let billingInfo = billingInfo else { return }
+                guard let billingInfo = billingInfo else {
+                    currentStatusLabel = "Apple Pay returned no billing info"
+                    completion("")
+                    return
+                }
                 
                 /// Decode ApplePaymentData from Token
                 let decoder = JSONDecoder()
@@ -155,11 +172,17 @@ struct ContentView: View {
                     let applePaymentDataBody = try decoder.decode(RecurlyApplePaymentDataBody.self, from: token.paymentData)
                     applePaymentData = RecurlyApplePaymentData(paymentData: applePaymentDataBody)
                 } catch {
-                    print("Apple Payment Data Error")
-                    
-                    // Creating a Simulated Data for Apple Pay
+                    print("Apple Payment Data Error: \(error)")
+
+                    #if targetEnvironment(simulator)
+                    // Simulator-only fallback — a real device hitting this is a genuine decode failure.
                     let paymentDataBody = RecurlyApplePaymentDataBody(version: "EC_v1", data: "test", signature: "test", header: RecurlyApplePaymentDataHeader(ephemeralPublicKey: "test_public_key", publicKeyHash: "test_public_hash", transactionId: "abc123"))
                     applePaymentData = RecurlyApplePaymentData(paymentData: paymentDataBody)
+                    #else
+                    currentStatusLabel = "Could not read Apple Pay payment data"
+                    completion("")
+                    return
+                    #endif
                 }
                 
                 let displayName = token.paymentMethod.displayName ?? "unknown"
@@ -181,12 +204,8 @@ struct ContentView: View {
                                                 taxIdentifier: "",
                                                 taxIdentifierType: "")
                 
-                RecurlyTokenizationManager.shared.setBillingInfo(billingInfo: billingData)
-                RecurlyTokenizationManager.shared.setApplePaymentData(applePaymentData: applePaymentData)
-                RecurlyTokenizationManager.shared.setApplePaymentMethod(applePaymentMethod: applePaymentMethod)
-                
                 // This method is used to send ApplePay data for Tokenization
-                RecurlyTokenizationManager.shared.getApplePayTokenId { tokenId, error in
+                RecurlyTokenizationManager.shared.getApplePayTokenId(paymentData: applePaymentData, paymentMethod: applePaymentMethod, billingInfo: billingData) { tokenId, error in
                     
                     if let errorResponse = error {
                         print(errorResponse.error.message ?? "")

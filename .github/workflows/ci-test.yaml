@@ -36,3 +36,11 @@ jobs:
           PUBLIC_KEY=$API_TOKEN \
           SWIFT_STRICT_CONCURRENCY=targeted \
           test \
+
+    - name: Build ContainerApp sample
+      run: |
+        xcodebuild \
+          -project RecurlySDK-iOS.xcodeproj \
+          -scheme ContainerApp \
+          -destination 'platform=iOS Simulator,OS=latest,name=iPhone 16' \
+          build \
