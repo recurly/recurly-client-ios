@@ -29,7 +29,7 @@ dependency and add the `RecurlySDK` product to your target:
 
 	```swift
 	dependencies: [
-	    .package(url: "https://github.com/recurly/recurly-client-ios.git", from: "3.0.0")
+	    .package(url: "https://github.com/recurly/recurly-client-ios.git", from: "4.0.0")
 	],
 	targets: [
 	    .target(

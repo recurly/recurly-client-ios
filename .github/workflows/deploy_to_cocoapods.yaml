@@ -7,6 +7,8 @@ jobs:
     runs-on: macos-14
     steps:
     - uses: actions/checkout@v6.0.2
+    - name: Check version consistency
+      run: scripts/check_version.sh
     - name: Select Xcode
       run: sudo xcode-select -switch /Applications/Xcode_16.2.app && /usr/bin/xcodebuild -version
     - name: List Simulators
@@ -17,9 +19,9 @@ jobs:
     - name: Deploy to Cocoapods
       run: |
         set -eo pipefail
-        export VERSION=$(git describe --tags --abbrev=0 `git rev-list --tags --max-count=1`)
-        export LIB_VERSION=${VERSION#v}
+        export LIB_VERSION=${TAG_NAME#v}
         pod lib lint --allow-warnings
         pod trunk push --allow-warnings
       env:
+        TAG_NAME: ${{ github.event.release.tag_name }}
         COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
